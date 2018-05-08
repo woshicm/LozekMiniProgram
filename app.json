@@ -1,0 +1,9 @@
+{
+  "pages": ["pages/index/index"],
+  "window": {
+      "backgroundTextStyle": "dark",
+      "navigationBarBackgroundColor": "#1976d2",
+      "navigationBarTitleText": "路迹本",
+      "navigationBarTextStyle": "white"
+  }
+}

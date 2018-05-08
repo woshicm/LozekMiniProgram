@@ -1,0 +1,60 @@
+.backLayer{
+   position: relative;
+   left: 129rpx;
+   top: 30rpx;
+}
+.text{
+  width: 80%;
+  position: relative;
+  left: 40rpx;
+  bottom: 90rpx;
+}
+.text-head{
+  font-size: 12pt;
+  color: black;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.text-lookThrough{
+  font-size: 7pt;
+  color: #949494;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100%;
+  white-space: nowrap;
+}
+.extra-image{
+  width: 100%;
+  height: 50rpx;
+  position: relative;
+  bottom: 170rpx;
+  left: 35rpx;
+}
+.drawerMenu{
+  width: 9rpx;
+  height: 10rpx;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 2rpx 2rpx 10rpx 0rpx rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 355rpx;
+  bottom: 110rpx;
+}
+.drawerMenu-text-item{
+  font-size: 8pt;
+  display: block;
+}
+.image-dialogueBox{
+  height: 90rpx;
+  position: relative;
+}
+button::after {
+    border-radius: 0;
+    border: none;
+}
