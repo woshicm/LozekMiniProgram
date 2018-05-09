@@ -1,14 +1,18 @@
 var app = getApp()
 
 Page({
-  //時間軸
   data: {
-    diaryData: [
+    today: {},
+    //時間軸
+    diaryData: [{
+      aDay: [{
+      }],
+      date:[2018,5,8,'Wed']
+    }
     ],
-  },
-  //導航抽屜
-  drawerMenuMoveData: {
-    userInfo:{},
+
+    //導航抽屜
+    userInfo: {},
     check: false,   //是否触发滑动操作
     state: 0,    //0:初始状态 1:菜单弹出中状态 2:菜单弹入状态中 3:菜单弹出状态
     firstTouchX: 0,  //首次触摸X坐标值
@@ -19,8 +23,11 @@ Page({
     startTime: 0,
     endTime: 0,
   },
+  //導航抽屜
+  drawerMenuMoveData: {
+  },
   onMainPageTouchstart: function (e) {
-    var data = this.drawerMenuMoveData;
+    var data = this.data;
     var clientX = e.touches[0].clientX;
     data.startTime = e.timeStamp;
     //初识状态
@@ -41,7 +48,7 @@ Page({
     }
   },
   onMainPageTouchmove: function (e) {
-    var data = this.drawerMenuMoveData;
+    var data = this.data;
     var pixelRatio = wx.getSystemInfoSync().pixelRatio;
     if (data.check) {
       var mainPageLeft = 0, drawerMenuLeft = 0;
@@ -88,7 +95,7 @@ Page({
     }
   },
   onMainPageTouchend: function (e) {
-    var data = this.drawerMenuMoveData;
+    var data = this.data;
     if (!data.check) {
       return;
     }
@@ -162,7 +169,7 @@ Page({
     if(data.state !== 0){
       return;
     }
-    var data = this.drawerMenuMoveData;
+    var data = this.data;
     var animation = wx.createAnimation({
       duration: 300,
       timingFunction: 'ease'
@@ -177,7 +184,7 @@ Page({
     });
   },
   onMainPageTap: function (e) {
-    var data = this.drawerMenuMoveData;
+    var data = this.data;
     if (data.state !== 3) {
       return;
     }
@@ -209,7 +216,14 @@ Page({
     var array = [yy, mm, dd, day[now.getDay()]];
     return array;
   },
-  onLoad: function () {
-    var date = this.getTodayDate();
+
+  onLoad: function (options) {
+    var today = this.getTodayDate();
+    console.log(today);
+    this.setData({
+      "data.today": today,
+    });
+    console.log(this.today);
   },
+  
 })

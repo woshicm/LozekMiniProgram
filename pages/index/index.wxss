@@ -56,6 +56,13 @@
   background-color: white;
   padding: 0rpx;
 }
+.image-index-display-dot{
+  width: 64rpx;
+  height: 64rpx;
+  position: relative;
+  left: 80rpx;
+  bottom: 80rpx;
+}
 .image-trapezium{
   height: 100%;
   width: 40%;
@@ -80,6 +87,18 @@
   top: -12rpx;
   margin-left: 30rpx;
   font-size: 12pt;
+}
+.text-index-display-time{
+  text-align: center;
+  width: 100rpx;
+}
+.text-index-display-time-date{
+  font-size: 18pt;
+  display: block;
+}
+.text-index-display-time-day{
+  display: block;
+  font-size: 9pt;
 }
 .index-bottom{
   display: flex;
