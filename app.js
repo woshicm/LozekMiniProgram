@@ -4,6 +4,47 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+    // 清除本地 token
+    // wx.removeStorageSync("token")
+    this.checkToken()
+  },
+  login: function(){
+    wx.login({
+      success: function(res) {
+        wx.request({
+          url: 'http://localhost:8000/login',
+          method: 'POST',
+          data: {
+            code: res.code
+          },
+          success: (res)=>{
+            // console.log(res.data)
+            wx.setStorageSync('token', res.data)
+          }
+        })
+      },
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
+  checkToken: function(){
+    let token = wx.getStorageSync("token") || null
+    if(token != null){
+      wx.checkSession({
+        success: function (res) {
+          // console.log(res)
+        },
+        fail: (res) => {
+          console.log(res.errMsg)
+          this.login()
+        },
+        complete: function (res) {
+          console.log("token valid")
+        },
+      })
+    }else{
+      this.login()
+    }
   },
   getUserInfo: function (cb) {
     var that = this

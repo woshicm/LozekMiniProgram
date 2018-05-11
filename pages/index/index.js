@@ -217,13 +217,13 @@ Page({
     return array;
   },
 
-  onLoad: function (options) {
+  onLoad:  function(options) {
     var today = this.getTodayDate();
-    console.log(today);
+    // console.log(today);
     this.setData({
-      "data.today": today,
+      today: today,
     });
-    console.log(this.today);
+    // console.log(this);
   },
   
 })
