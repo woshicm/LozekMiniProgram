@@ -15,27 +15,15 @@
             <swiper-item>
                 <scroll-view scroll-y class='index-scrollView' bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll"    
                      scroll-top="700rpx">
-                    <view wx:if='{{diaryData.length !== 0}}'>
+                    <view wx:if='{{diaryData.length !== 0}}' style='padding-top: 5rpx;'>
                         <view class='index-display-list' wx:for='{{diaryData}}' wx:key='key' wx:for-item='displayItem'>
-                            <block  wx:if='{{displayItem.date}} === {{today}}' >
-                                <view class='text-index-display-time'>
-                                    <text class='text-index-display-time-date' style='color: #f8bc71;'>{{displayItem.date[2]}}</text>
-                                    <text class='text-index-display-time-day' style='color: #f7ce99;'>{{displayItem.date[3]}}</text>
-                                </view>
-                                <image src='/images/image-todayDot.svg' class='image-index-display-dot'></image>
-                                <view></view>
-                            </block>
-                            <block wx:else class='text-index-display-time'>
-                                <view class='text-index-display-time'>
-                                    <text class='index-display-date' style='color: #93bbef;'>{{displayItem.date[2]}}</text>
-                                    <text class='index-display-day' style='color: #accaf0;'>>{{displayItem.date[3]}}</text>
-                                </view>
-                                <image src='/images/image-yDot.svg' class='image-index-display-dot'></image>
-                            </block>
-                            <view class='index-display-list-aDay' wx:for='{{item.aDay}}'>
+                            <view class='index-display-timeLine'>
+                                <timeLine isToday='{{displayItem.date[0] === today[0] && displayItem.date[1] === today[1] && displayItem.date[2] === today[2]}}' date='{{displayItem.date[2]}}' day='{{displayItem.date[3]}}'></timeLine>
                             </view>
+                                <view class='index-display-textCard' wx:for='{{displayItem.aDay}}' wx:for-item='aDayItem'>
+                                    <textCard head='{{aDayItem.head}}' lookthrough='{{aDayItem.lookthrough}}'></textCard>
+                                </view>
                         </view>
-                        <view class='index-display-timeLine'></view>
                     </view>
                     <view wx:else class='index-display-noContent'>
                         <text class='index-display-noContent-text'>empty</text>

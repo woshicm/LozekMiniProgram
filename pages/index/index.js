@@ -2,13 +2,71 @@ var app = getApp()
 
 Page({
   data: {
-    today: {},
     //時間軸
     diaryData: [{
       aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
       }],
-      date:[2018,5,8,'Wed']
-    }
+      date: [2018, 5, 8, 'Wed']
+      },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+    {
+      aDay: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      date: [2018, 5, 8, 'Wed']
+    },
+
     ],
 
     //導航抽屜
@@ -106,7 +164,8 @@ Page({
     data.moveX = 0;
     var animation = wx.createAnimation({
       duration: 250,
-      timingFunction: 'ease'});
+      timingFunction: 'ease'
+    });
     var translateX = 0;
     var mainPageLeft = 0;
     var windowWidth = wx.getSystemInfoSync().windowWidth;
@@ -150,7 +209,7 @@ Page({
     });
   },
   onMainPageTap: function (e) {
-    var data = this.drawerMenuMoveData;
+    var data = this.data;
     if (data.state !== 3) {
       return;
     }
@@ -164,9 +223,9 @@ Page({
       animationData: animation.export()
     });
   },
-  onPortraitTap: function(e){
-    var data = this.drawerMenuMoveData;
-    if(data.state !== 0){
+  onPortraitTap: function (e) {
+    var data = this.data;
+    if (data.state !== 0) {
       return;
     }
     var data = this.data;
@@ -217,13 +276,10 @@ Page({
     return array;
   },
 
-  onLoad:  function(options) {
-    var today = this.getTodayDate();
-    // console.log(today);
+  onLoad: function (options) {
     this.setData({
-      today: today,
+      today: this.getTodayDate(),
     });
-    // console.log(this);
   },
-  
+
 })

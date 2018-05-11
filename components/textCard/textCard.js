@@ -1,20 +1,17 @@
 Component({
   properties: {
     head: {
-      type: String
+      type: String,
     },
     lookthrough: {
       type: String  
     },
-    width: {
-      type: String
-    },
-    boxType: {
-      type: String
-    }
   },
 
-  data: {},
+  data: {
+    width: 441,
+    boxType: 'oneText',
+  },
 
   onTapExtra: function(e){
 

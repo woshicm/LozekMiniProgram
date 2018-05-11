@@ -56,13 +56,6 @@
   background-color: white;
   padding: 0rpx;
 }
-.image-index-display-dot{
-  width: 64rpx;
-  height: 64rpx;
-  position: relative;
-  left: 80rpx;
-  bottom: 80rpx;
-}
 .image-trapezium{
   height: 100%;
   width: 40%;
@@ -74,8 +67,8 @@
   position: relative;
   width: 12%;
   height: 100%;
-  left: 57rpx;
-  bottom: 115rpx;
+  left: 45rpx;
+  bottom: 110rpx;
   z-index: 10;
 }
 .text-nicknameOfDrawer{
@@ -87,18 +80,6 @@
   top: -12rpx;
   margin-left: 30rpx;
   font-size: 12pt;
-}
-.text-index-display-time{
-  text-align: center;
-  width: 100rpx;
-}
-.text-index-display-time-date{
-  font-size: 18pt;
-  display: block;
-}
-.text-index-display-time-day{
-  display: block;
-  font-size: 9pt;
 }
 .index-bottom{
   display: flex;
@@ -138,6 +119,16 @@
   position: relative;
   height: 100%;
 }
+.index-display-list{
+  display: flex;
+  top: 50rpx;
+}
+.index-display-textCard{
+  position: relative;
+  right: 30rpx;
+  top: 5rpx;
+  margin-bottom: 45rpx;
+}
 .index-display-button{
   height: 55rpx;
   display: flex;
@@ -148,6 +139,10 @@
   border: none;
   border-radius: 0%;
   background-color: white;
+}
+.index-display-timeLine{
+  position: relative;
+  top: 20rpx;
 }
 .index-display-noContent{
   display: flex;
