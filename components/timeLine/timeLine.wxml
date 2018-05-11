@@ -1,0 +1,10 @@
+<view class='timeLine'>
+    <view class='text'>
+        <text class='text-date' style='{{dateColor}}'>{{date}}</text>
+        <text class='text-day' style='{{dayColor}}'>{{day}}</text>
+    </view>
+    <view class="image">
+        <image src='{{imageURL}}' class='image-dot'></image>
+        <view class='modify-timeLine'></view>
+    </view>
+</view>

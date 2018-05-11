@@ -1,13 +1,15 @@
 .backLayer{
    position: relative;
-   left: 129rpx;
-   top: 30rpx;
+   bottom: 25rpx;
+   height: 100rpx;
+   margin: 0rpx;
 }
 .text{
   width: 80%;
   position: relative;
   left: 40rpx;
-  bottom: 90rpx;
+  bottom: 102rpx;
+  align-content: center;
 }
 .text-head{
   font-size: 12pt;
@@ -18,7 +20,7 @@
   text-overflow: ellipsis;
 }
 .text-lookThrough{
-  font-size: 7pt;
+  font-size: 8pt;
   color: #949494;
   display: block;
   overflow: hidden;
@@ -31,7 +33,7 @@
   height: 50rpx;
   position: relative;
   bottom: 170rpx;
-  left: 35rpx;
+  left: 185rpx;
 }
 .drawerMenu{
   width: 9rpx;
@@ -51,7 +53,7 @@
   display: block;
 }
 .image-dialogueBox{
-  height: 90rpx;
+  height: 110rpx;
   position: relative;
 }
 button::after {

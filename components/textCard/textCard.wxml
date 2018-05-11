@@ -2,9 +2,9 @@
     <image src='/images/image-dialogueBox-{{boxType}}.png' class='image-dialogueBox' style='width: {{width}}rpx;'></image>
     <view class='text'>
         <text class='text-head'  style='width: {{width - 90}}rpx;'>{{head}}</text>
-        <text class='text-lookThrough' style='width: {{width - 60}}rpx;'>{{lookThrough}}</text>
+        <text class='text-lookThrough' style='width: {{width - 60}}rpx;'>{{lookthrough}}</text>
     </view>
-    <image src='/images/image-textCard-extra.svg' class='extra-image' bindtap='onTapExtra'></image>
+    <!-- <image src='/images/image-textCard-extra.svg' class='extra-image' bindtap='onTapExtra'></image> -->
     <view wx:if='{{visible}}' class='drawerMenu' animation='{{animationOnExtraMenu}}'>
         <view  class='drawerMenu-text'>
         <text class='drawerMenu-text-item'>修改</text>

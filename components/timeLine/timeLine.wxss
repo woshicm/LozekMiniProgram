@@ -1,0 +1,47 @@
+.timeLine{
+  margin: 0rpx;
+  height: 80rpx;
+}
+.image{
+  width: 150rpx;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  right: 40rpx;
+  bottom: 15rpx;
+}
+.image-dot{
+  width: 64rpx;
+  height: 64rpx;
+  position: relative;
+  left: 78rpx;
+  bottom: 67rpx;
+  margin: 0 auto;
+}
+.text{
+  text-align: center;
+  width: 100rpx;
+  position: relative;
+  right: 10rpx;
+}
+.text-date{
+  font-size: 15pt;
+  display: block;
+  color: #93bbef;
+}
+.text-day{
+  display: block;
+  font-size: 7pt;
+  color: #accaf0;
+}
+.modify-timeLine{
+  width: 10rpx;
+  height: 100rpx;
+  background-color: #dae6f3;
+  margin: 0 auto;
+  position: relative;
+  left: 5rpx;
+  bottom: 95rpx;
+  z-index: -1;
+}
