@@ -1,87 +1,88 @@
-<view class="page-mainPage" animation='{{animationData}}' style='left:{{mainPageLeft}}rpx;'
- bindtouchstart='onMainPageTouchstart' catchtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend' bindtap='onMainPageTap'>
-    <view style='height: 149rpx;'>
-        <view class="color-main" style='height: 119rpx;'>
-            <open-data type="userAvatarUrl" class='image-portrait' catchtap='onPortraitTap'></open-data>
-            <image src='/images/image-trapezium.svg' class="image-trapezium"></image>
-        </view>
-         <button style='height: 1px; width: 100%; box-shadow: 0rpx 2rpx 5rpx 2rpx rgba(0,0,0,0.38);' class='color-main'></button>
-        <view class='color-grey100' style='height: 30rpx;'>
-        </view>
-        <image src='/images/image-clock.svg' class="image-clock"></image>
+<view class="page-mainPage" animation='{{animationData}}' style='left:{{mainPageLeft}}rpx;' bindtouchstart='onMainPageTouchstart' catchtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend' bindtap='onMainPageTap'>
+  <view style='height: 149rpx;'>
+    <view class="color-main" style='height: 119rpx;'>
+      <open-data type="userAvatarUrl" class='image-portrait' catchtap='onPortraitTap'></open-data>
+      <image src='/images/image-trapezium.svg' class="image-trapezium"></image>
     </view>
-    <view class='color-grey100' style='height: 922rpx;'>
-        <swiper style='width: 100%; height: 89%'>
-            <swiper-item>
-                <scroll-view scroll-y class='index-scrollView' bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll"    
-                     scroll-top="700rpx">
-                    <view wx:if='{{diaryData.length !== 0}}' style='padding-top: 5rpx;'>
-                        <view class='index-display-list' wx:for='{{diaryData}}' wx:key='key' wx:for-item='displayItem'>
-                            <view class='index-display-timeLine'>
-                                <timeLine isToday='{{displayItem.date[0] === today[0] && displayItem.date[1] === today[1] && displayItem.date[2] === today[2]}}' date='{{displayItem.date[2]}}' day='{{displayItem.date[3]}}'></timeLine>
-                            </view>
-                                <view class='index-display-textCard' wx:for='{{displayItem.aDay}}' wx:for-item='aDayItem'>
-                                    <textCard head='{{aDayItem.head}}' lookthrough='{{aDayItem.lookthrough}}'></textCard>
-                                </view>
-                        </view>
-                    </view>
-                    <view wx:else class='index-display-noContent'>
-                        <text class='index-display-noContent-text'>empty</text>
-                    </view>
-                </scroll-view>
-            </swiper-item>
-        </swiper>
-        <view class='index-display-buttonView modify-shadow-button'>
-              <button class='index-display-button' style='width: 75rpx; margin-right: 0rpx;'>
-                   <image src='/images/icon/ic_my_location.svg' class="image-index-displayButton"></image>
-              </button>
-              <view class='modify-divideLine-light' style='width: 3rpx'></view>
-              <button class='index-display-button' style='width: 80rpx; margin-left: 0rpx; margin-right: 0rpx; padding: 0rpx;'>
-                   <image src='/images/icon/ic_search.svg' class="image-index-displaySearchButton"></image>
-              </button>
-              <input type="text" class='index-display-input' maxlength='10'></input>
-              <view class='modify-divideLine-light' style='width: 3rpx'></view>
-              <button class='index-display-button' style='width: 75rpx; margin-left: 0rpx;'>
-                   <image src='/images/icon/ic_visibility.svg' class="image-index-displayButton"></image>
-              </button>
-        </view> 
+    <button style='height: 1px; width: 100%; box-shadow: 0rpx 2rpx 5rpx 2rpx rgba(0,0,0,0.38);' class='color-main'></button>
+    <view class='color-grey100' style='height: 30rpx;'>
     </view>
-    <view class='index-bottom modify-shadow-main-up'>
-        <button class="index-bottom-item">
-            <image src='/images/icon/imageDiaryLogo.png' class="image-diaryLogo"          
-                mode="widthFix"></image>
-        </button>
-        <view class='modify-divideLine-dark' style="width: 3rpx; height: 122rpx;"></view>
-        <button class="index-bottom-item">
-            <image src="/images/icon/writingDiaryLogo.png" class="image-diaryLogo" 
-                mode="widthFix"></image>
-        </button>
+    <image src='/images/image-clock.svg' class="image-clock"></image>
+  </view>
+  <view class='color-grey100' style='height: 922rpx;'>
+    <swiper style='width: 100%; height: 89%'>
+      <swiper-item>
+        <scroll-view scroll-y class='index-scrollView' bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-top="700rpx">
+          <view wx:if='{{diaryData.length !== 0}}' style='padding-top: 5rpx;'>
+            <view class='index-display-list' wx:for='{{diaryData}}' wx:key='key' wx:for-item='displayItem'>
+              <view class='index-display-timeLine'>
+                <!-- 這裡對日期加減的操作尚待完善 -->
+                <timeLine isLast='{{index == diaryData.length - 1}}' dash='{{index===0?false:!(diaryData[index-1].date[2] === displayItem.date[2] - 1)}}' date='{{displayItem.date}}' timeLineHeight='{{!displayItem.pureText?270:""}}' timeLineTop='{{!displayItem.pureText?60:""}}'></timeLine>
+              </view>
+              <scroll-view scroll-x class='index-display-aDay-scrollView'>
+                <view class='index-display-aDay-view'>
+                  <view wx:for='{{displayItem.aDay}}' wx:for-item='aDayItem'>
+                    <textCard head='{{aDayItem.head}}' lookthrough='{{aDayItem.lookthrough}}' wx:if='{{aDayItem.text}}'></textCard>
+                    <imageCard imageURL='{{aDayItem.imageURL}}' wx:else></imageCard>
+                  </view>
+                </view>
+              </scroll-view>
+            </view>
+          </view>
+          <view wx:else class='index-display-noContent'>
+            <text class='index-display-noContent-text'>empty</text>
+          </view>
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+    <view class='index-display-buttonView modify-shadow-button'>
+      <button class='index-display-button' style='width: 75rpx; margin-right: 0rpx;'>
+        <image src='/images/icon/ic_my_location.svg' class="image-index-displayButton"></image>
+      </button>
+      <view class='modify-divideLine-light' style='width: 3rpx'></view>
+      <button class='index-display-button' style='width: 80rpx; margin-left: 0rpx; margin-right: 0rpx; padding: 0rpx;'>
+        <image src='/images/icon/ic_search.svg' class="image-index-displaySearchButton"></image>
+      </button>
+      <input type="text" class='index-display-input' maxlength='10'></input>
+      <view class='modify-divideLine-light' style='width: 3rpx'></view>
+      <button class='index-display-button' style='width: 75rpx; margin-left: 0rpx;'>
+        <image src='/images/icon/ic_visibility.svg' class="image-index-displayButton"></image>
+      </button>
     </view>
+  </view>
+  <view class='index-bottom modify-shadow-main-up'>
+    <button class="index-bottom-item">
+      <image src='/images/icon/imageDiaryLogo.png' class="image-diaryLogo" mode="widthFix"></image>
+    </button>
+    <view class='modify-divideLine-dark' style="width: 3rpx; height: 122rpx;"></view>
+    <button class="index-bottom-item">
+      <image src="/images/icon/writingDiaryLogo.png" class="image-diaryLogo" mode="widthFix"></image>
+    </button>
+  </view>
 </view>
-<view class='page-drawerPage' animation='{{animationData}}' style='left:{{drawerMenuLeft}}rpx;' bindtouchstart='onMainPageTouchstart'
-  bindtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend'>
-        <view class='drawerPersonalInfo'>
-            <open-data type="userAvatarUrl" class='image-portraitOfDrawer'></open-data>
-            <open-data type="userNickName" class='text-nicknameOfDrawer'></open-data>
-        </view>
-    <view style="  background-color: #f0f0f0; height: 920rpx;">
-        <view class='drawerOptions'>
-            <view class='drawer-optionLine'>
-            <image src="/images/icon/ic_settings.svg" class="icon-drawer" ></image>
-            <text class='text-options'>设置</text>
-            </view>
-            <view class='drawer-optionLine'>
-            <image src="/images/icon/ic_help.svg" class="icon-drawer"></image>
-            <text class='text-options'>帮助</text>
-            </view>
-            <view class='drawer-optionLine'>
-            <image src="/images/icon/ic_feedback.svg" class="icon-drawer"></image>
-            <text class='text-options'>反馈</text>
-            </view>
-            <view class='drawer-optionLine'>
-                <image src="/images/icon/ic_exit_to_app.svg" class="icon-drawer"></image>
-                <text class='text-options'>退出</text>
-            </view>
-        </view>
+<view class='page-drawerPage' animation='{{animationData}}' style='left:{{drawerMenuLeft}}rpx;' bindtouchstart='onMainPageTouchstart' bindtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend'>
+  <view class='drawerPersonalInfo'>
+    <open-data type="userAvatarUrl" class='image-portraitOfDrawer'></open-data>
+    <open-data type="userNickName" class='text-nicknameOfDrawer'></open-data>
+  </view>
+  <view style="  background-color: #f0f0f0; height: 920rpx;">
+    <view class='drawerOptions'>
+      <view class='drawer-optionLine'>
+        <image src="/images/icon/ic_settings.svg" class="icon-drawer"></image>
+        <text class='text-options'>设置</text>
+      </view>
+      <view class='drawer-optionLine'>
+        <image src="/images/icon/ic_help.svg" class="icon-drawer"></image>
+        <text class='text-options'>帮助</text>
+      </view>
+      <view class='drawer-optionLine'>
+        <image src="/images/icon/ic_feedback.svg" class="icon-drawer"></image>
+        <text class='text-options'>反馈</text>
+      </view>
+      <view class='drawer-optionLine'>
+        <image src="/images/icon/ic_exit_to_app.svg" class="icon-drawer"></image>
+        <text class='text-options'>退出</text>
+      </view>
     </view>
+  </view>
 </view>

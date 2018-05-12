@@ -1,0 +1,9 @@
+<view class='backlayer'>
+<view class='imageCard' style='height:{{height}}rpx;'>
+  <image class='image' src='{{imageURL}}' mode='aspectFix'></image>
+  <view class='information'>
+    <image src='/images/icon/ic_location_on.svg' class='icon-locationOn'  bindload="imageLoad"></image>
+    <text class='message'>{{location}}</text>
+  </view>
+</view>
+</view>

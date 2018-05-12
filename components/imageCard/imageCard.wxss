@@ -1,0 +1,35 @@
+.backlayer{
+  height: 244rpx;
+}
+.imageCard{
+  height: 240rpx;
+  width: 300rpx;
+  background-color: white;
+  position: relative;
+  left: 20rpx;
+  border-radius: 2%;
+  box-shadow: 2rpx 2rpx 10rpx 0rpx rgba(0,0,0,0.38);
+}
+.image{
+  height: 85%;
+  width: 100%;
+  border-radius: 2% 2% 0% 0%;
+}
+.icon-locationOn{
+  width: 25rpx;
+  height: 25rpx;
+  position: relative;
+  bottom: 18rpx;
+  left: 10rpx;
+}
+.information{
+  position: relative;
+  top: 2rpx;
+}
+.message{
+  color: #a9a9a9;
+  font-size: 7pt;
+  position: relative;
+  bottom: 22rpx;
+  left: 10rpx;
+}

@@ -5,66 +5,87 @@ Page({
     //時間軸
     diaryData: [{
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
+      },
+      {
+        text: false,
+        imageURL: '/images/image-test.jpeg',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 4, 20, 'Sat'],
+      pureText: false,
       },
     {
       aDay: [{
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
+        text: false,
+        imageURL: '/images/image-test.jpeg',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 8, 'Wed'],
+      pureText: false,
     },
     {
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 1, 'Wed'],
+      pureText: true,
     },
     {
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 3, 'Wed'],
+      pureText: true,
     },
     {
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 4, 'Wed'],
+      pureText: true,
     },
     {
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 5, 'Wed'],
+      pureText: true,
     },
     {
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 6, 'Wed'],
+      pureText: true,
     },
     {
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 7, 'Wed'],
+      pureText: true,
     },
     {
       aDay: [{
+        text: true,
         head: '今天过得很快乐',
         lookthrough: '我是这里',
       }],
-      date: [2018, 5, 8, 'Wed']
+      date: [2018, 5, 11, 'Wed'],
+      pureText: true,
     },
 
     ],
@@ -257,29 +278,4 @@ Page({
       animationData: animation.export()
     });
   },
-
-  //自定義函數部分
-  getTodayDate: function () {
-    var now = new Date();
-    var yy = now.getFullYear();
-    var mm = now.getMonth() + 1;
-    var dd = now.getDate();
-    var day = new Array();
-    day[0] = "星期日";
-    day[1] = "星期一";
-    day[2] = "星期二";
-    day[3] = "星期三";
-    day[4] = "星期四";
-    day[5] = "星期五";
-    day[6] = "星期六";
-    var array = [yy, mm, dd, day[now.getDay()]];
-    return array;
-  },
-
-  onLoad: function (options) {
-    this.setData({
-      today: this.getTodayDate(),
-    });
-  },
-
 })

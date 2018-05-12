@@ -122,6 +122,7 @@
 .index-display-list{
   display: flex;
   top: 50rpx;
+  margin-top: 30rpx;
 }
 .index-display-textCard{
   position: relative;
@@ -157,6 +158,20 @@
 }
 .index-display-noContent-image{
   
+}
+.index-display-aDay-scrollView{
+  width: 750rpx;
+  position: relative;
+  right: 20rpx;
+  margin: 0rpx;
+  bottom: 15rpx;
+}
+.index-display-aDay-view{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin: 0rpx;
+  align-items: center;
 }
 button::after {
     border-radius: 0;

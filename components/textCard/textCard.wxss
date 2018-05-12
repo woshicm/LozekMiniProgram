@@ -1,7 +1,8 @@
 .backLayer{
    position: relative;
-   bottom: 25rpx;
+   bottom: 5rpx;
    height: 100rpx;
+   right: 10rpx;
    margin: 0rpx;
 }
 .text{
