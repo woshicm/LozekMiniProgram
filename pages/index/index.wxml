@@ -10,23 +10,36 @@
     <image src='/images/image-clock.svg' class="image-clock"></image>
   </view>
   <view class='color-grey100' style='height: 922rpx;'>
+    <!-- 預覽視圖 -->
     <swiper style='width: 100%; height: 89%'>
+      <!-- 時間軸預覽 -->
       <swiper-item>
         <scroll-view scroll-y class='index-scrollView' bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-top="700rpx">
           <view wx:if='{{diaryData.length !== 0}}' style='padding-top: 5rpx;'>
             <view class='index-display-list' wx:for='{{diaryData}}' wx:key='key' wx:for-item='displayItem'>
+              <!-- 時間軸效果 -->
               <view class='index-display-timeLine'>
                 <!-- 這裡對日期加減的操作尚待完善 -->
-                <timeLine isLast='{{index == diaryData.length - 1}}' dash='{{index===0?false:!(diaryData[index-1].date[2] === displayItem.date[2] - 1)}}' date='{{displayItem.date}}' timeLineHeight='{{!displayItem.pureText?270:""}}' timeLineTop='{{!displayItem.pureText?60:""}}'></timeLine>
+                <timeLine isLast='{{index == diaryData.length - 1}}' dash='{{index===0?false:!(diaryData[index-1].date[2] === displayItem.date[2] - 1)}}' date='{{displayItem.date}}' status='{{(displayItem.diary.text.length != 0 && displayItem.diary.image.length != 0) ? "both" : (displayItem.diary.image.length != 0 ? "image_only" : "text_only")}}'></timeLine>
               </view>
-              <scroll-view scroll-x class='index-display-aDay-scrollView'>
-                <view class='index-display-aDay-view'>
-                  <view wx:for='{{displayItem.aDay}}' wx:for-item='aDayItem'>
-                    <textCard head='{{aDayItem.head}}' lookthrough='{{aDayItem.lookthrough}}' wx:if='{{aDayItem.text}}'></textCard>
-                    <imageCard imageURL='{{aDayItem.imageURL}}' wx:else></imageCard>
-                  </view>
+              <view class='index-display-aDay'>
+                <!-- 對每天的文本日記遍歷 -->
+                <view wx:if='{{displayItem.diary.text.length != 0}}' class='index-display-text'>
+                  <scroll-view scroll-x class='index-display-text-scrollView'>
+                    <view wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-textItem'>
+                      <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
+                    </view>
+                  </scroll-view>
                 </view>
-              </scroll-view>
+                <!-- 對每天的圖片日記遍歷 -->
+                <view wx:if='{{displayItem.diary.image.length != 0}}' class='index-display-image'>
+                  <scroll-view scroll-x class='index-display-image-scrollView'>
+                    <view wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-imageItem'>
+                      <imageCard imageURL='{{imageItem.imageURL}}'></imageCard>
+                    </view>
+                  </scroll-view>
+                </view>
+              </view>
             </view>
           </view>
           <view wx:else class='index-display-noContent'>

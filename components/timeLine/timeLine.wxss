@@ -5,6 +5,8 @@
 .timeLine-add{
   margin-top: 40rpx;
   height: 80rpx;
+  position: relative;
+  top: 240rpx;
 }
 .timeLine-add-notice{
   position: relative;
@@ -18,14 +20,13 @@
   justify-content: center;
   position: relative;
   right: 40rpx;
-  bottom: 15rpx;
 }
 .image-dot{
   width: 64rpx;
   height: 64rpx;
   position: relative;
   left: 78rpx;
-  bottom: 67rpx;
+  bottom: 80rpx;
   margin: 0 auto;
 }
 .image-todayDot{
@@ -40,7 +41,7 @@
   text-align: center;
   width: 100rpx;
   position: relative;
-  right: 10rpx;
+  right: 15rpx;
 }
 .text-date{
   font-size: 15pt;
@@ -51,6 +52,8 @@
   display: block;
   font-size: 7pt;
   color: #accaf0;
+  position: relative;
+  bottom: 5rpx;
 }
 .text-add-notice{
   font-size: 10pt;
@@ -64,15 +67,18 @@
   margin: 0 auto;
   position: relative;
   left: 5rpx;
-  bottom: 125rpx;
+  bottom: 130rpx;
   z-index: -1;
 }
 .modify-timeLine-dash{
+  position: relative;
+}
+.modify-timeLine-dash-item{
   width: 10rpx;
   height: 10rpx;
   background-color: #f5f5f5;
   position: relative;
-  bottom: 15rpx;
+  bottom: 40rpx;
   margin-top: 10rpx;
 }
 .modify-timeLine-erase{
@@ -80,7 +86,7 @@
   height: 50rpx;
   position: relative;
   margin-top: 10rpx;
-  top: 40rpx;
+  top: 30rpx;
   background-color: #f5f5f5;
 }
 .modify-timeLine-add{
@@ -88,8 +94,8 @@
   height: 80rpx;
   position: relative;
   margin-top: 10rpx;
-  top: 80rpx;
-  background-color: #dae6f3;
+  background-color: #fed192;
+  top: 370rpx;
 }
 .modify-timeLine-add-erase{
   width: 10rpx;

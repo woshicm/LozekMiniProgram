@@ -1,22 +1,23 @@
 <view class='timeLine'>
-  <view class='text' style='top:{{timeLineTop==""?"":125}}rpx;'>
-    <text class='text-date' style='color:{{dateColor}}'>{{date[2]}}</text>
-    <text class='text-day' style='color:{{dayColor}}'>{{date[3]}}</text>
+  <view class='text'>
+    <text class='text-date' style='color:{{dateColor}};'>{{date[2]}}</text>
+    <text class='text-day' style='color:{{dayColor}};'>{{date[3]}}</text>
   </view>
   <view class="image">
-    <image src='{{imageURL}}' class='image-dot' style='top:{{timeLineTop}}rpx;'></image>
+    <image src='{{imageURL}}' class='image-dot'></image>
     <view class='modify-timeLine' style='height: {{timeLineHeight}}rpx;'>
-      <view class='modify-timeLine-dash' wx:if='{{dash}}'></view>
-      <view class='modify-timeLine-dash' wx:if='{{dash}}'></view>
-      <view class='modify-timeLine-dash' wx:if='{{dash}}'></view>
-      <view class='modify-timeLine-erase' wx:if='{{isLast && !show}}'></view>
-      <view class='modify-timeLine-add' wx:if='{{isLast && show}}'></view>
-      <view class='modify-timeLine-add-erase' wx:if='{{isLast && show}}'></view>
+      <view class='modify-timeLine-add' wx:if='{{isLast && show}}' style='top:{{todayTop + 121}}rpx;'></view>
+      <view style='modify-timeLine-dash' style='bottom:40rpx;' wx:if='{{dash}}'>
+        <view class='modify-timeLine-dash-item'></view>
+        <view class='modify-timeLine-dash-item'></view>
+        <view class='modify-timeLine-dash-item'></view>
+        <view class='modify-timeLine-erase' wx:if='{{isLast && !show}}' style='height:{{todayEraseHeight}}rpx;'></view> 
+      </view>
     </view>
   </view>
 </view>
-<view class='timeLine-add' wx:if='{{show}}'>
-  <view class='text' style='top: 20rpx;'>
+<view class='timeLine-add' wx:if='{{show}}' style='top:{{todayTop}}rpx'>
+  <view class='text'>
     <text class='text-date' style='color: #f8bc71;'>{{today[2]}}</text>
     <text class='text-day' style='color: #f7ce99'>{{today[3]}}</text>
   </view>
