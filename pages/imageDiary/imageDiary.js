@@ -9,8 +9,26 @@ Page({
    * 页面的初始数据
    */
   data: {
-    inputValue: 'a',
-    inputLength:'0',
+    inputLength: '0',
+	inputValue: 'a',
+    showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
+    showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
+    showDictumThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
+    showStyleFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
+    showStyleSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
+    showStyleThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
+    dataDictumFirst: ['名言', '例子', '矩阵', '水果', '蔬菜', '上衣'],//下拉列表的数据
+    dataDictumSecond: ['真的', '开心', '失望', '烦闹', '生气', '伤心'],//下拉列表的数据
+    dataDictumThird: ['有趣', '不', '是', '开心', '烦闹', '伤心'],//下拉列表的数据
+    dataStyleFirst: ['名言', '例子', '矩阵', '水果', '蔬菜', '上衣'],//下拉列表的数据
+    dataStyleSecond: ['真的', '开心', '失望', '烦闹', '生气', '伤心'],//下拉列表的数据
+    dataStyleThird: ['有趣', '不', '是', '开心', '烦闹', '伤心'],//下拉列表的数据
+    indexDictumFirst: 0,//选择的下拉列表下标
+    indexDictumSecond: 0,//选择的下拉列表下标
+    indexDictumThird: 0,//选择的下拉列表下标
+    indexStyleFirst: 0,//选择的下拉列表下标
+    indexStyleSecond: 0,//选择的下拉列表下标
+    indexStyleThird: 0,//选择的下拉列表下标
 
     items: [
       { name: 'Weather', value: '天气' },
@@ -19,6 +37,7 @@ Page({
 
     ],
 
+    zIndex: 0,
 
   },
 
@@ -81,7 +100,7 @@ Page({
   /**
    * 实时显示字符串长度
    */
-  displayInputLength: function(){
+  displayInputLength: function(e){
     this.setData({
       inputLength: this.data.inputValue.length
     })
@@ -116,5 +135,123 @@ Page({
   },
   checkboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e.detail.value)
+  },
+
+  // 打开dictum下拉显示框
+  selectDictum(e) {
+
+    let id = e.currentTarget.id;
+    this.setData({
+      zIndex: -1
+    });
+    switch (id) {
+      case "dictumFirst":
+        this.setData({
+          showDictumFirst: !this.data.showDictumFirst
+        });
+        break;
+      case "dictumSecond":
+        this.setData({
+          showDictumSecond: !this.data.showDictumSecond
+        });
+        break;
+      case "dictumThird":
+        this.setData({
+          showDictumThird: !this.data.showDictumThird
+        });
+        break;
+      default:
+        console.log("该id不存在！");
+    }
+  },
+  // 点击dictum下拉列表
+  optionDictum(e) {
+    let target = e.currentTarget;
+    let id = target.id;
+    console.log(id);
+    let index = target.dataset.index;//获取点击的下拉列表的下标
+    switch (id) {
+      case "selectDictumFirst":
+        this.setData({
+          indexDictumFirst: index,
+          showDictumFirst: !this.data.showDictumFirst,
+        });
+        break;
+      case "selectDictumSecond":
+        this.setData({
+          indexDictumSecond: index,
+          showDictumSecond: !this.data.showDictumSecond,
+        });
+        break;
+      case "selectDictumThird":
+        this.setData({
+          indexDictumThird: index,
+          showDictumThird: !this.data.showDictumThird,
+        });
+        break;
+      default:
+        console.log("该id不存在!！");
+    }
+    this.setData({
+      zIndex: 0
+    });
+  },
+  // 打开style下拉显示框
+  selectStyle(e) {
+    
+    let id = e.currentTarget.id;
+    this.setData({
+      zIndex: -1
+    });
+    switch (id) {
+      case "styleFirst":
+        this.setData({
+          showStyleFirst: !this.data.showStyleFirst
+        });
+        break;
+      case "styleSecond":
+        this.setData({
+          showStyleSecond: !this.data.showStyleSecond
+        });
+        break;
+      case "styleThird":
+        this.setData({
+          showStyleThird: !this.data.showStyleThird
+        });
+        break;
+      default:
+        console.log("该id不存在！");
+    }
+  },
+  // 点击style下拉列表
+  optionStyle(e) {
+    let target = e.currentTarget;
+    let id = target.id;
+    let index = target.dataset.index;//获取点击的下拉列表的下标
+    switch (id) {
+      case "selectStyleFirst":
+        this.setData({
+          indexStyleFirst: index,
+          showStyleFirst: !this.data.showStyleFirst,
+        });
+        break;
+      case "selectStyleSecond":
+        this.setData({
+          indexStyleSecond: index,
+          showStyleSecond: !this.data.showStyleSecond,
+        });
+        break;
+      case "selectStyleThird":
+        this.setData({
+          indexStyleThird: index,
+          showStyleThird: !this.data.showStyleThird,
+        });
+        break;
+      default:
+        console.log("该id不存在!！");
+    }
+    this.setData({
+      zIndex: 0
+    });
   },
 })
