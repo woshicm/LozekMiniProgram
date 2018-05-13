@@ -9,14 +9,10 @@ Component({
     date: {
       type: Array,
     },
-    timeLineHeight: {
+    status: {
       type: String,
-      value: '',
-    },
-    timeLineTop: {
-      type: String,
-      value: '',
-    },
+      value: 'both',
+    }
   },
 
   data: {
@@ -25,6 +21,19 @@ Component({
   },
 
   attached: function(){
+    var timeLineHeight = 415;
+    var todayTop = 280;
+    var todayEraseHeight = 320;
+    if(this.data.status == 'image_only'){
+      timeLineHeight = 310;
+      todayTop = 150;
+      todayEraseHeight = 210;
+    }
+    else if(this.data.status == 'text_only'){
+      timeLineHeight = 160;
+      todayTop = 30;
+      todayEraseHeight = 60;
+    }
     if (this.data.isLast) {
       var date = this.data.date;
       var today = this.getTodayDate();
@@ -33,8 +42,8 @@ Component({
       var imageURL = '/images/image-Dot.svg';
       var show = false;
       if(today[0] === date[0] && today[1] === date[1] && today[2] === date[2]){
-        dateColor = 'color: #f8bc71;';
-        dayColor = 'color: #f7ce99;';
+        dateColor = '#fb8c00';
+        dayColor = '#f7d2a5';
         imageURL = '/images/image-todayDot.svg'
       } 
       else{
@@ -46,8 +55,13 @@ Component({
         show: show,
         imageURL: imageURL,
         today: today,
-      }) 
+      })
     }
+    this.setData({
+      timeLineHeight: timeLineHeight,
+      todayTop: todayTop,
+      todayEraseHeight: todayEraseHeight,
+    })
   },
 
   methods:{

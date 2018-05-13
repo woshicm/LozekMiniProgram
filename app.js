@@ -2,8 +2,10 @@ App({
   globalData: {
     token:'1',
     api: {
-      login: 'http://111.230.24.245/login',
-      parseText: 'http://111.23.24.245/parsetext'
+      login: 'http://localhost:8000/login',
+      // getDiarys : base + '/diarys',
+      // getDiary : base + '/diary',
+      parseText: 'http://localhost:8000/parsetext'
     }
   },
   onLaunch: function () {
@@ -15,18 +17,18 @@ App({
     // wx.removeStorageSync("token")
     this.checkToken()
   },
-  login: function(){
+  login: function (callback){
     wx.login({
-      success: function(res) {
+      success: (res)=> {
         wx.request({
-          url: 'http://localhost:8000/login',
+          url: this.globalData.api.login,
           method: 'POST',
           data: {
             code: res.code
           },
           success: (res)=>{
-            // console.log(res.data)
-            wx.setStorageSync('token', res.data)
+            wx.setStorageSync('token', res.data.token)
+            callback()
           }
         })
       },
@@ -36,22 +38,42 @@ App({
   },
   checkToken: function(){
     let token = wx.getStorageSync("token") || null
-    if(token != null){
-      wx.checkSession({
-        success: function (res) {
-          // console.log(res)
-        },
-        fail: (res) => {
-          console.log(res.errMsg)
-          this.login()
-        },
-        complete: function (res) {
-          console.log("token valid")
-        },
-      })
-    }else{
-      this.login()
-    }
+    wx.checkSession({
+      success: (res)=> {
+        if(token == null){
+          this.login(()=>{
+            this.globalData.token = wx.getStorageSync("token")
+          }) 
+        }
+      },
+      fail: (res) => {
+        this.login(() => {
+          this.globalData.token = wx.getStorageSync("token")
+        }) 
+      },
+      complete: (res)=> {
+      },
+    })
+  },
+  relogin: ()=> {
+    let app = getApp()
+    wx.login({
+      success: (res) => {
+        wx.request({
+          url: app.globalData.api.login,
+          method: 'POST',
+          data: {
+            code: res.code
+          },
+          success: (res) => {
+            wx.setStorageSync('token', res.data.token)
+            app.globalData.token = wx.getStorageSync("token")
+          }
+        })
+      },
+      fail: function (res) { },
+      complete: function (res) { },
+    })
   },
   getUserInfo: function (cb) {
     var that = this

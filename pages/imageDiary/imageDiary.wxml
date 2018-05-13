@@ -15,7 +15,13 @@
 <view class='view-layoutSecond'>
   <view class='view-eachItem'>
     <text class="text-eachTitle">文案</text>
-    <textarea class='input-text' bindinput='displayInputLength' placeholder='请在这里输入文案。' maxlength='25' placeholder-style='font-size: 13pt' auto-height='true'></textarea>
+    <input class='input-text' 
+           bindinput='inputEditEvent' 
+           bindblur="parseInputValue" 
+           placeholder='请在这里输入文案。' 
+           maxlength='25' 
+           placeholder-style='font-size: 13pt'>
+           </input>
     <view class='view-line'></view>
     <view class='view-help-and-displayLength'>
       <image class='img-helpLogo' src='/images/icon-imageDiary-help.svg'></image>

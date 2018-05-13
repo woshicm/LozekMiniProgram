@@ -4,90 +4,62 @@ Page({
   data: {
     //時間軸
     diaryData: [{
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
+      diary: {
+        text: [],
+        image: [{
+          imageURL: '/images/image-test.jpeg',
+        }],
+      },
+      date: [2018, 5, 1, 'Sat'],
       },
       {
-        text: false,
-        imageURL: '/images/image-test.jpeg',
-      }],
-      date: [2018, 4, 20, 'Sat'],
-      pureText: false,
+      diary: {
+        text: [{
+          head: '今天过得很快乐',
+          lookthrough: '我是这里',
+        },
+        {
+          head: '今天过得很快乐',
+          lookthrough: '我是这里',
+        }],
+        image: [],
       },
-    {
-      aDay: [{
-        text: false,
-        imageURL: '/images/image-test.jpeg',
-      }],
-      date: [2018, 5, 8, 'Wed'],
-      pureText: false,
-    },
-    {
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      date: [2018, 5, 1, 'Wed'],
-      pureText: true,
-    },
-    {
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      date: [2018, 5, 3, 'Wed'],
-      pureText: true,
-    },
-    {
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      date: [2018, 5, 4, 'Wed'],
-      pureText: true,
-    },
-    {
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      date: [2018, 5, 5, 'Wed'],
-      pureText: true,
-    },
-    {
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      date: [2018, 5, 6, 'Wed'],
-      pureText: true,
-    },
-    {
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      date: [2018, 5, 7, 'Wed'],
-      pureText: true,
-    },
-    {
-      aDay: [{
-        text: true,
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      date: [2018, 5, 11, 'Wed'],
-      pureText: true,
-    },
-
+      date: [2018, 5, 5, 'Sat'],
+      },
+      {
+        diary: {
+          text: [{
+            head: '今天过得很快乐',
+            lookthrough: '我是这里',
+          }],
+          image: [{
+            imageURL: '/images/image-test.jpeg',
+          }],
+        },
+        date: [2018, 5, 9, 'Sat'],
+      },
+      {
+        diary: {
+          text: [{
+            head: '今天过得很快乐',
+            lookthrough: '我是这里',
+          }],
+          image: [{
+            imageURL: '/images/image-test.jpeg',
+          }],
+        },
+        date: [2018, 5, 10, 'Sat'],
+      },
+      {
+        diary: {
+          text: [{
+            head: '今天过得很快乐',
+            lookthrough: '我是这里',
+          }],
+          image: [],
+        },
+        date: [2018, 5, 13, 'Sat'],
+      },
     ],
 
     //導航抽屜
@@ -103,8 +75,6 @@ Page({
     endTime: 0,
   },
   //導航抽屜
-  drawerMenuMoveData: {
-  },
   onMainPageTouchstart: function (e) {
     var data = this.data;
     var clientX = e.touches[0].clientX;

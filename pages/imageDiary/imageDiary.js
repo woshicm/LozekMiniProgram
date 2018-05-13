@@ -1,5 +1,7 @@
 // page/imageDiary/imageDiary.js
-var app = getApp()
+import {ParseText} from 'api.js'
+
+let app = getApp()
 
 Page({
 
@@ -8,7 +10,7 @@ Page({
    */
   data: {
     inputLength: '0',
-
+	inputValue: 'a',
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -98,12 +100,39 @@ Page({
   /**
    * 实时显示字符串长度
    */
-  displayInputLength: function (e) {
+  displayInputLength: function(e){
     this.setData({
-      inputLength: e.detail.value.length
+      inputLength: this.data.inputValue.length
     })
   },
-
+  /**
+   * 同步 input 值到 data
+   */
+  bindInputValueToData: function(value){
+    this.setData({
+      inputValue: value
+    })
+  },
+  /**
+   * 触发 input 编辑事件
+   */
+  inputEditEvent: function (e) {
+    this.bindInputValueToData(e.detail.value)
+    this.displayInputLength()
+  },
+  /**
+   * 失去焦点时开始调用api处理输入文字
+   */
+  parseInputValue: function(e){
+    ParseText(this.data.inputValue)
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((e)=>{
+      console.log(e + "token expired")
+      app.relogin()
+    })
+  },
   checkboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e.detail.value)
   },
@@ -139,28 +168,29 @@ Page({
   optionDictum(e) {
     let target = e.currentTarget;
     let id = target.id;
+    console.log(id);
     let index = target.dataset.index;//获取点击的下拉列表的下标
     switch (id) {
-      case "selectStyleFirst":
+      case "selectDictumFirst":
         this.setData({
-          indexStyleFirst: index,
-          showStyleFirst: !this.data.showStyleFirst,
+          indexDictumFirst: index,
+          showDictumFirst: !this.data.showDictumFirst,
         });
         break;
-      case "selectStyleSecond":
+      case "selectDictumSecond":
         this.setData({
-          indexStyleSecond: index,
-          showStylevSecond: !this.data.showStyleSecond,
+          indexDictumSecond: index,
+          showDictumSecond: !this.data.showDictumSecond,
         });
         break;
-      case "selectStyleThird":
+      case "selectDictumThird":
         this.setData({
-          indexStyleThird: index,
-          showStyleThird: !this.data.showStyleThird,
+          indexDictumThird: index,
+          showDictumThird: !this.data.showDictumThird,
         });
         break;
       default:
-        console.log("该id不存在！");
+        console.log("该id不存在!！");
     }
     this.setData({
       zIndex: 0

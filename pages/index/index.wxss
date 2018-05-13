@@ -124,6 +124,16 @@
   top: 50rpx;
   margin-top: 30rpx;
 }
+.index-display-text{
+}
+.index-display-text-scrollView{
+}
+.index-display-textItem{
+  display: inline;
+}
+.index-display-image{
+  margin-top: 10rpx;
+}
 .index-display-textCard{
   position: relative;
   right: 30rpx;
@@ -166,12 +176,11 @@
   margin: 0rpx;
   bottom: 15rpx;
 }
-.index-display-aDay-view{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  margin: 0rpx;
-  align-items: center;
+.index-display-aDay{
+  margin-top: 20rpx;
+  position: relative;
+  bottom: 40rpx;
+  right: 20rpx;
 }
 button::after {
     border-radius: 0;
