@@ -1,15 +1,6 @@
 /* pages/imageDiary/imageDiary.wxss */
 
-.view-layoutFirst {
-  background-color: #f5f5f5;
-  width: 750rpx;
-  height: 574rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-addphoto {
+.img-addphoto {
   height: 138rpx;
 }
 
@@ -19,8 +10,40 @@
   position: fixed;  
   top: 494rpx;  
   right:2rpx;  
-  opacity: 0.7
 }  
+
+.img-helpLogo {
+  width: 30rpx;
+  height: 30rpx;
+  margin-top: 10rpx;
+}
+
+.input-text {
+  font-size: 13pt;
+  margin-top: 8rpx;
+  width: 100%;
+}
+
+.text-eachTitle {
+  font-size: 10pt;
+  text-align: left;
+  color: #3f8ae9;
+}
+
+.text-displayLength {
+  font-size: 10pt;
+  margin-top: 6rpx;
+}
+
+.view-layoutFirst {
+  background-color: #f5f5f5;
+  width: 750rpx;
+  height: 574rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .view-model {
   float: right;
@@ -49,18 +72,6 @@
   margin-bottom: 16rpx;
 }
 
-.text-eachTitle {
-  font-size: 10pt;
-  text-align: left;
-  color: #3f8ae9;
-}
-
-.input-text {
-  font-size: 13pt;
-  margin-top: 8rpx;
-  width: 100%;
-}
-
 .view-line {
   height: 2px;
   background: #3f8ae9;
@@ -71,26 +82,11 @@
   justify-content: space-between;
 }
 
-.image-helpLogo {
-  width: 30rpx;
-  height: 30rpx;
-  margin-top: 10rpx;
-}
-
-.text-displayLength {
-  font-size: 10pt;
-  margin-top: 6rpx;
-}
-
 .view-dictum{
   margin-bottom: 50rpx;
 }
 
-.picker-dictum{
-  margin-top: 8rpx;
-}
-
-.view-threeChoice {
+.view-items {
   margin-top: 16rpx;
   display: flex;
   justify-content: space-around;

@@ -248,4 +248,10 @@ Page({
       animationData: animation.export()
     });
   },
+
+  toImageDiary: function(){
+    wx.navigateTo({
+      url: '../imageDiary/imageDiary',
+    })
+  }
 })

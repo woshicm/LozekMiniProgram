@@ -1,10 +1,10 @@
 <!--pages/imageDiary/imageDiary.wxml-->
 <view class='view-layoutFirst'>
-  <image src='/images/icon/icon-imageDiary-addPhoto.svg' class='image-addphoto'></image>
+  <image src='/images/icon-imageDiary-addPhoto.svg' class='img-addphoto'></image>
 </view>
 
 <view>
-  <image src="/images/icon/icon-imageDiary-shareButton.svg" class='img-share'></image>
+  <image src="/images/icon-imageDiary-shareButton.svg" class='img-share'></image>
 </view>
 
 <view class='view-model'>
@@ -15,34 +15,31 @@
 <view class='view-layoutSecond'>
   <view class='view-eachItem'>
     <text class="text-eachTitle">文案</text>
-    <input class='input-text' bindinput='displayInputLength' placeholder='请在这里输入文案。' maxlength='25' placeholder-style='font-size: 13pt'></input>
+    <input class='input-text' 
+           bindinput='inputEditEvent' 
+           bindblur="parseInputValue" 
+           placeholder='请在这里输入文案。' 
+           maxlength='25' 
+           placeholder-style='font-size: 13pt'>
+           </input>
     <view class='view-line'></view>
     <view class='view-help-and-displayLength'>
-      <image class='image-helpLogo' src='/images/icon/icon-imageDiary-help.svg'></image>
+      <image class='img-helpLogo' src='/images/icon-imageDiary-help.svg'></image>
       <text class='text-displayLength'>{{inputLength}}/25</text>
     </view>
   </view>
 
   <view class='view-eachItem view-dictum'>
     <text class='text-eachTitle'>名言</text>
-    <picker class='piker-dictum' mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
-      <view class="picker">
-        {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
-      </view>
-    </picker>
+      
   </view>
 
   <view class='view-eachItem view-style'>
     <text class='text-eachTitle'>样式</text>
-    <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
-      <view class='picker'>
-        {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
-      </view>
-    </picker>
   </view>
-  <view class='view-eachItem view-threeChoice'>
+  <view class='view-eachItem view-items'>
     <checkbox-group bindchange="checkboxChange">
-      <label wx:for="{{items}}">
+      <label wx:key="this" wx:for="{{items}}">
         <checkbox value="{{item}}" checked="{{item.checked}}" />{{item.value}}
       </label>
     </checkbox-group>
