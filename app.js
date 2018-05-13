@@ -1,4 +1,11 @@
 App({
+  globalData: {
+    token:'1',
+    api: {
+      login: 'http://111.230.24.245/login',
+      parseText: 'http://111.23.24.245/parsetext'
+    }
+  },
   onLaunch: function () {
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []

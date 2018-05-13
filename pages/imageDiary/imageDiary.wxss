@@ -1,16 +1,18 @@
 /* pages/imageDiary/imageDiary.wxss */
 
+
+.checkgroup-threeItems {
+  zoom: 60%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  color: #3f8ae9;
+  position: relative;
+}
+
 .img-addphoto {
   height: 138rpx;
 }
-
-.img-share {  
-  width: 123rpx;
-  height: 123rpx;   
-  position: fixed;  
-  top: 494rpx;  
-  right:2rpx;  
-}  
 
 .img-helpLogo {
   width: 30rpx;
@@ -18,10 +20,34 @@
   margin-top: 10rpx;
 }
 
+.img-select {
+  width: 40rpx;
+  height: 40rpx;
+  display: block;
+  transition: transform 0.3s;
+}
+
+.img-select-rotate {
+  transform: rotate(180deg);
+}
+
+.img-share {
+  width: 123rpx;
+  height: 123rpx;
+  position: fixed;
+  top: 494rpx;
+  right: 2rpx;
+}
+
 .input-text {
   font-size: 13pt;
   margin-top: 8rpx;
-  width: 100%;
+  width: 100%；
+}
+
+.text-displayLength {
+  font-size: 10pt;
+  margin-top: 6rpx;
 }
 
 .text-eachTitle {
@@ -30,9 +56,24 @@
   color: #3f8ae9;
 }
 
-.text-displayLength {
-  font-size: 10pt;
-  margin-top: 6rpx;
+.text-select {
+  font-size: 11pt;
+  flex: 1;
+}
+
+.view-dictum {
+  margin-bottom: 50rpx;
+}
+
+.view-eachItem {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 16rpx;
+}
+
+.view-help-and-displayLength {
+  display: flex;
+  justify-content: space-between;
 }
 
 .view-layoutFirst {
@@ -44,17 +85,7 @@
   justify-content: center;
 }
 
-
-.view-model {
-  float: right;
-  font-size: 10pt;
-  margin-top: 30rpx;
-  margin-right: 22rpx;
-  color: #3f8ae9;
-}
-
 .view-layoutSecond {
-  background-color: #fafafa;
   width: 554rpx;
   height: 520rpx;
   display: flex;
@@ -66,34 +97,99 @@
   font-size: 13pt;
 }
 
-.view-eachItem {
-  text-align: left;
-  width: 100%;
-  margin-bottom: 16rpx;
-}
-
 .view-line {
   height: 2px;
   background: #3f8ae9;
 }
 
-.view-help-and-displayLength{
-  display: flex;
-  justify-content: space-between;
-}
-
-.view-dictum{
-  margin-bottom: 50rpx;
-}
-
-.view-items {
-  margin-top: 16rpx;
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
+.view-model {
+  float: right;
+  font-size: 10pt;
+  margin-top: 30rpx;
+  margin-right: 22rpx;
   color: #3f8ae9;
+}
+
+.text-option-box {
+  display: block;
+  line-height: 40rpx;
+  font-size: 30rpx;
+  border-bottom: 1px solid #efefef;
+  padding: 10rpx;
+}
+
+.view-option-box-first {
+  position: absolute;
+  top: 50rpx;
+  width: 90%;
+  border: 0px solid #efefef;
+  box-sizing: border-box;
+  height: 0;
+  overflow-y: auto;
+  border-top: 0;
+  background: #fff;
+  transition: height 0.3s;
+}
+
+.view-option-box-second {
+  width: 100%;
+}
+
+.view-select {
+  box-sizing: border-box;
+  height: 50rpx;
+  border: 1px solid #efefef;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 20rpx;
+}
+
+.view-select-box-first {
+  background: #fff;
+   width: 50%; 
+   position: relative; 
+   padding-right: 44rpx;
+}
+
+.view-select-box-second {
+    background: #fff;
+   width: 100%; 
+   position: relative;
+}
+
+.view-select-layout {
+  display: flex;
+  flex-direction: row;
+    justify-content: space-around; 
+   margin-top: 8rpx;
+}
+
+.view-select-style-layout{
+  position: relative;
+}
+
+/*天气 时空 心情滤镜  */
+.view-threeItems {
+  margin-top: 16rpx;
   font-size: 9pt;
 }
+
+.wx-switch-input {
+  width: 42px !important;
+  height: 20px !important;
+}
+
+.wx-switch-input::after {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.wx-switch-input::before {
+  width: 41px !important;
+  height: 20px !important;
+}
+
 
 
 
