@@ -1,5 +1,7 @@
 // page/imageDiary/imageDiary.js
-var app = getApp()
+import {ParseText} from 'api.js'
+
+let app = getApp()
 
 Page({
 
@@ -7,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    inputValue: 'a',
     inputLength:'0',
 
     items: [
@@ -78,14 +81,40 @@ Page({
   /**
    * 实时显示字符串长度
    */
-  displayInputLength: function(e){
+  displayInputLength: function(){
     this.setData({
-      inputLength: e.detail.value.length
+      inputLength: this.data.inputValue.length
     })
   },
-
+  /**
+   * 同步 input 值到 data
+   */
+  bindInputValueToData: function(value){
+    this.setData({
+      inputValue: value
+    })
+  },
+  /**
+   * 触发 input 编辑事件
+   */
+  inputEditEvent: function (e) {
+    this.bindInputValueToData(e.detail.value)
+    this.displayInputLength()
+  },
+  /**
+   * 失去焦点时开始调用api处理输入文字
+   */
+  parseInputValue: function(e){
+    ParseText(this.data.inputValue)
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((e)=>{
+      console.log(e + "token expired")
+      app.relogin()
+    })
+  },
   checkboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e.detail.value)
   },
-
 })
