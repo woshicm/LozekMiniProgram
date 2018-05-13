@@ -24,18 +24,22 @@
               </view>
               <view class='index-display-aDay'>
                 <!-- 對每天的文本日記遍歷 -->
-                <view wx:if='{{displayItem.diary.text.length != 0}}' class='index-display-text'>
+                <view wx:if='{{displayItem.diary.text.length != 0}}'>
                   <scroll-view scroll-x class='index-display-text-scrollView'>
-                    <view wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-textItem'>
-                      <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
+                    <view class='index-display-text'>
+                      <view wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-textItem'>
+                        <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
+                      </view>
                     </view>
                   </scroll-view>
                 </view>
                 <!-- 對每天的圖片日記遍歷 -->
-                <view wx:if='{{displayItem.diary.image.length != 0}}' class='index-display-image'>
+                <view wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
                   <scroll-view scroll-x class='index-display-image-scrollView'>
-                    <view wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-imageItem'>
-                      <imageCard imageURL='{{imageItem.imageURL}}'></imageCard>
+                    <view class='index-display-image'>
+                      <view wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-imageItem' style='margin-right: 30rpx;'>
+                        <imageCard imageURL='{{imageItem.imageURL}}'></imageCard>
+                      </view>
                     </view>
                   </scroll-view>
                 </view>

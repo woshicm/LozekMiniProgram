@@ -46,6 +46,9 @@ Page({
           }],
           image: [{
             imageURL: '/images/image-test.jpeg',
+          },
+          {
+            imageURL: '/images/image-test.jpeg',
           }],
         },
         date: [2018, 5, 10, 'Sat'],

@@ -125,14 +125,18 @@
   margin-top: 30rpx;
 }
 .index-display-text{
+    display: flex;
 }
 .index-display-text-scrollView{
+  width: 100%;
 }
 .index-display-textItem{
-  display: inline;
 }
 .index-display-image{
-  margin-top: 10rpx;
+  display: flex;
+}
+.index-display-image-scrollView{
+  width: 100%;
 }
 .index-display-textCard{
   position: relative;
