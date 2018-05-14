@@ -4,19 +4,13 @@ App({
      * 設備參數
      */
     pixelRadio: wx.getSystemInfoSync().pixelRatio,
-    token:'1',
-    api: {
-      login: 'http://111.230.24.245/login',
-      // getDiarys : base + '/diarys',
-      // getDiary : base + '/diary',
-      parseText: 'http://111.230.24.245/parsetext'
-    },
     token:'',
     baseURL: 'http://localhost:8000/',
+    // baseURL: 'http://111.230.24.245/',
     api: {
       login: '',
-      // getDiarys : base + '/diarys',
-      // getDiary : base + '/diary',
+      getDiarys : '',
+      getDiary : '',
       uploadImage: '',
       parseText: ''
     }
@@ -35,6 +29,7 @@ App({
     this.globalData.api.login = this.globalData.baseURL + 'login'
     this.globalData.api.uploadImage = this.globalData.baseURL + 'upload'
     this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
+    this.globalData.api.getDiarys = this.globalData.baseURL + 'diarys'
   },
   login: function (callback){
     wx.login({

@@ -135,9 +135,9 @@ Page({
   /**
    * textarea失去焦点处理函数
    */
-  textareaOnBlurEvent: function(e){
+  textareaOnBlurEvent(e){
     var value = e.detail.value;
-    parseInputValue(value);
+    this.parseInputValue(value);
     var animation = wx.createAnimation({
       duration: 200,  //动画时长  
       timingFunction: "linear", //线性  
@@ -154,7 +154,7 @@ Page({
     })
   },
 //调用api处理输入文字 
-  parseInputValue: function(value){
+  parseInputValue(value){
     ParseText(value)
     .then((res)=>{
       console.log(res)
@@ -255,31 +255,6 @@ Page({
         console.log("该id不存在！");
     }
   },
-  /**
-   * 上传图片
-   */
-  uploadImage(e){
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: (res)=> {
-        let tempFilePaths = res.tempFilePaths
-        this.setData({
-          imageSrc: tempFilePaths[0]
-        })
-        UploadImage(tempFilePaths[0])
-        .then((res)=>{
-            console.log("upload images completed: "+res)
-        })
-        .catch((e)=>{
-            console.log("upload images fail:"+ e)
-        })
-      },
-      fail: function(res) {},
-      complete: function(res) {},
-    })
-  },
   // 点击style下拉列表
   optionStyle(e) {
     let target = e.currentTarget;
@@ -313,70 +288,56 @@ Page({
   },
 
   // 上傳圖片
-  chooseImageTap: function () {
-    var that = this;
+  chooseImageTap() {
     wx.showActionSheet({
       itemList: ['本地上传', '拍照上传'],
-      success: function (res) {
+      success: (res)=> {
         if (!res.cancel) {
           if (res.tapIndex == 0) {
-            that.doUpload('album')
+            this.doUpload('album')
           } else if (res.tapIndex == 1) {
-            that.doUpload('camera')
+            this.doUpload('camera')
           }
         }
       }
     })
   },
   // 上传图片接口
-  doUpload: function () {
-    var that = this
-
+  doUpload() {
     // 选择图片
     wx.chooseImage({
       count: 1,
-      success: function (res) {
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
         wx.showLoading({
           title: '正在上传',
         })
-        var filePath = res.tempFilePaths[0]
-
-        // 上传图片
-        wx.uploadFile({
-          url: '111.230.24.245',
-          filePath: filePath,
-          name: 'file',
-
-          success: function (res) {
-           wx.showToast({
-             title: '上传成功',
-             icon: 'success',
-             duration: 2000,
-           }),
-
-           wx.hideLoading(),
-           
-            console.log(res)
-            res = JSON.parse(res.data)
-            console.log(res)
-            that.setData({
+        let tempFilePaths = res.tempFilePaths
+        UploadImage(tempFilePaths[0])
+          .then((res) => {
+            wx.showToast({
+              title: '上传成功',
+              icon: 'success',
+              duration: 2000,
+            })
+            wx.hideLoading()
+            console.log("upload images completed: " + res)
+            this.setData({
               imgUrl: res.data.imgUrl
             })
-          },
-
-          fail: function (e) {
+          })
+          .catch((e) => {
             wx.showToast({
-              title: '上传失败',
+              title: '上传失败: ' + e,
               icon: 'fail',
               duration: 2000,
             })
-          }
-        })
-
+            console.log("upload images fail:" + e)
+          })
       },
-      fail: function (e) {
-        console.error(e)
-      }
+      fail: function (res) { },
+      complete: function (res) { }
     })
   },
 
@@ -387,7 +348,6 @@ Page({
       urls: [this.data.imgUrl]
     })
   },
-
 
   /**
    * 彈窗頁
