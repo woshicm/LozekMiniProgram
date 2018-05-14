@@ -1,11 +1,13 @@
 App({
   globalData: {
-    token:'1',
+    token:'',
+    baseURL: 'http://localhost:8000/',
     api: {
-      login: 'http://localhost:8000/login',
+      login: '',
       // getDiarys : base + '/diarys',
       // getDiary : base + '/diary',
-      parseText: 'http://localhost:8000/parsetext'
+      uploadImage: '',
+      parseText: ''
     }
   },
   onLaunch: function () {
@@ -15,7 +17,13 @@ App({
     wx.setStorageSync('logs', logs)
     // 清除本地 token
     // wx.removeStorageSync("token")
+    this.initAppData()
     this.checkToken()
+  },
+  initAppData: function(){
+    this.globalData.api.login = this.globalData.baseURL + 'login'
+    this.globalData.api.uploadImage = this.globalData.baseURL + 'upload'
+    this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
   },
   login: function (callback){
     wx.login({
@@ -44,6 +52,8 @@ App({
           this.login(()=>{
             this.globalData.token = wx.getStorageSync("token")
           }) 
+        }else{
+          this.globalData.token = wx.getStorageSync("token")
         }
       },
       fail: (res) => {

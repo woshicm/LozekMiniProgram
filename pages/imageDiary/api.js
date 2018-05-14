@@ -27,5 +27,26 @@ function ParseText(text){
   return promise
 }
 
+function UploadImage(path){
+  let promise = new Promise(function (resolve, reject){
+    wx.uploadFile({
+      url: globalData.api.uploadImage,
+      filePath: path,
+      header: {
+        "token": globalData.token
+      },
+      name: 'demo',
+      success:(res)=>{
+        if (res.statusCode == '200') {
+          resolve(JSON.parse(res.data).status)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      }
+    })
+  });
+  return promise
+}
 
-export { ParseText }
+
+export { ParseText, UploadImage }
