@@ -1,11 +1,7 @@
-<import src='../../template/popUpPage/popUpPage.wxml' />
-
 <!--pages/imageDiary/imageDiary.wxml-->
 
 <view class='view-layoutFirst'>
   <image src='/images/icon-imageDiary-addPhoto.svg' class='img-addphoto' catchtap="chooseImageTap"></image>
-<view class='view-layoutFirst' bindtap="uploadImage" mode="">
-  <image src="{{imageSrc}}"  class='img-addphoto'></image>
 </view>
 
 <view>

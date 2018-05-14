@@ -1,6 +1,5 @@
 App({
   globalData: {
-<<<<<<< HEAD
     /**
      * 設備參數
      */
@@ -11,6 +10,7 @@ App({
       // getDiarys : base + '/diarys',
       // getDiary : base + '/diary',
       parseText: 'http://111.230.24.245/parsetext'
+    },
     token:'',
     baseURL: 'http://localhost:8000/',
     api: {

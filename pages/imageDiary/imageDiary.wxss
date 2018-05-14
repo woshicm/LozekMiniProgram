@@ -9,7 +9,7 @@
 }
 
 .img-addphoto {
-  /* height: 138rpx; */
+   height: 138rpx; 
 }
 
 .img-helpLogo {
