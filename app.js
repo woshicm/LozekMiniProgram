@@ -1,11 +1,15 @@
 App({
   globalData: {
+    /**
+     * 設備參數
+     */
+    pixelRadio: wx.getSystemInfoSync().pixelRatio,
     token:'1',
     api: {
-      login: 'http://localhost:8000/login',
+      login: 'http://111.230.24.245/login',
       // getDiarys : base + '/diarys',
       // getDiary : base + '/diary',
-      parseText: 'http://localhost:8000/parsetext'
+      parseText: 'http://111.230.24.245/parsetext'
     }
   },
   onLaunch: function () {
