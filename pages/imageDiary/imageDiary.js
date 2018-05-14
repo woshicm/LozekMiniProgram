@@ -15,7 +15,6 @@ Page({
     inputLength: '0',
 	  inputValue: 'a',
     inputCursor: 0,
-
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
