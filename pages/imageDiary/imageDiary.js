@@ -1,5 +1,5 @@
 // page/imageDiary/imageDiary.js
-import {ParseText} from 'api.js'
+import {ParseText, UploadImage} from 'api.js'
 
 
 let app = getApp()
@@ -15,6 +15,7 @@ Page({
     inputLength: '0',
 	  inputValue: 'a',
     inputCursor: 0,
+
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -254,6 +255,31 @@ Page({
       default:
         console.log("该id不存在！");
     }
+  },
+  /**
+   * 上传图片
+   */
+  uploadImage(e){
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res)=> {
+        let tempFilePaths = res.tempFilePaths
+        this.setData({
+          imageSrc: tempFilePaths[0]
+        })
+        UploadImage(tempFilePaths[0])
+        .then((res)=>{
+            console.log("upload images completed: "+res)
+        })
+        .catch((e)=>{
+            console.log("upload images fail:"+ e)
+        })
+      },
+      fail: function(res) {},
+      complete: function(res) {},
+    })
   },
   // 点击style下拉列表
   optionStyle(e) {

@@ -19,7 +19,13 @@ App({
     wx.setStorageSync('logs', logs)
     // 清除本地 token
     // wx.removeStorageSync("token")
+    this.initAppData()
     this.checkToken()
+  },
+  initAppData: function(){
+    this.globalData.api.login = this.globalData.baseURL + 'login'
+    this.globalData.api.uploadImage = this.globalData.baseURL + 'upload'
+    this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
   },
   login: function (callback){
     wx.login({
@@ -48,6 +54,8 @@ App({
           this.login(()=>{
             this.globalData.token = wx.getStorageSync("token")
           }) 
+        }else{
+          this.globalData.token = wx.getStorageSync("token")
         }
       },
       fail: (res) => {
