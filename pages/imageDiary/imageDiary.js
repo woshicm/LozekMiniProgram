@@ -120,12 +120,15 @@ Page({
       delay: 0  //0则不延迟  
     });
     this.animation = animation;
+<<<<<<< HEAD
+=======
+    console.log(-0.3  * keyboardHeight * app.globalData.pixelRatio);
+>>>>>>> 0517dc87d63b40f88104a58cb028a0dae9b6fef8
     animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
     console.log(-1 * keyboardHeight)
     this.setData({
       keyboardHeight: keyboardHeight,
       animationData: animation.export(),
-      // inputLength : '0',
     });
     wx.showToast({
       title: 'focus',
