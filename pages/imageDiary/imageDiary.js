@@ -322,9 +322,9 @@ Page({
               duration: 2000,
             })
             wx.hideLoading()
-            console.log("upload images completed: " + res)
+            console.log("upload images completed: " + res.imgUrl)
             this.setData({
-              imgUrl: res.data.imgUrl
+              imgUrl: res.imgUrl
             })
           })
           .catch((e) => {
