@@ -11,11 +11,9 @@
 
 <!--文本区  -->
 <view class='view-layoutSecond'>
-  <!--button-->
-  <view class="btn-toEdit" bindtap="powerDrawer" data-statu="open">点击进入文字编辑</view>
 
   <!--遮蔽层-->
-  <view class="drawer-screen" bindtap="powerDrawer" data-statu="close" hidden="{{showModalStatus}}"></view> 
+  <view class="drawer-screen" bindtap="powerDrawer" data-statu="close" hidden="{{showModalStatus}}"></view>
   <!--content-->
   <!--使用animation属性指定需要执行的动画-->
   <view animation="{{animationData}}" class="drawer_box" hidden="{{showModalStatus}}">
@@ -72,31 +70,10 @@
   </view>
 
   <!-- 显示输入的文字 -->
-  <view class='view-eachItem' style='margin-top:10px' wx:if='{{inputLenth == 0}}'>
-    <text class="text-eachTitle">文案</text>
-    <view class='view-show-text'>{{inputValue}}</view>
-    <view class='view-line'></view>
-  </view>
-  <!--显示选择的名言  -->
-  <view class='view-eachItem view-dictum' wx:if='{{inputLenth != 0}}' >
-    <text class='text-eachTitle'>名言</text>
-    <view class='view-select-layout view-select-style-layout' style='z-index:{{zIndex}}'>
-      <view class='view-select-box-first' style='padding-right:0rpx'>
-        <view class='view-select'>
-          <text class='text-select'>{{dataDictumFirst[indexDictumFirst]}}</text>
-        </view>
-      </view>
-      <view class='view-select-box-first' style='padding-right:0rpx'>
-        <view class='view-select'>
-          <text class='text-select'>{{dataDictumSecond[indexDictumSecond]}}</text>
-        </view>
-      </view>
-      <view class='view-select-box-second' style='padding-right:0rpx'>
-        <view class='view-select'>
-          <text class='text-select' style='font-size:9pt'>{{dataDictumThird[indexDictumThird]}}</text>
-        </view>
-      </view>
-    </view>
+  <view class='view-eachItem' style='margin-top:10px'>
+    <text class="text-eachTitle" bindtap="powerDrawer" data-statu="open">文案</text>
+    <view class='view-show-text' bindtap="powerDrawer" data-statu="open">{{inputValue}}</view>
+    <view class='view-line' bindtap="powerDrawer" data-statu="open"></view>
   </view>
 
   <!--显示样式  -->

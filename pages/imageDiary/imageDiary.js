@@ -121,14 +121,11 @@ Page({
     });
     this.animation = animation;
     console.log(-0.3  * keyboardHeight * app.globalData.pixelRatio);
-
-    // console.log(-1 * keyboardHeight * app.globalData.pixelRatio);
     animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
     // this.animation.translateY(-200);
     this.setData({
       keyboardHeight: keyboardHeight,
       animationData: animation.export(),
-      // inputLength : '0',
     });
     wx.showToast({
       title: 'focus',

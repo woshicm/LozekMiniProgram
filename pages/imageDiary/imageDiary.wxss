@@ -201,8 +201,8 @@
   border-radius: 10rpx;  
   text-align: center;  
   margin: 0rpx 10%;  
-  background: #000;  
-  color: #fff;  
+  background: #fafafa;  
+  color: #3f8ae9;  
 }  
   
 /*mask*/  
