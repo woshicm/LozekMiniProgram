@@ -123,7 +123,8 @@ Page({
       delay: 0  //0则不延迟  
     });
     this.animation = animation;
-    animation.translateY(-1 * keyboardHeight * app.globalData.pixelRatio).step();
+    animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
+    console.log(-1 * keyboardHeight)
     this.setData({
       keyboardHeight: keyboardHeight,
       animationData: animation.export()
@@ -144,7 +145,7 @@ Page({
       delay: 0  //0则不延迟  
     });
     this.animation = animation;
-    animation.translateY(this.data.keyboardHeight * app.globalData.pixelRatio).step();
+    animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
     this.setData({
       inputValue: value,
       animationData: animation.export(),
@@ -328,6 +329,7 @@ Page({
       }
     })
   },
+  
   // 上传图片接口
   doUpload: function () {
     var that = this
@@ -392,9 +394,6 @@ Page({
   /**
    * 彈窗頁
    */
-  data: {
-    showModalStatus: false
-  },
   powerDrawer: function (e) {
     var currentStatu = e.currentTarget.dataset.statu;
     this.util(currentStatu)

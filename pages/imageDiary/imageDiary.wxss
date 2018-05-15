@@ -218,7 +218,7 @@
   width: 650rpx;  
   overflow: hidden;  
   position: fixed;  
-  top: 40%;  
+  top: 50%;  
   left: 0;  
   z-index: 1001;  
   background: #FAFAFA;  
@@ -233,7 +233,6 @@
 }  
 .drawer_content {  
   height: 210px;  
-  overflow-y: scroll; /*超出父盒子高度可滚动*/  
 }  
   
 .btn_ok{  

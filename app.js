@@ -3,7 +3,7 @@ App({
     /**
      * 設備參數
      */
-    pixelRadio: wx.getSystemInfoSync().pixelRatio,
+    pixelRatio: wx.getSystemInfoSync().pixelRatio,
     token:'1',
     api: {
       login: 'http://111.230.24.245/login',
