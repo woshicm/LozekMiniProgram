@@ -71,9 +71,9 @@
 
   <!-- 显示输入的文字 -->
   <view class='view-eachItem' style='margin-top:10px'>
-    <text class="text-eachTitle" bindtap="powerDrawer" data-statu="open">文案</text>
+    <text class="text-eachTitle" bindtap="powerDrawer" data-statu="open" style='{{inputLength == 0 ? "color: grey; font-size: 13pt;" : ""}};'>文案</text>
     <view class='view-show-text' bindtap="powerDrawer" data-statu="open">{{inputValue}}</view>
-    <view class='view-line' bindtap="powerDrawer" data-statu="open"></view>
+    <view class='view-line' bindtap="powerDrawer" data-statu="open" style='{{inputLength == 0 ? "background-color: grey;" : "height: 4rpx"}};'></view>
   </view>
 
   <!--显示样式  -->

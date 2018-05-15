@@ -52,6 +52,8 @@
   font-size: 10pt;
   text-align: left;
   color: #3f8ae9;
+  position: relative;
+  bottom: 10rpx;
 }
 
 .text-select {
@@ -97,7 +99,7 @@
 }
 
 .view-line {
-  height: 2px;
+  height: 2rpx;
   background: #3f8ae9;
 }
 
