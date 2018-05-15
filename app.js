@@ -3,7 +3,7 @@ App({
     /**
      * 設備參數
      */
-    pixelRadio: wx.getSystemInfoSync().pixelRatio,
+    pixelRatio: wx.getSystemInfoSync().pixelRatio,
     token:'',
     baseURL: 'http://localhost:8000/',
     // baseURL: 'http://111.230.24.245/',

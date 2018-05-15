@@ -67,6 +67,7 @@
   text-align: left;
   width: 100%;
   margin-bottom: 16rpx;
+  margin-top: 16rpx;
 }
 
 .view-help-and-displayLength {
@@ -104,7 +105,7 @@
   float: right;
   font-size: 10pt;
   margin-top: 30rpx;
-  margin-right: 22rpx;
+  /* margin-right: 22rpx; */
   color: #3f8ae9;
 }
 
@@ -167,6 +168,10 @@
   position: relative;
 }
 
+.view-show-text{
+  font-size: 13pt;
+}
+
 /*天气 时空 心情滤镜  */
 .view-threeItems {
   margin-top: 16rpx;
@@ -190,18 +195,18 @@
 
 
 /*button*/  
-.btn {  
+.btn-toEdit {  
   width: 80%;  
   padding: 20rpx 0;  
   border-radius: 10rpx;  
   text-align: center;  
-  margin: 40rpx 10%;  
+  margin: 0rpx 10%;  
   background: #000;  
   color: #fff;  
 }  
   
 /*mask*/  
-.drawer_screen {  
+.drawer-screen {  
   width: 100%;  
   height: 100%;  
   position: fixed;  
@@ -210,7 +215,7 @@
   z-index: 1000;  
   background: #000;  
   opacity: 0.5;  
-  overflow: hidden;  
+   overflow: hidden;   
 }  
   
 /*content*/  
@@ -218,7 +223,7 @@
   width: 650rpx;  
   overflow: hidden;  
   position: fixed;  
-  top: 40%;  
+  top: 60%;  
   left: 0;  
   z-index: 1001;  
   background: #FAFAFA;  
@@ -226,14 +231,15 @@
   border-radius: 3px;  
 }  
   
-.drawer_title{  
+.drawer-title{  
   padding:15px;  
   font: 20px "microsoft yahei";  
   text-align: center;  
 }  
-.drawer_content {  
+.drawer-content {  
   height: 210px;  
-  overflow-y: scroll; /*超出父盒子高度可滚动*/  
+   overflow-y: scroll; 
+   /*超出父盒子高度可滚动*/  
 }  
   
 .btn_ok{  

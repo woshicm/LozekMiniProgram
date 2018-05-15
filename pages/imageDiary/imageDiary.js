@@ -11,9 +11,10 @@ Page({
      */
     showModalStatus: true,
     keyboardHeight: 0,
+    showEdit: false, //false显示文案,true显示名言
 
-    inputLength: '0',
-	  inputValue: 'a',
+    inputLength: 0,
+	  inputValue: '',
     inputCursor: 0,
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -33,16 +34,12 @@ Page({
     indexStyleFirst: 0,//选择的下拉列表下标
     indexStyleSecond: 0,//选择的下拉列表下标
     indexStyleThird: 0,//选择的下拉列表下标
-
     items: [
       { name: 'Weather', value: '天气' },
       { name: 'TimeAndSpace', value: '时空' },
       { name: 'Mood', value: '心情滤镜' },
-
     ],
-
     zIndex: 0,
-
   },
 
   /**
@@ -106,8 +103,8 @@ Page({
    */
   textareaOnInputEvent: function (e) {
     this.setData({
-      inputLength: e.detail.value.length,
       inputCursor: e.detail.cursor,
+      inputLength: e.detail.value.length,
     })
   },
 /**
@@ -123,10 +120,15 @@ Page({
       delay: 0  //0则不延迟  
     });
     this.animation = animation;
-    animation.translateY(-1 * keyboardHeight * app.globalData.pixelRatio).step();
+    console.log(-0.3  * keyboardHeight * app.globalData.pixelRatio);
+
+    // console.log(-1 * keyboardHeight * app.globalData.pixelRatio);
+    animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
+    // this.animation.translateY(-200);
     this.setData({
       keyboardHeight: keyboardHeight,
-      animationData: animation.export()
+      animationData: animation.export(),
+      // inputLength : '0',
     });
     wx.showToast({
       title: 'focus',
@@ -164,7 +166,8 @@ Page({
       app.relogin();
     })
   },
-  //？？cm: 这里干嘛的
+
+  //监测天气，时空，心情滤镜有没有选中
   checkboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e.detail.value)
   },
@@ -200,7 +203,6 @@ Page({
   optionDictum(e) {
     let target = e.currentTarget;
     let id = target.id;
-    console.log(id);
     let index = target.dataset.index;//获取点击的下拉列表的下标
     switch (id) {
       case "selectDictumFirst":
@@ -352,9 +354,6 @@ Page({
   /**
    * 彈窗頁
    */
-  data: {
-    showModalStatus: false
-  },
   powerDrawer: function (e) {
     var currentStatu = e.currentTarget.dataset.statu;
     this.util(currentStatu)
@@ -392,7 +391,7 @@ Page({
       if (currentStatu == "close") {
         this.setData(
           {
-            showModalStatus: false
+            showModalStatus: !this.data.showModalStatus,
           }
         );
       }
@@ -402,7 +401,7 @@ Page({
     if (currentStatu == "open") {
       this.setData(
         {
-          showModalStatus: true
+          showModalStatus: !this.data.showModalStatus,
         }
       );
     }
