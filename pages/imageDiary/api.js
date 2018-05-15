@@ -32,13 +32,16 @@ function UploadImage(path){
     wx.uploadFile({
       url: globalData.api.uploadImage,
       filePath: path,
+      formData:{
+        description: "xxxxx"
+      },
       header: {
         "token": globalData.token
       },
-      name: 'demo',
+      name: 'image',
       success:(res)=>{
         if (res.statusCode == '200') {
-          resolve(JSON.parse(res.data).status)
+          resolve(JSON.parse(res.data))
         } else if (res.statusCode == '403') {
           reject(403)
         }

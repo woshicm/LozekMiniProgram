@@ -1,83 +1,105 @@
 <!--pages/imageDiary/imageDiary.wxml-->
-
+<!--图片区  -->
 <view class='view-layoutFirst'>
   <image src='/images/icon-imageDiary-addPhoto.svg' class='img-addphoto' catchtap="chooseImageTap"></image>
 </view>
 
+<!--分享按钮  -->
 <view>
   <image src="/images/icon-imageDiary-shareButton.svg" class='img-share' bindtap='powerDrawer' data-statu='open'></image>
 </view>
 
-
-
-
-<!--button-->
-<view class="btn" bindtap="powerDrawer" data-statu="open">button</view>
-
-<!--mask-->
-<view class="drawer_screen" bindtap="powerDrawer" data-statu="close" wx:if="{{showModalStatus}}"></view>
-<!--content-->
-<!--使用animation属性指定需要执行的动画-->
-<view animation="{{animationData}}" class="drawer_box" wx:if="{{showModalStatus}}">
-
-  <!--drawer content-->
-  <view class="drawer_title">弹窗标题</view>
-  <view class="drawer_content">
-
-    <view class='view-model'>
-      <text>叙事模式</text>
-      <switch class='switch-input' color='#3f8ae9'></switch>
-    </view>
-    <view class='view-eachItem'>
-      <text class="text-eachTitle">文案</text>
-      <textarea class='input-text' auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入文案。' maxlength='25' placeholder-style='font-size: 13pt' show-confirm-bar='false'></textarea>
-      <view class='view-line'></view>
-      <view class='view-help-and-displayLength'>
-        <image class='img-helpLogo' src='/images/icon-imageDiary-help.svg'></image>
-        <text class='text-displayLength'>{{inputLength}}/25</text>
-      </view>
-    </view>
-
-    <view class='view-eachItem view-dictum'>
-      <text class='text-eachTitle'>名言</text>
-      <view class='view-select-layout'>
-        <view class='view-select-box-first'>
-          <view class='view-select' id='dictumFirst' catchtap='selectDictum'>
-            <text class='text-select'>{{dataDictumFirst[indexDictumFirst]}}</text>
-          </view>
-          <view class='view-option-box-first' style='height:{{showDictumFirst?(dataDictumFirst.length>5?300:dataDictumFirst.length*60):0}}rpx;'>
-            <text class='text-option-box' style='{{indexDictumFirst==dataDictumFirst.length-1&&"border:0;"}}' wx:for='{{dataDictumFirst}}' wx:key='this' data-index='{{index}}' id='selectDictumFirst' catchtap='optionDictum'>{{item}}</text>
-          </view>
-        </view>
-        <view class='view-select-box-first'>
-          <view class='view-select' id='dictumSecond' catchtap='selectDictum'>
-            <text class='text-select'>{{dataDictumSecond[indexDictumSecond]}}</text>
-          </view>
-          <view class='view-option-box-first' style='height:{{showDictumSecond?(dataDictumSecond.length>5?300:dataDictumSecond.length*60):0}}rpx;'>
-            <text class='text-option-box' style='{{indexDictumSecond==dataDictumSecond.length-1&&"border:0;"}}' wx:for='{{dataDictumSecond}}' wx:key='this' data-index='{{index}}' id='selectDictumSecond' catchtap='optionDictum'>{{item}}</text>
-          </view>
-        </view>
-        <view class='view-select-box-first'>
-          <view class='view-select' id='dictumThird' catchtap='selectDictum'>
-            <text class='text-select' style='font-size:9pt'>{{dataDictumThird[indexDictumThird]}}</text>
-          </view>
-          <view class='view-option-box-first view-option-box-second' style='height:{{showDictumThird?(dataDictumThird.length>5?300:dataDictumThird.length*60):0}}rpx;'>
-            <text class='text-option-box' style='{{indexDictumThird==dataDictumThird.length-1&&"border:0;"}}' wx:for='{{dataDictumThird}}' wx:key='this' data-index='{{index}}' id='selectDictumThird' catchtap='optionDictum'>{{item}}</text>
-          </view>
-        </view>
-      </view>
-    </view>
-
-
-  </view>
-  <view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</view>
-</view>
-
-
-
-
-
+<!--文本区  -->
 <view class='view-layoutSecond'>
+  <!--button-->
+  <view class="btn-toEdit" bindtap="powerDrawer" data-statu="open">点击进入文字编辑</view>
+
+  <!--遮蔽层-->
+  <view class="drawer-screen" bindtap="powerDrawer" data-statu="close" hidden="{{showModalStatus}}"></view> 
+  <!--content-->
+  <!--使用animation属性指定需要执行的动画-->
+  <view animation="{{animationData}}" class="drawer_box" hidden="{{showModalStatus}}">
+
+    <!--drawer content-->
+    <view class="drawer-content">
+      <view class='view-model'>
+        <text>叙事模式</text>
+        <switch class='switch-input' color='#3f8ae9'></switch>
+      </view>
+      <view class='view-eachItem' style='margin-top:20px'>
+        <text class="text-eachTitle">文案</text>
+        <textarea class='input-text' auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入文案。' maxlength='25' placeholder-style='font-size: 13pt' show-confirm-bar='false'></textarea>
+        <view class='view-line'></view>
+        <view class='view-help-and-displayLength'>
+          <image class='img-helpLogo' src='/images/icon-imageDiary-help.svg'></image>
+          <text class='text-displayLength'>{{inputLength}}/25</text>
+        </view>
+      </view>
+
+      <view class='view-eachItem view-dictum' hidden='{{inputLength != 0}}'>
+        <text class='text-eachTitle'>名言</text>
+        <view class='view-select-layout'>
+          <view class='view-select-box-first'>
+            <view class='view-select' id='dictumFirst' catchtap='selectDictum'>
+              <text class='text-select'>{{dataDictumFirst[indexDictumFirst]}}</text>
+            </view>
+            <view class='view-option-box-first' style='height:{{showDictumFirst?(dataDictumFirst.length>5?300:dataDictumFirst.length*60):0}}rpx;'>
+              <text class='text-option-box' style='{{indexDictumFirst==dataDictumFirst.length-1&&"border:0;"}}' wx:for='{{dataDictumFirst}}' wx:key='this' data-index='{{index}}' id='selectDictumFirst' catchtap='optionDictum'>{{item}}</text>
+            </view>
+          </view>
+          <view class='view-select-box-first'>
+            <view class='view-select' id='dictumSecond' catchtap='selectDictum'>
+              <text class='text-select'>{{dataDictumSecond[indexDictumSecond]}}</text>
+            </view>
+            <view class='view-option-box-first' style='height:{{showDictumSecond?(dataDictumSecond.length>5?300:dataDictumSecond.length*60):0}}rpx;'>
+              <text class='text-option-box' style='{{indexDictumSecond==dataDictumSecond.length-1&&"border:0;"}}' wx:for='{{dataDictumSecond}}' wx:key='this' data-index='{{index}}' id='selectDictumSecond' catchtap='optionDictum'>{{item}}</text>
+            </view>
+          </view>
+          <view class='view-select-box-first'>
+            <view class='view-select' id='dictumThird' catchtap='selectDictum'>
+              <text class='text-select' style='font-size:9pt'>{{dataDictumThird[indexDictumThird]}}</text>
+            </view>
+            <view class='view-option-box-first view-option-box-second' style='height:{{showDictumThird?(dataDictumThird.length>5?300:dataDictumThird.length*60):0}}rpx;'>
+              <text class='text-option-box' style='{{indexDictumThird==dataDictumThird.length-1&&"border:0;"}}' wx:for='{{dataDictumThird}}' wx:key='this' data-index='{{index}}' id='selectDictumThird' catchtap='optionDictum'>{{item}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+
+    </view>
+    <view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</view>
+  </view>
+
+  <!-- 显示输入的文字 -->
+  <view class='view-eachItem' style='margin-top:10px' wx:if='{{inputLenth == 0}}'>
+    <text class="text-eachTitle">文案</text>
+    <view class='view-show-text'>{{inputValue}}</view>
+    <view class='view-line'></view>
+  </view>
+  <!--显示选择的名言  -->
+  <view class='view-eachItem view-dictum' wx:if='{{inputLenth != 0}}' >
+    <text class='text-eachTitle'>名言</text>
+    <view class='view-select-layout view-select-style-layout' style='z-index:{{zIndex}}'>
+      <view class='view-select-box-first' style='padding-right:0rpx'>
+        <view class='view-select'>
+          <text class='text-select'>{{dataDictumFirst[indexDictumFirst]}}</text>
+        </view>
+      </view>
+      <view class='view-select-box-first' style='padding-right:0rpx'>
+        <view class='view-select'>
+          <text class='text-select'>{{dataDictumSecond[indexDictumSecond]}}</text>
+        </view>
+      </view>
+      <view class='view-select-box-second' style='padding-right:0rpx'>
+        <view class='view-select'>
+          <text class='text-select' style='font-size:9pt'>{{dataDictumThird[indexDictumThird]}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!--显示样式  -->
   <view class='view-eachItem view-style'>
     <text class='text-eachTitle'>样式</text>
     <view class='view-select-layout view-select-style-layout' style='z-index:{{zIndex}}'>
@@ -110,6 +132,8 @@
       </view>
     </view>
   </view>
+
+  <!--天气、时空和心情滤镜  -->
   <view class='view-eachItem view-items'>
     <checkbox-group class='checkgroup-threeItems' style='z-index:{{zIndex}}' bindchange="checkboxChange">
       <label wx:key="this" wx:for="{{items}}">

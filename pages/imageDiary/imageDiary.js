@@ -11,9 +11,10 @@ Page({
      */
     showModalStatus: true,
     keyboardHeight: 0,
+    showEdit: false, //false显示文案,true显示名言
 
-    inputLength: '0',
-	  inputValue: 'a',
+    inputLength: 0,
+	  inputValue: '',
     inputCursor: 0,
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -33,16 +34,12 @@ Page({
     indexStyleFirst: 0,//选择的下拉列表下标
     indexStyleSecond: 0,//选择的下拉列表下标
     indexStyleThird: 0,//选择的下拉列表下标
-
     items: [
       { name: 'Weather', value: '天气' },
       { name: 'TimeAndSpace', value: '时空' },
       { name: 'Mood', value: '心情滤镜' },
-
     ],
-
     zIndex: 0,
-
   },
 
   /**
@@ -106,8 +103,8 @@ Page({
    */
   textareaOnInputEvent: function (e) {
     this.setData({
-      inputLength: e.detail.value.length,
       inputCursor: e.detail.cursor,
+      inputLength: e.detail.value.length,
     })
   },
 /**
@@ -127,7 +124,8 @@ Page({
     console.log(-1 * keyboardHeight)
     this.setData({
       keyboardHeight: keyboardHeight,
-      animationData: animation.export()
+      animationData: animation.export(),
+      // inputLength : '0',
     });
     wx.showToast({
       title: 'focus',
@@ -136,9 +134,9 @@ Page({
   /**
    * textarea失去焦点处理函数
    */
-  textareaOnBlurEvent: function(e){
+  textareaOnBlurEvent(e){
     var value = e.detail.value;
-    parseInputValue(value);
+    this.parseInputValue(value);
     var animation = wx.createAnimation({
       duration: 200,  //动画时长  
       timingFunction: "linear", //线性  
@@ -155,7 +153,7 @@ Page({
     })
   },
 //调用api处理输入文字 
-  parseInputValue: function(value){
+  parseInputValue(value){
     ParseText(value)
     .then((res)=>{
       console.log(res)
@@ -165,7 +163,8 @@ Page({
       app.relogin();
     })
   },
-  //？？cm: 这里干嘛的
+
+  //监测天气，时空，心情滤镜有没有选中
   checkboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e.detail.value)
   },
@@ -201,7 +200,6 @@ Page({
   optionDictum(e) {
     let target = e.currentTarget;
     let id = target.id;
-    console.log(id);
     let index = target.dataset.index;//获取点击的下拉列表的下标
     switch (id) {
       case "selectDictumFirst":
@@ -256,31 +254,6 @@ Page({
         console.log("该id不存在！");
     }
   },
-  /**
-   * 上传图片
-   */
-  uploadImage(e){
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: (res)=> {
-        let tempFilePaths = res.tempFilePaths
-        this.setData({
-          imageSrc: tempFilePaths[0]
-        })
-        UploadImage(tempFilePaths[0])
-        .then((res)=>{
-            console.log("upload images completed: "+res)
-        })
-        .catch((e)=>{
-            console.log("upload images fail:"+ e)
-        })
-      },
-      fail: function(res) {},
-      complete: function(res) {},
-    })
-  },
   // 点击style下拉列表
   optionStyle(e) {
     let target = e.currentTarget;
@@ -314,16 +287,15 @@ Page({
   },
 
   // 上傳圖片
-  chooseImageTap: function () {
-    var that = this;
+  chooseImageTap() {
     wx.showActionSheet({
       itemList: ['本地上传', '拍照上传'],
-      success: function (res) {
+      success: (res)=> {
         if (!res.cancel) {
           if (res.tapIndex == 0) {
-            that.doUpload('album')
+            this.doUpload('album')
           } else if (res.tapIndex == 1) {
-            that.doUpload('camera')
+            this.doUpload('camera')
           }
         }
       }
@@ -331,54 +303,41 @@ Page({
   },
   
   // 上传图片接口
-  doUpload: function () {
-    var that = this
-
+  doUpload() {
     // 选择图片
     wx.chooseImage({
       count: 1,
-      success: function (res) {
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
         wx.showLoading({
           title: '正在上传',
         })
-        var filePath = res.tempFilePaths[0]
-
-        // 上传图片
-        wx.uploadFile({
-          url: '111.230.24.245',
-          filePath: filePath,
-          name: 'file',
-
-          success: function (res) {
-           wx.showToast({
-             title: '上传成功',
-             icon: 'success',
-             duration: 2000,
-           }),
-
-           wx.hideLoading(),
-           
-            console.log(res)
-            res = JSON.parse(res.data)
-            console.log(res)
-            that.setData({
-              imgUrl: res.data.imgUrl
-            })
-          },
-
-          fail: function (e) {
+        let tempFilePaths = res.tempFilePaths
+        UploadImage(tempFilePaths[0])
+          .then((res) => {
             wx.showToast({
-              title: '上传失败',
+              title: '上传成功',
+              icon: 'success',
+              duration: 2000,
+            })
+            wx.hideLoading()
+            console.log("upload images completed: " + res.imgUrl)
+            this.setData({
+              imgUrl: res.imgUrl
+            })
+          })
+          .catch((e) => {
+            wx.showToast({
+              title: '上传失败: ' + e,
               icon: 'fail',
               duration: 2000,
             })
-          }
-        })
-
+            console.log("upload images fail:" + e)
+          })
       },
-      fail: function (e) {
-        console.error(e)
-      }
+      fail: function (res) { },
+      complete: function (res) { }
     })
   },
 
@@ -389,7 +348,6 @@ Page({
       urls: [this.data.imgUrl]
     })
   },
-
 
   /**
    * 彈窗頁
@@ -431,7 +389,7 @@ Page({
       if (currentStatu == "close") {
         this.setData(
           {
-            showModalStatus: false
+            showModalStatus: !this.data.showModalStatus,
           }
         );
       }
@@ -441,7 +399,7 @@ Page({
     if (currentStatu == "open") {
       this.setData(
         {
-          showModalStatus: true
+          showModalStatus: !this.data.showModalStatus,
         }
       );
     }
