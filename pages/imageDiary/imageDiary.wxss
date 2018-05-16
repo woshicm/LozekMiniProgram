@@ -94,6 +94,7 @@
   left: 98rpx;
   bottom: 0;
   font-size: 13pt;
+  background: #f5f5f5;
 }
 
 .view-line {
