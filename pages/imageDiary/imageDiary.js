@@ -10,6 +10,7 @@ Page({
      *  彈窗頁
      */
     showModalStatus: true,
+    showAddButton: true,
     keyboardHeight: 0,
     showEdit: false, //false显示文案,true显示名言
 
@@ -309,24 +310,30 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        wx.showLoading({
-          title: '正在上传',
-        })
+        this.setData({
+          showAddButton: false,
+          imgUrl: res.tempFilePaths,
+        });
+        console.log(this.data.imgUrl)
+ //       wx.showLoading({
+ //         title: '正在上传',
+ //       })
         let tempFilePaths = res.tempFilePaths
         UploadImage(tempFilePaths[0])
           .then((res) => {
+            wx.hideLoading();
             wx.showToast({
               title: '上传成功',
               icon: 'success',
               duration: 2000,
             })
-            wx.hideLoading()
             console.log("upload images completed: " + res.imgUrl)
-            this.setData({
-              imgUrl: res.imgUrl
-            })
+     //       this.setData({
+     //         imgUrl: res.imgUrl
+    //        });
           })
           .catch((e) => {
+            wx.hideLoading()
             wx.showToast({
               title: '上传失败: ' + e,
               icon: 'fail',

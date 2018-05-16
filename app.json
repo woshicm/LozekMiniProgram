@@ -6,5 +6,9 @@
       "navigationBarBackgroundColor": "#1976d2",
       "navigationBarTitleText": "路迹本",
       "navigationBarTextStyle": "white"
+  },
+  "networkTimeout":{
+    "request": 5000,
+    "uploadFile": 5000
   }
 }
