@@ -319,12 +319,23 @@ Page({
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
-            that.setData({
-              showAddButton: false,
-              imgUrl: tempFilePaths,
-              uploadedImageHeight: res.height * app.globalData.pixelRatio,
-              uploadedImageWidth: res.width * app.globalData.pixelRatio,
-            });
+            if(res.height > res.width){
+              res.width *= (0.95 * 0.8 * 1094) / res.height;
+              that.setData({
+                showAddButton: false,
+                imgUrl: tempFilePaths,
+                uploadedImageHeight: res.height * app.globalData.pixelRatio,
+                uploadedImageWidth: res.width,
+              });
+            }else{
+              res.height *= 750 / res.width;
+              that.setData({
+                showAddButton: false,
+                imgUrl: tempFilePaths,
+                uploadedImageHeight: res.height,
+                uploadedImageWidth: res.width * app.globalData.pixelRatio,
+              });
+            }
             console.log("外面：" + that.data.uploadedImageHeight + " " + that.data.uploadedImageWidth);
           }
         });

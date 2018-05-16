@@ -3,13 +3,10 @@
   <!--图片区  -->
   <view class='view-layoutFirst'>
     <image wx:if='{{showAddButton}}' src='/images/icon-imageDiary-addPhoto.svg' class='img-addphoto' catchtap="chooseImageTap"></image>
-    <image wx:else src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='{{uploadedImageHeight > uploadedImageWidth ? "height: 95%; width: " + uploadedImageHeight * (0.95 * 1094) / uploadedImageWidth : "width: 100%; height: " + uploadedImageHeight * 750 / uploadedImageWidth}}rpx'></image>
-    <text>{{uploadedImageHeight}}  {{uploadedImageWidth}}</text>
-    <movable-area class='movableArea-userInput'>
-      <movable-view wx:if='{{inputLength != 0}}' class='text-userInput' direction='all' inertia='true' scale='true'>{{inputValue}} </movable-view>
-    </movable-area>
+    <block wx:else>
+    <image src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='{{uploadedImageHeight > uploadedImageWidth ? "height: 95%; width: " + uploadedImageWidth : "width: 100%; height: " + uploadedImageHeight}}rpx'></image>
+    </block>
   </view>
-
   <!--文本区  -->
   <view class='view-layoutSecond modify-shadow-main-up'>
     <!--分享按钮  -->

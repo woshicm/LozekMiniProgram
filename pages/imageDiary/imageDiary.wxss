@@ -13,10 +13,7 @@
 }
 
 .img-uploaded{
-  height: 100%;
-  width: 100%;
-  box-shadow: 0rpx 0rpx 8rpx 2rpx rgba(0,0,0,0.18);
-  background-color: red;
+  box-shadow: 0rpx 0rpx 6rpx 2rpx rgba(0,0,0,0.38);
 }
 
 .img-helpLogo {
@@ -68,6 +65,13 @@
 
 .text-userInput{
   font-size: 13pt;
+}
+.view-userOperationArea{
+  width: 100%;
+  height: 1094rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .view-dictum {
   margin-bottom: 50rpx;
@@ -185,10 +189,9 @@
   font-size: 13pt;
 }
 .movableArea-userInput{
-  height: 100%;
-  width: 100%;
-  display: flex;
-  z-index: 10;
+  background-color: red; 
+  position: fixed;    
+  z-index: 1;  
 }
 
 /*天气 时空 心情滤镜  */
