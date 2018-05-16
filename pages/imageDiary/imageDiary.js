@@ -7,13 +7,23 @@ let app = getApp()
 Page({
   data: {
     /**
+     * imageDiary頁
+     */
+    items: [
+      { name: 'Weather', value: '天气' },
+      { name: 'TimeAndSpace', value: '时空' },
+      { name: 'Mood', value: '心情滤镜' },
+    ],
+    zIndex: 0,
+    uploadedImageHeight: 0,
+    uploadedImageWidth: 0,
+    /**
      *  彈窗頁
      */
     showModalStatus: true,
     showAddButton: true,
     keyboardHeight: 0,
     showEdit: false, //false显示文案,true显示名言
-
     inputLength: 0,
 	  inputValue: '',
     inputCursor: 0,
@@ -35,12 +45,6 @@ Page({
     indexStyleFirst: 0,//选择的下拉列表下标
     indexStyleSecond: 0,//选择的下拉列表下标
     indexStyleThird: 0,//选择的下拉列表下标
-    items: [
-      { name: 'Weather', value: '天气' },
-      { name: 'TimeAndSpace', value: '时空' },
-      { name: 'Mood', value: '心情滤镜' },
-    ],
-    zIndex: 0,
   },
 
   /**
@@ -310,15 +314,28 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
+        let tempFilePaths = res.tempFilePaths;
+        let uploadedImageHeight = 1;
+        let uploadedImageWidth = 2;
+        wx.getImageInfo({
+          src: tempFilePaths[0],
+          success: (res) => {
+            uploadedImageHeight = res.height * app.globalData.pixelRatio;
+            uploadedImageWidth = res.width * app.globalData.pixelRatio;
+            console.log("裡面：" + uploadedImageHeight + " " + uploadedImageWidth);
+            console.log(src);
+          }
+        });
+        console.log("外面：" + uploadedImageHeight + " " + uploadedImageWidth);
         this.setData({
           showAddButton: false,
-          imgUrl: res.tempFilePaths,
+          imgUrl: tempFilePaths,
+          uploadedImageHeight: uploadedImageHeight,
+          uploadedImageWidth: uploadedImageWidth
         });
-        console.log(this.data.imgUrl)
  //       wx.showLoading({
  //         title: '正在上传',
  //       })
-        let tempFilePaths = res.tempFilePaths
         UploadImage(tempFilePaths[0])
           .then((res) => {
             wx.hideLoading();

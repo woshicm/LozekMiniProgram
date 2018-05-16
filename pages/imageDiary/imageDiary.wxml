@@ -3,11 +3,12 @@
 <!--图片区  -->
 <view class='view-layoutFirst'>
   <image wx:if='{{showAddButton}}' src='/images/icon-imageDiary-addPhoto.svg' class='img-addphoto' catchtap="chooseImageTap"></image>
-  <image wx:else src='{{imgUrl}}' mode='aspectFit' class='img-uploaded'></image>
+  <image wx:else src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='{{uploadedImageHeight > uploadedImageWidth ? "height: 95%;" : "width: 100%;"}}'></image>
+  <text wx:if='{{inputLength != 0}}' class='text-userInput'>{{inputValue}} </text>
 </view>
 
 <!--文本区  -->
-<view class='view-layoutSecond'>
+<view class='view-layoutSecond modify-shadow-main-up'>
 <!--分享按钮  -->
 <view>
   <image src="/images/icon-imageDiary-shareButton.svg" class='img-share' bindtap='powerDrawer' data-statu='open'></image>
