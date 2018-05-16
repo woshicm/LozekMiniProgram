@@ -184,6 +184,12 @@
 .view-show-text{
   font-size: 13pt;
 }
+.movableArea-userInput{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  z-index: 10;
+}
 
 /*天气 时空 心情滤镜  */
 .view-threeItems {

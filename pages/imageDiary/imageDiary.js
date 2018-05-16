@@ -309,29 +309,24 @@ Page({
   // 上传图片接口
   doUpload() {
     // 选择图片
+    var that = this;
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
         let tempFilePaths = res.tempFilePaths;
-        let uploadedImageHeight = 1;
-        let uploadedImageWidth = 2;
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
-            uploadedImageHeight = res.height * app.globalData.pixelRatio;
-            uploadedImageWidth = res.width * app.globalData.pixelRatio;
-            console.log("裡面：" + uploadedImageHeight + " " + uploadedImageWidth);
-            console.log(src);
+            that.setData({
+              showAddButton: false,
+              imgUrl: tempFilePaths,
+              uploadedImageHeight: res.height * app.globalData.pixelRatio,
+              uploadedImageWidth: res.width * app.globalData.pixelRatio,
+            });
+            console.log("外面：" + that.data.uploadedImageHeight + " " + that.data.uploadedImageWidth);
           }
-        });
-        console.log("外面：" + uploadedImageHeight + " " + uploadedImageWidth);
-        this.setData({
-          showAddButton: false,
-          imgUrl: tempFilePaths,
-          uploadedImageHeight: uploadedImageHeight,
-          uploadedImageWidth: uploadedImageWidth
         });
  //       wx.showLoading({
  //         title: '正在上传',
