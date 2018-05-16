@@ -7,12 +7,23 @@ let app = getApp()
 Page({
   data: {
     /**
+     * imageDiary頁
+     */
+    items: [
+      { name: 'Weather', value: '天气' },
+      { name: 'TimeAndSpace', value: '时空' },
+      { name: 'Mood', value: '心情滤镜' },
+    ],
+    zIndex: 0,
+    uploadedImageHeight: 0,
+    uploadedImageWidth: 0,
+    /**
      *  彈窗頁
      */
     showModalStatus: true,
+    showAddButton: true,
     keyboardHeight: 0,
     showEdit: false, //false显示文案,true显示名言
-
     inputLength: 0,
 	  inputValue: '',
     inputCursor: 0,
@@ -34,12 +45,6 @@ Page({
     indexStyleFirst: 0,//选择的下拉列表下标
     indexStyleSecond: 0,//选择的下拉列表下标
     indexStyleThird: 0,//选择的下拉列表下标
-    items: [
-      { name: 'Weather', value: '天气' },
-      { name: 'TimeAndSpace', value: '时空' },
-      { name: 'Mood', value: '心情滤镜' },
-    ],
-    zIndex: 0,
   },
 
   /**
@@ -120,9 +125,8 @@ Page({
       delay: 0  //0则不延迟  
     });
     this.animation = animation;
-    console.log(-0.3  * keyboardHeight * app.globalData.pixelRatio);
     animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
-    // this.animation.translateY(-200);
+    console.log(-1 * keyboardHeight)
     this.setData({
       keyboardHeight: keyboardHeight,
       animationData: animation.export(),
@@ -143,7 +147,7 @@ Page({
       delay: 0  //0则不延迟  
     });
     this.animation = animation;
-    animation.translateY(this.data.keyboardHeight * app.globalData.pixelRatio).step();
+    animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
     this.setData({
       inputValue: value,
       animationData: animation.export(),
@@ -301,6 +305,7 @@ Page({
       }
     })
   },
+  
   // 上传图片接口
   doUpload() {
     // 选择图片
@@ -309,24 +314,43 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        wx.showLoading({
-          title: '正在上传',
-        })
-        let tempFilePaths = res.tempFilePaths
+        let tempFilePaths = res.tempFilePaths;
+        let uploadedImageHeight = 1;
+        let uploadedImageWidth = 2;
+        wx.getImageInfo({
+          src: tempFilePaths[0],
+          success: (res) => {
+            uploadedImageHeight = res.height * app.globalData.pixelRatio;
+            uploadedImageWidth = res.width * app.globalData.pixelRatio;
+            console.log("裡面：" + uploadedImageHeight + " " + uploadedImageWidth);
+            console.log(src);
+          }
+        });
+        console.log("外面：" + uploadedImageHeight + " " + uploadedImageWidth);
+        this.setData({
+          showAddButton: false,
+          imgUrl: tempFilePaths,
+          uploadedImageHeight: uploadedImageHeight,
+          uploadedImageWidth: uploadedImageWidth
+        });
+ //       wx.showLoading({
+ //         title: '正在上传',
+ //       })
         UploadImage(tempFilePaths[0])
           .then((res) => {
+            wx.hideLoading();
             wx.showToast({
               title: '上传成功',
               icon: 'success',
               duration: 2000,
             })
-            wx.hideLoading()
             console.log("upload images completed: " + res.imgUrl)
-            this.setData({
-              imgUrl: res.imgUrl
-            })
+     //       this.setData({
+     //         imgUrl: res.imgUrl
+    //        });
           })
           .catch((e) => {
+            wx.hideLoading()
             wx.showToast({
               title: '上传失败: ' + e,
               icon: 'fail',

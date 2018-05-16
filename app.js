@@ -4,16 +4,14 @@ App({
      * 設備參數
      */
     pixelRatio: wx.getSystemInfoSync().pixelRatio,
-    token:'',
-    baseURL: 'http://localhost:8000/',
-    // baseURL: 'http://111.230.24.245/',
+    token:'1',
     api: {
-      login: '',
-      getDiarys : '',
-      getDiary : '',
+      login: 'http://111.230.24.245/login',
+      // getDiarys : base + '/diarys',
+      // getDiary : base + '/diary',
       uploadImage: '',
-      parseText: ''
-    }
+      parseText: 'http://111.230.24.245/parsetext'
+    },
   },
   onLaunch: function () {
     //调用API从本地缓存中获取数据
