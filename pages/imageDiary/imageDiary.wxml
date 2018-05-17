@@ -4,7 +4,10 @@
   <view class='view-layoutFirst'>
     <image wx:if='{{showAddButton}}' src='/images/icon-imageDiary-addPhoto.svg' class='img-addphoto' catchtap="chooseImageTap"></image>
     <block wx:else>
-    <image src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='{{uploadedImageHeight > uploadedImageWidth ? "height: 95%; width: " + uploadedImageWidth : "width: 100%; height: " + uploadedImageHeight}}rpx'></image>
+      <image src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='{{uploadedImageHeight <= uploadedImageWidth ? (uploadedImageHeight == uploadedImageWidth ? "width: " + uploadedImageWidth + "rpx; height: " +  uploadedImageHeight : "width: 100%; height : " + uploadedImageHeight) : "height: 95%; width: " + uploadedImageWidth}}rpx'></image>
+      <movable-area class='movableArea-userInput' style='{{uploadedImageHeight <= uploadedImageWidth ? (uploadedImageHeight == uploadedImageWidth ? "width: " + uploadedImageWidth + "rpx; height: " +  uploadedImageHeight + "rpx; top: " + (1094 * 0.8 - uploadedImageHeight) / 2 + "rpx; left: " + (750 - uploadedImageWidth) / 2 : "width: 100%; height: " + uploadedImageHeight + "rpx; top: " + (1094 - uploadedHeight) / 2) : "height: " + 1094 * 0.95 * 0.8 + "rpx; width: " + uploadedImageWidth + "rpx; top: " + 1094 * 0.8 *(1 - 0.95) / 2 + "rpx; left: " + (750 - uploadedImageWidth) / 2}}rpx'>
+        <movable-view wx:if='{{inputLength != 0}}' direction='all' inertia='true' scale='true'>{{inputValue}}</movable-view>
+      </movable-area>
     </block>
   </view>
   <!--文本区  -->

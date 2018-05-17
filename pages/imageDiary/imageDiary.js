@@ -327,7 +327,15 @@ Page({
                 uploadedImageHeight: res.height * app.globalData.pixelRatio,
                 uploadedImageWidth: res.width,
               });
-            }else{
+            }else if(res.height == res.width){
+              that.setData({
+                showAddButton: false,
+                imgUrl: tempFilePaths,
+                uploadedImageHeight: res.height * app.globalData.pixelRatio,
+                uploadedImageWidth: res.width * app.globalData.pixelRatio,
+              });
+            }
+            else{
               res.height *= 750 / res.width;
               that.setData({
                 showAddButton: false,

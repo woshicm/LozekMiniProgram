@@ -189,7 +189,6 @@
   font-size: 13pt;
 }
 .movableArea-userInput{
-  background-color: red; 
   position: fixed;    
   z-index: 1;  
 }
@@ -330,6 +329,7 @@ radio{
 .col-1 {-webkit-box-flex:1;box-flex:1;}  
 .fl { float: left;}  
 .fr { float: right;}  
+
 
 
 
