@@ -207,9 +207,9 @@
 }
 /**
  *修飾樣式*/
-.modify-divideLine-light{
+ .modify-divideLine-light{
   background-color: rgba(55,121,205,0.12);
-}
+} 
 .modify-divideLine-dark{
   background-color: rgba(55,121,205,0.38);
 }

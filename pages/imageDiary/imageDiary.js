@@ -58,7 +58,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+        
   },
 
   /**
@@ -309,55 +309,55 @@ Page({
   // 上传图片接口
   doUpload() {
     // 选择图片
+    let that = this;  //保存初始this
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
         let tempFilePaths = res.tempFilePaths;
-        let uploadedImageHeight = 1;
-        let uploadedImageWidth = 2;
+        let uploadedImageHeight = 0;
+        let uploadedImageWidth = 0;
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
             uploadedImageHeight = res.height * app.globalData.pixelRatio;
             uploadedImageWidth = res.width * app.globalData.pixelRatio;
-            console.log("裡面：" + uploadedImageHeight + " " + uploadedImageWidth);
-            console.log(src);
+            that.setData({
+              showAddButton: false,
+              imgUrl: tempFilePaths,
+              uploadedImageHeight: uploadedImageHeight,
+              uploadedImageWidth: uploadedImageWidth,   
+            });
           }
         });
-        console.log("外面：" + uploadedImageHeight + " " + uploadedImageWidth);
-        this.setData({
-          showAddButton: false,
-          imgUrl: tempFilePaths,
-          uploadedImageHeight: uploadedImageHeight,
-          uploadedImageWidth: uploadedImageWidth
-        });
+        
+        
  //       wx.showLoading({
  //         title: '正在上传',
  //       })
-        UploadImage(tempFilePaths[0])
-          .then((res) => {
-            wx.hideLoading();
-            wx.showToast({
-              title: '上传成功',
-              icon: 'success',
-              duration: 2000,
-            })
-            console.log("upload images completed: " + res.imgUrl)
-     //       this.setData({
-     //         imgUrl: res.imgUrl
-    //        });
-          })
-          .catch((e) => {
-            wx.hideLoading()
-            wx.showToast({
-              title: '上传失败: ' + e,
-              icon: 'fail',
-              duration: 2000,
-            })
-            console.log("upload images fail:" + e)
-          })
+    //     UploadImage(tempFilePaths[0])
+    //       .then((res) => {
+    //         wx.hideLoading();
+    //         wx.showToast({
+    //           title: '上传成功',
+    //           icon: 'success',
+    //           duration: 2000,
+    //         })
+    //         console.log("upload images completed: " + res.imgUrl)
+    //  //       this.setData({
+    //  //         imgUrl: res.imgUrl
+    // //        });
+    //       })
+    //       .catch((e) => {
+    //         wx.hideLoading()
+    //         wx.showToast({
+    //           title: '上传失败: ' + e,
+    //           icon: 'fail',
+    //           duration: 2000,
+    //         })
+    //         console.log("upload images fail:" + e)
+    //       })
       },
       fail: function (res) { },
       complete: function (res) { }
