@@ -1,5 +1,14 @@
 let globalData  = getApp().globalData
 
+/**
+ * 1、input点击空白处时失去焦点函数有问题：提示blur，但是setData没有执行。
+ * 2、从叙事模式转回非叙事模式时，超出的字怎么处理，
+ * 3、在手机测试palceholder是会跟着主页面滑动
+ * 4、数据格式怎么设计
+ * 5、字体大小滑块
+ * 6、布局
+ */
+
 function ParseText(text){
   let promise = new Promise(function (resolve, reject) {
     wx.request({

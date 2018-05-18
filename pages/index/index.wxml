@@ -27,7 +27,7 @@
                 <view wx:if='{{displayItem.diary.text.length != 0}}'>
                   <scroll-view scroll-x class='index-display-text-scrollView'>
                     <view class='index-display-text'>
-                      <view wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-textItem'>
+                      <view wx:key='this' wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-textItem'>
                         <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
                       </view>
                     </view>
@@ -37,7 +37,7 @@
                 <view wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
                   <scroll-view scroll-x class='index-display-image-scrollView'>
                     <view class='index-display-image'>
-                      <view wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-imageItem' style='margin-right: 30rpx;'>
+                      <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-imageItem' style='margin-right: 30rpx;'>
                         <imageCard imageURL='{{imageItem.imageURL}}'></imageCard>
                       </view>
                     </view>
