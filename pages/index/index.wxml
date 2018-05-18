@@ -33,7 +33,7 @@
                 <view wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
                   <scroll-view scroll-x class='index-display-image-scrollView'>
                     <view class='index-display-image'>
-                      <view wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-imageItem' style='margin-right: 30rpx;'>
+                      <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-imageItem' style='margin-right: 30rpx;'>
                         <imageCard imageURL='{{imageItem.imageURL}}'></imageCard>
                       </view>
                     </view>

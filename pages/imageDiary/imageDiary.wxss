@@ -1,6 +1,6 @@
 /* pages/imageDiary/imageDiary.wxss */
 .checkgroup-threeItems {
-  zoom: 60%;
+  zoom: 80%;
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
@@ -76,19 +76,18 @@
   justify-content: center;
 }
 .view-dictum {
-  margin-bottom: 50rpx;
+  margin-top: 6%;
 }
 
 .view-eachItem {
   text-align: left;
   width: 100%;
-  margin-bottom: 16rpx;
-  margin-top: 16rpx;
 }
 
 .view-help-and-displayLength {
   display: flex;
   justify-content: space-between;
+  
 }
 
 .view-mainLayout{
@@ -112,19 +111,18 @@
 }
 
 .view-layoutSecond-text {
-    width: 554rpx;
+    width: 86%;
     font-size: 13pt;
 }
 .view-line {
   height: 2rpx;
+  width: 100%;
   background: #3f8ae9;
 }
 
 .view-model {
   float: right;
   font-size: 10pt;
-  margin-top: 30rpx;
-  /* margin-right: 22rpx; */
   color: #3f8ae9;
 }
 
@@ -191,7 +189,8 @@
   font-size: 13pt;
 }
 .movableArea-userInput{
-  position: fixed;    
+  position: fixed;  
+  
   z-index: 1;  
 }
 .colorModuleScrollView{
@@ -269,9 +268,9 @@ button::after {
 }
 /**
  *修飾樣式*/
-.modify-divideLine-light{
+ .modify-divideLine-light{
   background-color: rgba(55,121,205,0.12);
-}
+} 
 .modify-divideLine-dark{
   background-color: rgba(55,121,205,0.38);
 }
@@ -325,7 +324,10 @@ button::after {
   text-align: center;  
 }  
 .drawer-content {  
-  height: 210px;  
+  width: 90%; 
+  height: 210px;
+  margin-left: 5%;
+  margin-right: 5%;
 }  
   
 .btn_ok{  

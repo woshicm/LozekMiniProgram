@@ -6,6 +6,7 @@ let app = getApp()
 
 Page({
   data: {
+    test: '',
     /**
      * imageDiary頁
      */
@@ -98,6 +99,9 @@ Page({
     inputLength: 0,
     inputValue: '',
     inputCursor: 0,
+    inputMaxLength: 25,
+    switchChecked: false,  //是否选中叙事模式
+    switchDisabled: false,  //是否禁用叙事模式 
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -128,11 +132,9 @@ Page({
     this.setData({
       textModuleScrollView: array,
     })
-    console.log("這裡" + array)
   },
 
   onReady: function () {
-
   },
   onShow: function () {
 
@@ -252,6 +254,7 @@ Page({
     this.setData({
       keyboardHeight: keyboardHeight,
       animationData: animation.export(),
+      // switchDisabled: !this.data.switchDisabled,
     });
     wx.showToast({
       title: 'focus',
@@ -273,7 +276,9 @@ Page({
     this.setData({
       inputValue: value,
       animationData: animation.export(),
+      // switchDisabled: !this.data.switchDisabled,
     });
+    // console.log(this.data.switchDisabled);
     wx.showToast({
       title: 'blur',
     })
@@ -295,13 +300,29 @@ Page({
     console.log('checkbox发生change事件，携带value值为：', e.detail.value)
   },
 
+  //开关叙事模式
+  switchModel(){
+    var that = this;
+    this.setData({
+      switchChecked: !this.data.switchChecked,
+    });
+    if(this.data.switchChecked){
+      that.setData({
+        inputMaxLength: 50,
+      })
+    }else{
+      that.setData({
+        inputMaxLength: 25,
+        inputLength: that.data.inputValue.length, 
+      });
+      
+    }
+    console.log(that.data.inputMaxLength);
+  },
   // 打开dictum下拉显示框
   selectDictum(e) {
 
     let id = e.currentTarget.id;
-    this.setData({
-      zIndex: -1
-    });
     switch (id) {
       case "dictumFirst":
         this.setData({
@@ -349,16 +370,12 @@ Page({
       default:
         console.log("该id不存在!！");
     }
-    this.setData({
-      zIndex: 0
-    });
   },
   // 打开style下拉显示框
   selectStyle(e) {
-
     let id = e.currentTarget.id;
     this.setData({
-      zIndex: -1
+      zIndex: -1,
     });
     switch (id) {
       case "styleFirst":
@@ -408,7 +425,7 @@ Page({
         console.log("该id不存在!！");
     }
     this.setData({
-      zIndex: 0
+      zIndex: 0,
     });
   },
 
@@ -485,6 +502,7 @@ Page({
   // 上传图片接口
   doUpload() {
     // 选择图片
+
     var that = this;
     wx.chooseImage({
       count: 1,
@@ -523,9 +541,6 @@ Page({
             console.log("外面：" + that.data.uploadedImageHeight + " " + that.data.uploadedImageWidth);
           }
         });
-        //       wx.showLoading({
-        //         title: '正在上传',
-        //       })
         UploadImage(tempFilePaths[0])
           .then((res) => {
             wx.hideLoading();
@@ -535,9 +550,6 @@ Page({
               duration: 2000,
             })
             console.log("upload images completed: " + res.imgUrl)
-            //       this.setData({
-            //         imgUrl: res.imgUrl
-            //        });
           })
           .catch((e) => {
             wx.hideLoading()
