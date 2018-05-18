@@ -3,67 +3,7 @@ var app = getApp()
 Page({
   data: {
     //時間軸
-    diaryData: [{
-      diary: {
-        text: [],
-        image: [{
-          imageURL: '/images/image-test.jpeg',
-        }],
-      },
-      date: [2018, 5, 1, 'Sat'],
-      },
-      {
-      diary: {
-        text: [{
-          head: '今天过得很快乐',
-          lookthrough: '我是这里',
-        },
-        {
-          head: '今天过得很快乐',
-          lookthrough: '我是这里',
-        }],
-        image: [],
-      },
-      date: [2018, 5, 5, 'Sat'],
-      },
-      {
-        diary: {
-          text: [{
-            head: '今天过得很快乐',
-            lookthrough: '我是这里',
-          }],
-          image: [{
-            imageURL: '/images/image-test.jpeg',
-          }],
-        },
-        date: [2018, 5, 9, 'Sat'],
-      },
-      {
-        diary: {
-          text: [{
-            head: '今天过得很快乐',
-            lookthrough: '我是这里',
-          }],
-          image: [{
-            imageURL: '/images/image-test.jpeg',
-          },
-          {
-            imageURL: '/images/image-test.jpeg',
-          }],
-        },
-        date: [2018, 5, 10, 'Sat'],
-      },
-      {
-        diary: {
-          text: [{
-            head: '今天过得很快乐',
-            lookthrough: '我是这里',
-          }],
-          image: [],
-        },
-        date: [2018, 5, 13, 'Sat'],
-      },
-    ],
+    diaryData: {},
 
     //導航抽屜
     userInfo: {},
@@ -77,6 +17,18 @@ Page({
     startTime: 0,
     endTime: 0,
   },
+  /**
+   * 生命週期函數
+   */
+
+  onLoad(options) {
+    this.getDiaryData();
+  },
+
+  onUnload(){
+
+  },
+
   //導航抽屜
   onMainPageTouchstart: function (e) {
     var data = this.data;
@@ -252,9 +204,40 @@ Page({
     });
   },
 
-  toImageDiary: function(){
+  toImageDiary: function () {
     wx.navigateTo({
       url: '../imageDiary/imageDiary',
+    })
+  },
+
+  getDiaryData() {
+    var diaryData = [
+{
+      diary: {
+        text: [],
+          image: [{
+            imageURL: '/images/image-test.jpeg',
+          }],
+      },
+  date: [2018, 5, 1, 'Sat'],
+},
+  {
+    diary: {
+      text: [{
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      },
+      {
+        head: '今天过得很快乐',
+        lookthrough: '我是这里',
+      }],
+      image: [],
+    },
+    date: [2018, 5, 5, 'Sat'],
+  }
+    ];
+    this.setData({
+      diaryData: diaryData,
     })
   }
 })

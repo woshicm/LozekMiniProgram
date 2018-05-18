@@ -8,11 +8,15 @@
     <image wx:if='{{showAddButton}}' src='/images/icon-imageDiary-addPhoto.svg' class='img-addphoto' catchtap="chooseImageTap"></image>
     <block wx:else>
       <image src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='{{uploadedImageHeight <= uploadedImageWidth ? (uploadedImageHeight == uploadedImageWidth ? "width: " + uploadedImageWidth + "rpx; height: " +  uploadedImageHeight : "width: 100%; height : " + uploadedImageHeight) : "height: 95%; width: " + uploadedImageWidth}}rpx'></image>
-      <movable-area class='movableArea-userInput' style='{{uploadedImageHeight <= uploadedImageWidth ? (uploadedImageHeight == uploadedImageWidth ? "width: " + uploadedImageWidth + "rpx; height: " +  uploadedImageHeight + "rpx; top: " + (1094 * 0.8 - uploadedImageHeight) / 2 + "rpx; left: " + (750 - uploadedImageWidth) / 2 : "width: 100%; height: " + uploadedImageHeight + "rpx; top: " + (1094 - uploadedHeight) / 2) : "height: " + 1094 * 0.95 * 0.8 + "rpx; width: " + uploadedImageWidth + "rpx; top: " + 1094 * 0.8 *(1 - 0.95) / 2 + "rpx; left: " + (750 - uploadedImageWidth) / 2}}rpx'>
-        <movable-view style='display: flex;text-align: center;' wx:if='{{inputLength != 0}}' direction='all' inertia='true' scale='true'>{{inputValue}}</movable-view>
+
+      <movable-area class='movableArea-userInput' style='{{uploadedImageHeight <= uploadedImageWidth ? (uploadedImageHeight == uploadedImageWidth ? "width: " + uploadedImageWidth + "rpx; height: " +  uploadedImageHeight + "rpx; top: " + (1094 * 0.8 - uploadedImageHeight) / 2 + "rpx; left: " + (750 - uploadedImageWidth) / 2 : "width: 100%; height: " + uploadedImageHeight + "rpx; top: " + (1094 - uploadedHeight) / 2) : "height: " + 1094 * 0.95 * 0.8 + "rpx; width: " + uploadedImageWidth + "rpx; top: " + 1094 * 0.8 *(1 - 0.95) / 2 + "rpx; left: " + (750 - uploadedImageWidth) / 2}}rpx;'>
+        <movable-view wx:if='{{showModuleText}}' direction='all' inertia='true' scale='true' style='width: 230px; height: 110px;'>
+          <rich-text nodes="{{textModule}}" style='width: 100%;'></rich-text>
+        </movable-view>
+
       </movable-area>
     </block>
-    
+
   </view>
   <!--文本区  -->
   <view class='view-layoutSecond modify-shadow-main-up'>
@@ -85,7 +89,7 @@
       </view>
 
       <!--显示样式  -->
-      <view class='view-eachItem view-style'  style='margin-top: 5%;'>
+      <view class='view-eachItem view-style' style='margin-top: 5%;'>
         <text class='text-eachTitle'>样式</text>
         <view style='margin-top: 0%;'>
           <slider show-value min='1' max='18' activeColor='#3f8ae9' block-size='20'></slider>
@@ -93,13 +97,42 @@
       </view>
 
       <!--天气、时空和心情滤镜  -->
-      <view class='view-eachItem' style='margin-top: 8%;' >
+      <view class='view-eachItem' style='margin-top: 8%;'>
         <checkbox-group class='checkgroup-threeItems' style='z-index:{{zIndex}}' bindchange="checkboxChange">
           <label wx:key="this" wx:for="{{items}}">
             <checkbox value="{{item}}" checked="{{item.checked}}" />{{item.value}}
           </label>
         </checkbox-group>
       </view>
+      <!-- <view class='view-eachItem view-style'>
+        <text class='text-eachTitle'>样式</text>
+        <view class='view-select-layout view-select-style-layout' style='z-index:{{zIndex}}'>
+          <view class='view-select-box-first' style='padding-right:0rpx'>
+            <view class='view-select' id='styleFirst' catchtap='selectStyle'>
+              <text class='text-select'>{{dataStyleFirst[indexStyleFirst]}}</text>
+            </view>
+            <view class='view-option-box-first' style='height:{{showStyleFirst?(dataStyleFirst.length>5?300:datavFirst.length*60):0}}rpx;'>
+              <text class='text-option-box' style='{{indexStyleFirst==dataStyleFirst.length-1&&"border:0;"}}' wx:for='{{dataStyleFirst}}' wx:key='this' data-index='{{index}}' id='selectStyleFirst' catchtap='optionStyle'>{{item}}</text>
+            </view>
+          </view>
+          <view class='view-select-box-first' style='padding-right:0rpx'>
+            <view class='view-select' id='styleSecond' catchtap='selectStyle'>
+              <text class='text-select'>{{dataStyleSecond[indexStyleSecond]}}</text>
+            </view>
+            <view class='view-option-box-first' style='height:{{showStyleSecond?(dataStyleSecond.length>4?240:dataStyleSecond.length*60):0}}rpx;'>
+              <text class='text-option-box' style='{{indexStyleSecond==dataStyleSecond.length-1&&"border:0;"}}' wx:for='{{dataStyleSecond}}' wx:key='this' data-index='{{index}}' id='selectStyleSecond' catchtap='optionStyle'>{{item}}</text>
+            </view>
+          </view>
+          <view class='view-select-box-first' style='padding-right:0rpx'>
+            <view class='view-select' id='styleThird' catchtap='selectStyle'>
+              <text class='text-select' style='font-size:9pt'>{{dataStyleThird[indexStyleThird]}}</text>
+            </view>
+            <view class='view-option-box-first view-option-box-second' style='height:{{showStyleThird?(dataStyleThird.length>5?300:dataStyleThird.length*60):0}}rpx;'>
+              <text class='text-option-box' style='{{indexStyleThird==dataStyleThird.length-1&&"border:0;"}}' wx:for='{{dataStyleThird}}' wx:key='this' data-index='{{index}}' id='selectStyleThird' catchtap='optionStyle'>{{item}}</text>
+            </view>
+          </view>
+        </view>
+      </view> -->
     </view>
   </view>
 </view>

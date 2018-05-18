@@ -1,5 +1,5 @@
 // page/imageDiary/imageDiary.js
-import {ParseText, UploadImage} from 'api.js'
+import { ParseText, UploadImage } from 'api.js'
 
 
 let app = getApp()
@@ -18,15 +18,18 @@ Page({
     zIndex: 0,
     uploadedImageHeight: 0,
     uploadedImageWidth: 0,
+    //富文本節點：用於handedText顯示
+    textModule: [],
     /**
      *  彈窗頁
      */
+    showModuleText: false,
     showModalStatus: true,
     showAddButton: true,
     keyboardHeight: 0,
     showEdit: false, //false显示文案,true显示名言
     inputLength: 0,
-	  inputValue: '',
+    inputValue: '',
     inputCursor: 0,
     inputMaxLength: 25,
     switchChecked: false,  //是否选中叙事模式
@@ -51,38 +54,81 @@ Page({
     indexStyleThird: 0,//选择的下拉列表下标
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
       
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
 
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
   onHide: function () {
 
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
   onUnload: function () {
 
+  },
+
+  //-----------------------------前端函數-----------------------------------------//
+  /**
+     * 彈窗頁
+     */
+  powerDrawer: function (e) {
+    var currentStatu = e.currentTarget.dataset.statu;
+    this.util(currentStatu)
+    //調用文字模板函數
+    if(this.data.inputLength != 0)
+      this.getTextModule();
+  },
+  util: function (currentStatu) {
+    /* 动画部分 */
+    // 第1步：创建动画实例   
+    var animation = wx.createAnimation({
+      duration: 200,  //动画时长  
+      timingFunction: "linear", //线性  
+      delay: 0  //0则不延迟  
+    });
+
+    // 第2步：这个动画实例赋给当前的动画实例  
+    this.animation = animation;
+
+    // 第3步：执行第一组动画  
+    animation.opacity(0).rotateX(-100).step();
+
+    // 第4步：导出动画对象赋给数据对象储存  
+    this.setData({
+      animationData: animation.export()
+    })
+
+    // 第5步：设置定时器到指定时候后，执行第二组动画  
+    setTimeout(function () {
+      // 执行第二组动画  
+      animation.opacity(1).rotateX(0).step();
+      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象  
+      this.setData({
+        animationData: animation
+      })
+
+      //关闭  
+      if (currentStatu == "close") {
+        this.setData(
+          {
+            showModalStatus: !this.data.showModalStatus,
+          }
+        );
+      }
+    }.bind(this), 200)
+
+    // 显示  
+    if (currentStatu == "open") {
+      this.setData(
+        {
+          showModalStatus: !this.data.showModalStatus,
+        }
+      );
+    }
   },
 
   /**
@@ -115,11 +161,11 @@ Page({
       inputLength: e.detail.value.length,
     })
   },
-/**
- * textarea獲得焦點處理函數
- */
+  /**
+   * textarea獲得焦點處理函數
+   */
 
-  textareaOnFocusEvent: function(e){
+  textareaOnFocusEvent: function (e) {
     var keyboardHeight = e.detail.height;
     //建立動畫：拉起鍵盤，彈窗向上偏移
     var animation = wx.createAnimation({
@@ -142,7 +188,7 @@ Page({
   /**
    * textarea失去焦点处理函数
    */
-  textareaOnBlurEvent(e){
+  textareaOnBlurEvent(e) {
     var value = e.detail.value;
     this.parseInputValue(value);
     var animation = wx.createAnimation({
@@ -162,16 +208,16 @@ Page({
       title: 'blur',
     })
   },
-//调用api处理输入文字 
-  parseInputValue(value){
+  //调用api处理输入文字 
+  parseInputValue(value) {
     ParseText(value)
-    .then((res)=>{
-      console.log(res)
-    })
-    .catch((e)=>{
-      console.log(e + "token expired");
-      app.relogin();
-    })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e) => {
+        console.log(e + "token expired");
+        app.relogin();
+      })
   },
 
   //监测天气，时空，心情滤镜有没有选中
@@ -308,11 +354,14 @@ Page({
     });
   },
 
+
+
+  //-----------------------------前後交互函數-----------------------------------------//
   // 上傳圖片
   chooseImageTap() {
     wx.showActionSheet({
       itemList: ['本地上传', '拍照上传'],
-      success: (res)=> {
+      success: (res) => {
         if (!res.cancel) {
           if (res.tapIndex == 0) {
             this.doUpload('album')
@@ -323,7 +372,7 @@ Page({
       }
     })
   },
-  
+
   // 上传图片接口
   doUpload() {
     // 选择图片
@@ -338,7 +387,7 @@ Page({
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
-            if(res.height > res.width){
+            if (res.height > res.width) {
               res.width *= (0.95 * 0.8 * 1094) / res.height;
               that.setData({
                 showAddButton: false,
@@ -346,15 +395,15 @@ Page({
                 uploadedImageHeight: res.height * app.globalData.pixelRatio,
                 uploadedImageWidth: res.width,
               });
-            }else if(res.height == res.width){
+            } else if (res.height == res.width) {
               that.setData({
                 showAddButton: false,
                 imgUrl: tempFilePaths,
-                uploadedImageHeight: res.height * app.globalData.pixelRatio,
-                uploadedImageWidth: res.width * app.globalData.pixelRatio,
+                uploadedImageHeight: 750,
+                uploadedImageWidth: 750,
               });
             }
-            else{
+            else {
               res.height *= 750 / res.width;
               that.setData({
                 showAddButton: false,
@@ -366,31 +415,25 @@ Page({
             console.log("外面：" + that.data.uploadedImageHeight + " " + that.data.uploadedImageWidth);
           }
         });
- //       wx.showLoading({
- //         title: '正在上传',
- //       })
-    //     UploadImage(tempFilePaths[0])
-    //       .then((res) => {
-    //         wx.hideLoading();
-    //         wx.showToast({
-    //           title: '上传成功',
-    //           icon: 'success',
-    //           duration: 2000,
-    //         })
-    //         console.log("upload images completed: " + res.imgUrl)
-    //  //       this.setData({
-    //  //         imgUrl: res.imgUrl
-    // //        });
-    //       })
-    //       .catch((e) => {
-    //         wx.hideLoading()
-    //         wx.showToast({
-    //           title: '上传失败: ' + e,
-    //           icon: 'fail',
-    //           duration: 2000,
-    //         })
-    //         console.log("upload images fail:" + e)
-    //       })
+        UploadImage(tempFilePaths[0])
+          .then((res) => {
+            wx.hideLoading();
+            wx.showToast({
+              title: '上传成功',
+              icon: 'success',
+              duration: 2000,
+            })
+            console.log("upload images completed: " + res.imgUrl)
+          })
+          .catch((e) => {
+            wx.hideLoading()
+            wx.showToast({
+              title: '上传失败: ' + e,
+              icon: 'fail',
+              duration: 2000,
+            })
+            console.log("upload images fail:" + e)
+          })
       },
       fail: function (res) { },
       complete: function (res) { }
@@ -405,59 +448,47 @@ Page({
     })
   },
 
-  /**
-   * 彈窗頁
-   */
-  powerDrawer: function (e) {
-    var currentStatu = e.currentTarget.dataset.statu;
-    this.util(currentStatu)
-  },
-  util: function (currentStatu) {
-    /* 动画部分 */
-    // 第1步：创建动画实例   
-    var animation = wx.createAnimation({
-      duration: 200,  //动画时长  
-      timingFunction: "linear", //线性  
-      delay: 0  //0则不延迟  
-    });
-
-    // 第2步：这个动画实例赋给当前的动画实例  
-    this.animation = animation;
-
-    // 第3步：执行第一组动画  
-    animation.opacity(0).rotateX(-100).step();
-
-    // 第4步：导出动画对象赋给数据对象储存  
-    this.setData({
-      animationData: animation.export()
-    })
-
-    // 第5步：设置定时器到指定时候后，执行第二组动画  
-    setTimeout(function () {
-      // 执行第二组动画  
-      animation.opacity(1).rotateX(0).step();
-      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象  
-      this.setData({
-        animationData: animation
-      })
-
-      //关闭  
-      if (currentStatu == "close") {
-        this.setData(
-          {
-            showModalStatus: !this.data.showModalStatus,
-          }
-        );
-      }
-    }.bind(this), 200)
-
-    // 显示  
-    if (currentStatu == "open") {
-      this.setData(
+  //請求文字模板
+  getTextModule() {
+    var textModule = [{
+      name: 'div',
+      attrs: {
+        style: 'display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%;'
+      },
+      children: [{
+        name: 'div',
+        attrs: {
+          style: 'font-size: 50pt; font-family:; letter-spacing: 10px; line-height: 95%;'
+        },
+        children: [{
+          type: 'text',
+          text: '05:20'
+        }]
+        },
         {
-          showModalStatus: !this.data.showModalStatus,
-        }
-      );
-    }
+          name: 'div',
+          attrs: {
+            style: 'font-size: 13pt; letter-spacing: 8px;'
+          },
+          children: [{
+            type: 'text',
+            text: this.data.inputValue
+          }]
+        },
+        {
+          name: 'div',
+          attrs: {
+            style: 'font-size: 10pt;'
+          },
+          children: [{
+            type: 'text',
+            text: 'Let time stop at this moment'
+          }]
+        }]
+      }]
+      this.setData({
+        textModule: textModule,
+        showModuleText: true,
+      })
   }
 })
