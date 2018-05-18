@@ -36,7 +36,9 @@
 .img-share {
   width: 123rpx;
   height: 123rpx;
-  position: fixed;
+  position: relative;
+  bottom: 60rpx;
+  left: 250rpx;
 }
 
 .input-text {
@@ -90,20 +92,20 @@
 }
 
 .view-mainLayout{
-  height: 1094rpx;
+  height: 1200rpx;
 }
 
 .view-layoutFirst {
   background-color: #f5f5f5;
   width: 750rpx;
-  height: 80%;
+  height: 75%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .view-layoutSecond {
-  height: 20%;
+  height: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -192,6 +194,58 @@
   position: fixed;    
   z-index: 1;  
 }
+.colorModuleScrollView{
+  height: 115rpx;
+  width: 750rpx;
+  display: flex;
+  white-space: nowrap;
+}
+.colorModuleScrollView-item{
+   display: inline-block;
+   width: 110rpx;
+   height: 100%;
+}
+.colorModuleScrollView-item-button{
+  width: 100%;
+  height: 100%;
+  font-weight: 500;
+  border: none;
+  border-radius: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.textModuleScrollView{
+  height: 140rpx;
+  width: 750rpx;
+  display: flex;
+  white-space: nowrap;
+}
+.textModuleScrollView-item{
+   display: inline-block;
+   width: 130rpx;
+   height: 100%;
+   position: relative;
+   bottom: 75rpx;
+   padding-left: 10rpx;
+   padding-right: 10rpx;
+}
+.textModuleScrollView-item-button{
+  text-align: center;
+  width: 107rpx;
+  height: 120rpx;
+  font-weight: 500;
+  border: none;
+  border-radius: 0%;
+}
+.textModuleScrollView-item-richText{
+  transform: scale(0.2, 0.2);
+}
+button::after {
+  border-radius: 0;
+  border: none;
+}
+
 
 /*天气 时空 心情滤镜  */
 .view-threeItems {

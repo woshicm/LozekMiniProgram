@@ -24,15 +24,11 @@
               </view>
               <view class='index-display-aDay'>
                 <!-- 對每天的文本日記遍歷 -->
-                <view wx:if='{{displayItem.diary.text.length != 0}}'>
-                  <scroll-view scroll-x class='index-display-text-scrollView'>
-                    <view class='index-display-text'>
-                      <view wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-textItem'>
+                  <scroll-view wx:if='{{displayItem.diary.text.length != 0}}' scroll-x='true' class='index-display-text-scrollView'>
+                      <view wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-text-item'>
                         <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
                       </view>
-                    </view>
                   </scroll-view>
-                </view>
                 <!-- 對每天的圖片日記遍歷 -->
                 <view wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
                   <scroll-view scroll-x class='index-display-image-scrollView'>
@@ -52,6 +48,7 @@
         </scroll-view>
       </swiper-item>
     </swiper>
+    <!-- 底部功能入口 -->
     <view class='index-display-buttonView modify-shadow-button'>
       <button class='index-display-button' style='width: 75rpx; margin-right: 0rpx;'>
         <image src='/images/icon/ic_my_location.svg' class="image-index-displayButton"></image>
