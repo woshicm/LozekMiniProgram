@@ -215,30 +215,30 @@
   justify-content: center;
 }
 .textModuleScrollView{
-  height: 140rpx;
+  height: 170rpx;
   width: 750rpx;
   display: flex;
   white-space: nowrap;
 }
 .textModuleScrollView-item{
    display: inline-block;
-   width: 130rpx;
+   width: 170rpx;
    height: 100%;
    position: relative;
-   bottom: 75rpx;
+   bottom: 65rpx;
    padding-left: 10rpx;
    padding-right: 10rpx;
 }
 .textModuleScrollView-item-button{
   text-align: center;
   width: 107rpx;
-  height: 120rpx;
+  height: 100%;
   font-weight: 500;
   border: none;
   border-radius: 0%;
 }
 .textModuleScrollView-item-richText{
-  transform: scale(0.2, 0.2);
+  transform: scale(2, 2);
 }
 button::after {
   border-radius: 0;

@@ -100,21 +100,21 @@
 
 
       <!--显示样式  -->
-      <view class='view-eachItem view-style' style='margin-top: 5%;'>
+      <!-- <view class='view-eachItem view-style' style='margin-top: 5%;'>
         <text class='text-eachTitle'>样式</text>
         <view style='margin-top: 0%;'>
           <slider show-value min='1' max='18' activeColor='#3f8ae9' block-size='20'></slider>
         </view>
-      </view>
+      </view> -->
 
       <!--天气、时空和心情滤镜  -->
-      <view class='view-eachItem' style='margin-top: 8%;'>
+      <!-- <view class='view-eachItem' style='margin-top: 8%;'>
         <checkbox-group class='checkgroup-threeItems' style='z-index:{{zIndex}}' bindchange="checkboxChange">
           <label wx:key="this" wx:for="{{items}}">
             <checkbox value="{{item}}" checked="{{item.checked}}" />{{item.value}}
           </label>
         </checkbox-group>
-      </view>
+      </view> -->
       <!-- <view class='view-eachItem view-style'>
         <text class='text-eachTitle'>样式</text>
         <view class='view-select-layout view-select-style-layout' style='z-index:{{zIndex}}'>
