@@ -15,6 +15,7 @@ App({
       parseText: ''
     },
   },
+
   onLaunch: function () {
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
@@ -25,12 +26,14 @@ App({
     this.initAppData()
     this.checkToken()
   },
+
   initAppData: function(){
     this.globalData.api.login = this.globalData.baseURL + 'login'
     this.globalData.api.uploadImage = this.globalData.baseURL + 'upload'
     this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
     this.globalData.api.getDiary = this.globalData.baseURL + 'diary'
   },
+  
   login: function (callback){
     wx.login({
       success: (res)=> {
