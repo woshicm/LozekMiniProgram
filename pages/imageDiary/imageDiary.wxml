@@ -13,51 +13,50 @@
         <block wx:else>
           <rich-text wx:key="this" nodes="<div>textModule</div>" style='width: 100%;' bindtap='showTools'></rich-text>
           <slider class='slider-changeSize' show-value min='1' max='18' activeColor='#3f8ae9' block-size='20' wx:if="{{isShowTools}}" bindchange='changeFontSize'></slider>
-          <image class="img-changeTextStatus" style=" height:80rpx;"
-          src="/images/image-Dot.svg" wx:if="{{isShowTools}}" bindtap='changeTextReady'></image>
+          <image class="img-changeTextStatus" style=" height:40rpx;" src="/images/image-Dot.svg" wx:if="{{isShowTools}}" bindtap='changeTextReady'></image>
+          <image class='img-EditDictum'  style=" height:40rpx;" src="/images/icon-imageDiary-help.svg" wx:if="{{isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>
         </block>
       </movable-view>
-
     </movable-area>
   </view>
   <!--文本区  -->
   <view class='view-layoutSecond modify-shadow-main-up'>
     <!--分享按钮  -->
-     <view class='view-layoutSecond-shareButton'>
+    <view class='view-layoutSecond-shareButton'>
       <image src="/images/icon-imageDiary-shareButton.png" class='img-share'></image>
-    </view> 
+    </view>
     <view class='view-layoutSecond-preview'>
       <view class='view-layoutSecond-preview-textModule'>
         <scroll-view scroll-x='true' class='textModuleScrollView'>
-        <view style='border: {{textModuleIndex == choseTextModule ? "4rpx solid #3f8ae9": ""}};' wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap'
-              data-text-module-id='{{textModuleItem.id}}' disabled='{{false}}'>
+          <view style='border: {{textModuleIndex == choseTextModule ? "4rpx solid #3f8ae9": ""}};' wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:key="this" wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap' data-text-module-id='{{textModuleItem.id}}'
+            disabled='{{false}}'>
             <rich-text nodes="{{textModuleItem.nodes}}" style='position: relative; bottom: 90rpx;'></rich-text>
-            </view>
+          </view>
         </scroll-view>
       </view>
-       <view class='view-layoutSecond-preview-colorModule'>
+      <view class='view-layoutSecond-preview-colorModule'>
         <scroll-view scroll-x='true' class='colorModuleScrollView'>
-          <view wx:for='{{colorModuleScrollView}}' wx:for-item='colorModuleItem' wx:for-index='colorModuleIndex' class='colorModuleScrollView-item'>
+          <view wx:key="this" wx:for='{{colorModuleScrollView}}' wx:for-item='colorModuleItem' wx:for-index='colorModuleIndex' class='colorModuleScrollView-item'>
             <button class='colorModuleScrollView-item-button' style='background-color:{{colorModuleItem.backgroundColor}}; color:{{colorModuleItem.color}}; border: {{colorModuleIndex == choseColorModule ? "8rpx solid #3f8ae9": ""}}' bindtap='onColorModuleItemTap'
               data-color-module-id='{{colorModuleItem.id}}' disabled='{{false}}'>T</button>
           </view>
         </scroll-view>
-      </view> 
+      </view>
     </view>
-    <!-- <view class='view-layoutSecond-text'> -->
-    <!--遮蔽层-->
-    <!-- <view class="drawer-screen" bindtap="powerDrawer" data-statu="close" hidden="{{showModalStatus}}"></view> -->
-    <!--content-->
-    <!--使用animation属性指定需要执行的动画-->
-    <!-- <view animation="{{animationData}}" class="drawer_box" hidden="{{showModalStatus}}"> -->
+    <view class='view-layoutSecond-text'>
+      <!--遮蔽层-->
+      <view class="drawer-screen" bindtap="powerDrawer" data-statu="close" hidden="{{showModalStatus}}"></view>
+      <!--content-->
+      <!--使用animation属性指定需要执行的动画-->
+      <view animation="{{animationData}}" class="drawer_box" hidden="{{showModalStatus}}">
 
-    <!--drawer content-->
-    <!-- <view class="drawer-content">
+        <!--drawer content-->
+        <view class="drawer-content">
           <view class='view-model'>
             <text>叙事模式</text>
             <switch class='switch-input' checked='{{switchChecked}}' bindchange='switchModel' disabled='{{switchDisabled}}' color='#3f8ae9'></switch>
           </view>
-          <view class='view-eachItem' style='margin-top:20px'>
+          <!-- <view class='view-eachItem' style='margin-top:20px'>
             <text class="text-eachTitle">文案</text>
             
             <view class='view-line'></view>
@@ -65,9 +64,9 @@
               <image class='img-helpLogo' src='/images/icon-imageDiary-help.svg'></image>
               <text class='text-displayLength'>{{inputLength}}/{{inputMaxLength}}</text>
             </view>
-          </view>
+          </view> -->
 
-          <view class='view-eachItem view-dictum' hidden='{{inputLength != 0}}'>
+          <view class='view-eachItem view-dictum'>
             <text class='text-eachTitle'>名言</text>
             <view class='view-select-layout'>
               <view class='view-select-box-first'>
@@ -99,8 +98,8 @@
 
         </view>
         <view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</view>
-      </view> -->
-
+      </view>
+    </view>
 
     <!-- 显示输入的文字 -->
     <!-- <view class='view-eachItem' style='margin-top:10px'>
@@ -108,7 +107,6 @@
         <view class='view-show-text' bindtap="powerDrawer" data-statu="open">{{inputValue}}</view>
         <view class='view-line' bindtap="powerDrawer" data-statu="open" style='{{inputLength == 0 ? "background-color: grey;" : "height: 4rpx"}};'></view>
       </view> -->
-
 
     <!--显示样式  -->
     <!-- <view class='view-eachItem view-style' style='margin-top: 5%;'>

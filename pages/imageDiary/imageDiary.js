@@ -537,13 +537,12 @@ Page({
 
   //显示文本工具栏
   showTools() {
-    console.log("我被点击了！");
     this.setData({
       isShowTools: !this.data.isShowTools,
     });
   },
 
-
+  //改变文本大小
   changeFontSize(e) {
     console.log(e.detail.value);
     this.setData({
@@ -551,6 +550,7 @@ Page({
     });
   },
 
+  //选择显示输入框还是富文本
   changeTextReady(){
     this.setData({
       isShowTools: !this.data.isShowTools,
