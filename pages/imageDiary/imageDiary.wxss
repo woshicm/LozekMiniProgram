@@ -109,7 +109,23 @@
   flex-direction: column;
   align-items: center;
 }
-
+.view-layoutSecond-shareButton{
+  height: 20%;
+}
+.view-layoutSecond-preview{
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: 20rpx;
+}
+.view-layoutSecond-preview-textModule{
+  height: 40%;
+}
+.view-layoutSecond-preview-colorModule{
+  height: 40%;
+}
 .view-layoutSecond-text {
     width: 86%;
     font-size: 13pt;
@@ -190,14 +206,15 @@
 }
 .movableArea-userInput{
   position: fixed;  
-  
   z-index: 1;  
 }
 .colorModuleScrollView{
-  height: 115rpx;
+  height: 100%;
   width: 750rpx;
   display: flex;
   white-space: nowrap;
+  position: relative;
+  top: 20rpx;
 }
 .colorModuleScrollView-item{
    display: inline-block;
@@ -217,28 +234,13 @@
 .textModuleScrollView{
   height: 170rpx;
   width: 750rpx;
-  display: flex;
   white-space: nowrap;
+  position: relative;
 }
 .textModuleScrollView-item{
-   display: inline-block;
-   width: 170rpx;
-   height: 100%;
-   position: relative;
-   bottom: 65rpx;
-   padding-left: 10rpx;
-   padding-right: 10rpx;
-}
-.textModuleScrollView-item-button{
-  text-align: center;
-  width: 107rpx;
-  height: 100%;
-  font-weight: 500;
-  border: none;
-  border-radius: 0%;
-}
-.textModuleScrollView-item-richText{
-  transform: scale(2, 2);
+  display: inline-block;
+  width: 170rpx;
+  height: 50%;
 }
 button::after {
   border-radius: 0;
