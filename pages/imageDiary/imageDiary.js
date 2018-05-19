@@ -38,7 +38,7 @@ Page({
     imgUrl: '',
     uploadedImageWidth: 0,  
     uploadedImageHeigth: 0,
-    doesTextReady: true,
+    isTextEmpty: true,
     isMoveable: true,
     isShowTools: false,
     //富文本節點：用於handedText顯示
@@ -46,10 +46,11 @@ Page({
     //照片濾鏡
     imageFilter: "",
     //文本模板預覽參數
-    choseTextModule: 0,
+    choseTextModuleId: 0,
+    choseTextModule: "",
     textModuleScrollView: [],
     //顏色模板預覽參數
-    choseColorModule: -1,
+    choseColorModuleId: -1,
     colorModuleScrollView: [
       //適度提亮
       {
@@ -148,18 +149,11 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
-    var array = []
-    for(var i = 0; i < 10; i ++){
-      var defaultTextModule = this.getTextModule('配有英文的模板', 'black', 0.3, i);
-      array.push(defaultTextModule)
-    }
     this.setData({
-      textModuleScrollView: array,
       imgUrl: wx.getStorageSync('imgUrl'),
       uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
       uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
     })
-    
   },
 
   onReady: function () {
@@ -290,6 +284,16 @@ Page({
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     this.parseInputValue(value);
+    if(value.length == 0){
+      //隨機調用名言模板
+    }
+    else{
+      var array = []
+      for (var i = 0; i < 10; i++) {
+        var suitableTextModule = this.getTextModule(value, 'black', 0.3, i);
+        array.push(suitableTextModule)
+      }
+    }
     // var animation = wx.createAnimation({
     //   duration: 200,  //动画时长  
     //   timingFunction: "linear", //线性  
@@ -306,8 +310,10 @@ Page({
     // })
     this.setData({
       inputValue: value,
-      doesTextReady: !this.data.doesTextReady,
+      isTextEmpty: !this.data.isTextEmpty,
       isMoveable: !this.data.isMoveable,
+      textModuleScrollView: array,
+      choseTextModule: this.getTextModule(value, 'black', 0.5, 0),
     });
   },
   //调用api处理输入文字 
@@ -461,11 +467,15 @@ Page({
    * 文字模板處理函數
    */
   onTextModuleItemTap(e){
-    var textModuleId = e.currentTarget.dataset.textModuleId;
-    if (textModuleId == this.data.choseTextModule)
+    var choseTextModuleId = e.currentTarget.dataset.textModuleId;
+    if (choseTextModuleId == this.data.choseTextModuleId)
       return;
+    var color = "black"; 
+    if(this.data.choseColorModuleId != -1)
+      color = this.data.colorModuleScrollView[this.data.choseColorModuleId].color;
     this.setData({
-      choseTextModule: textModuleId,
+      choseTextModuleId: choseTextModuleId,
+      choseTextModule: this.getTextModule(this.data.value, color, 0.5, choseTextModuleId)
     })
   },
   /**
@@ -473,10 +483,10 @@ Page({
    */
   onColorModuleItemTap(e) {
     var colorModuleId = e.currentTarget.dataset.colorModuleId;
-    if (colorModuleId == this.data.choseColorModule) {
+    if (colorModuleId == this.data.choseColorModuleId) {
       this.setData({
         imageFilter: "",
-        choseColorModule: -1,
+        choseColorModuleId: -1,
       })
       return;
     }
@@ -515,7 +525,8 @@ Page({
     }
     this.setData({
       imageFilter: operation,
-      choseColorModule: colorModuleId,
+      choseColorModuleId: colorModuleId,
+      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, 0.5, this.data.choseTextModuleId)
     })
   },
 
@@ -555,7 +566,7 @@ Page({
     this.setData({
       isShowTools: !this.data.isShowTools,
       isMoveable: !this.data.isMoveable,
-      doesTextReady: !this.data.doesTextReady,
+      isTextEmpty: !this.data.isTextEmpty,
     })
   }
 })
