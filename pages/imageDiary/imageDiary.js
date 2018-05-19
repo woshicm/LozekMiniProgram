@@ -140,10 +140,33 @@ Page({
 
   },
   onHide: function () {
-
   },
   onUnload: function () {
+    var pages = getCurrentPages()    //获取加载的页面
+    var currentPage = pages[pages.length - 1]    //获取当前页面的对象
+    var url = currentPage.route    //当前页面url
+    var options = currentPage.options;
 
+    console.log("哈哈哈" + url);
+
+    for (var key in options) {
+      var value = options[key]
+      console.log(key + '=' + value + '\n');
+    }
+
+    wx.showModal({
+      title: '提示',
+      content: '确定放弃修改？',
+      showCancel: 'true',
+      cancelText: '取消',
+      confirmText: '确定',
+      success(res){
+        if(res.confirm);
+        else{
+
+        }
+      }
+    })
   },
 
   //-----------------------------前端函數-----------------------------------------//
@@ -500,14 +523,14 @@ Page({
   },
 
   // 上传图片接口
-  doUpload() {
+  doUpload(choose) {
     // 选择图片
 
     var that = this;
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
+      sourceType: [choose],
       success: (res) => {
         let tempFilePaths = res.tempFilePaths;
         wx.getImageInfo({
