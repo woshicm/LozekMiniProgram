@@ -38,12 +38,80 @@ Page({
     imgUrl: '',
     uploadedImageWidth: 0,
     uploadedImageHeigth: 0,
+    doesTextReady: false,
     //富文本節點：用於handedText顯示
     textModule: [],
+    //照片濾鏡
+    imageFilter: "",
+    //顏色模板預覽參數
+    textModuleScrollView: [],
+    choseColorModule: -1,
+    colorModuleBorder: "",
+    colorModuleScrollView: [
+      //適度提亮
+      {
+        backgroundColor: "#dfdfdf",
+        color: "black",
+        id: 0,
+      },
+      //適度壓暗
+      {
+        backgroundColor: "#808080",
+        color: "white",
+        id: 1,
+      },
+      //懷舊風 米黃
+      {
+        backgroundColor: "#f7de5f",
+        color: "black",
+        id: 2,
+      },
+      //清新藍
+      {
+        backgroundColor: "#10b2fa",
+        color: "white",
+        id: 3,
+      },
+      //白
+      {
+        backgroundColor: "white",
+        color: "black",
+        id: 4,
+      },
+      //黑
+      {
+        backgroundColor: "black",
+        color: "white",
+        id: 5,
+      },
+      //純灰度黃字
+      {
+        backgroundColor: "#333333",
+        color: "#f7de5f",
+        id: 6,
+      },
+      //懷舊灰黑字
+      {
+        backgroundColor: "#d9bea0",
+        color: "black",
+        id: 7,
+      },
+      //清新綠
+      {
+        backgroundColor: "#07e59c",
+        color: "black",
+        id: 8,
+      },
+      //低飽和度
+      {
+        backgroundColor: "#f5e9bf",
+        color: "black",
+        id: 9,
+      },
+    ],
     /**
      *  彈窗頁
      */
-    showModuleText: false,
     showModalStatus: true,
     showAddButton: true,
     keyboardHeight: 0,
@@ -77,10 +145,16 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
+    var defaultTextModule = this.getTextModule('配有英文的模板', 'black');
+    var array = []
+    for (var i = 0; i < 6; i++) {
+      array.push(defaultTextModule)
+    }
     this.setData({
+      textModuleScrollView: array,
       imgUrl: wx.getStorageSync('imgUrl'),
       uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
-      uploadedImageHeigth: wx.getStorageSync('uploadedImageHeigth'),
+      uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
     })
   },
 
@@ -377,6 +451,57 @@ Page({
     });
   },
 
+  /**
+   * 顏色模板處理函數
+   */
+  onColorModuleItemTap(e) {
+    var colorModuleId = e.currentTarget.dataset.colorModuleId;
+    if (colorModuleId == this.data.choseColorModule) {
+      this.setData({
+        imageFilter: "",
+        choseColorModule: -1,
+      })
+      return;
+    }
+    var operation = "";
+    switch (colorModuleId) {
+      case 0:
+        operation = "contrast(150%);";
+        break;
+      case 1:
+        operation = "contrast(50%)";
+        break;
+      case 2:
+        operation = "sepia(50%)";
+        break;
+      case 3:
+        operation = "";
+        break;
+      case 4:
+        operation = "brightness(150%);";
+        break;
+      case 5:
+        operation = "brightness(50%);";
+        break;
+      case 6:
+        operation = "";
+        break;
+      case 7:
+        operation = "";
+        break;
+      case 8:
+        operation = "";
+        break;
+      case 9:
+        operation = "";
+        break;
+    }
+    this.setData({
+      imageFilter: operation,
+      choseColorModule: colorModuleId,
+    })
+    console.log("here:" + operation + " " + colorModuleId)
+  },
 
 
   //-----------------------------前後交互函數-----------------------------------------//
@@ -400,12 +525,12 @@ Page({
   doUpload(choose) {
     // 选择图片
     var that = this;
-    let srcType = []; 
+    let srcType = [];
     console.log(choose);
 
-    if(choose === "album"){
+    if (choose === "album") {
       srcType.push("album");
-    }else{
+    } else {
       srcType.push("camera");
     }
     wx.chooseImage({
@@ -442,6 +567,7 @@ Page({
                 uploadedImageWidth: res.width * app.globalData.pixelRatio,
               });
             }
+            console.log("imageDiary:" + this.data.uploadedImageWidth + " , " + this.data.uploadedImageHeigth);
           }
         });
         UploadImage(tempFilePaths[0])
@@ -469,56 +595,48 @@ Page({
     })
   },
 
-  // 预览图片
-  previewImg: function () {
-    wx.previewImage({
-      current: this.data.imgUrl,
-      urls: [this.data.imgUrl]
-    })
-  },
-
   //請求文字模板
-  getTextModule() {
-    var textModule = [{
-      name: 'div',
-      attrs: {
-        style: 'display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%;'
-      },
-      children: [{
+  getTextModule(sourceText, color) {
+    var textModule = {
+      nodes: [{
         name: 'div',
         attrs: {
-          style: 'font-size: 50pt; font-family:; letter-spacing: 10px; line-height: 95%;'
+          style: 'display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; transform: scale(0.3, 0.3);'
         },
         children: [{
-          type: 'text',
-          text: '05:20'
-        }]
-      },
-      {
-        name: 'div',
-        attrs: {
-          style: 'font-size:10pt ; letter-spacing: 8px;'
+          name: 'div',
+          attrs: {
+            style: 'font-size: 50pt; font-family:; letter-spacing: 10px; line-height: 95%;'
+          },
+          children: [{
+            type: 'text',
+            text: '05:20'
+          }]
         },
-        children: [{
-          type: 'text',
-          text: this.data.inputValue,
-        }]
-      },
-      {
-        name: 'div',
-        attrs: {
-          style: 'font-size: 10pt;'
+        {
+          name: 'div',
+          attrs: {
+            style: 'font-size: 13pt; letter-spacing: 8px; color:' + color + ';',
+          },
+          children: [{
+            type: 'text',
+            text: sourceText,
+          }]
         },
-        children: [{
-          type: 'text',
-          text: 'Let time stop at this moment'
+        {
+          name: 'div',
+          attrs: {
+            style: 'font-size: 10pt;'
+          },
+          children: [{
+            type: 'text',
+            text: 'Let time stop at this moment'
+          }]
         }]
-      }]
-    }]
-    this.setData({
-      textModule: textModule,
-      showModuleText: true,
-    })
+      }],
+      defaltValue: {},
+    }
+    return textModule;
   },
 
   //显示字体大小选择器

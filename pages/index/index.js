@@ -1,3 +1,5 @@
+import { ParseText, UploadImage } from "../../common/util.js";
+
 var app = getApp()
 
 Page({
@@ -247,25 +249,25 @@ Page({
         let tempFilePaths = res.tempFilePaths;
         let imgUrl = ' ';
         let uploadedImageWidth = 0;
-        let uploadedImageHeigth = 0;
+        let uploadedImageHeight = 0;
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
             if (res.height > res.width) {
-              res.width *= (0.95 * 0.8 * 1094) / res.height;
+              res.width *= (0.95 * 0.8 * 1200) / res.height;
               imgUrl = tempFilePaths;
               uploadedImageWidth = res.width;
-              uploadedImageHeigth = res.height * app.globalData.pixelRatio;
+              uploadedImageHeight = res.height * app.globalData.pixelRatio;
             } else if (res.height == res.width) {
               imgUrl = tempFilePaths;
               uploadedImageWidth = 750;
-              uploadedImageHeigth = 750;
+              uploadedImageHeight = 750;
             }
             else {
               res.height *= 750 / res.width;
               imgUrl = tempFilePaths;
               uploadedImageWidth = res.width * app.globalData.pixelRatio;
-              uploadedImageHeigth = res.height;
+              uploadedImageHeight = res.height;
             }
           },
           //   UploadImage(tempFilePaths[0])
@@ -292,10 +294,11 @@ Page({
           complete: function (res) {
             wx.setStorageSync('imgUrl', imgUrl);
             wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
-            wx.setStorageSync('uploadedImageHeigth', uploadedImageHeigth);
+            wx.setStorageSync('uploadedImageHeight', uploadedImageHeight);
             wx.navigateTo({
               url: '../imageDiary/imageDiary',
-            })
+            });
+            
           }
         })
       }
