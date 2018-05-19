@@ -1,5 +1,6 @@
 // page/imageDiary/imageDiary.js
-import { ParseText, UploadImage } from "../../common/util.js";
+
+import { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs } from "../../common/util.js";
 
 /**
  * -------------未完成
@@ -19,7 +20,6 @@ import { ParseText, UploadImage } from "../../common/util.js";
  * 3、api.js移到common.util.js
  * 4、修改index.display点击事件:toImageDiary和chooseImageTap
  */
-
 
 let app = getApp()
 
@@ -45,10 +45,11 @@ Page({
     textModule: [],
     //照片濾鏡
     imageFilter: "",
-    //顏色模板預覽參數
+    //文本模板預覽參數
+    choseTextModule: 0,
     textModuleScrollView: [],
+    //顏色模板預覽參數
     choseColorModule: -1,
-    colorModuleBorder: "",
     colorModuleScrollView: [
       //適度提亮
       {
@@ -147,9 +148,9 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
-    var defaultTextModule = this.getTextModule('配有英文的模板', 'black');
     var array = []
-    for (var i = 0; i < 6; i++) {
+    for(var i = 0; i < 10; i ++){
+      var defaultTextModule = this.getTextModule('配有英文的模板', 'black', 0.3, i);
       array.push(defaultTextModule)
     }
     this.setData({
@@ -168,10 +169,8 @@ Page({
 
   },
   onHide: function () {
-
   },
   onUnload: function () {
-
   },
 
   //-----------------------------前端函數-----------------------------------------//
@@ -459,6 +458,17 @@ Page({
   },
 
   /**
+   * 文字模板處理函數
+   */
+  onTextModuleItemTap(e){
+    var textModuleId = e.currentTarget.dataset.textModuleId;
+    if (textModuleId == this.data.choseTextModule)
+      return;
+    this.setData({
+      choseTextModule: textModuleId,
+    })
+  },
+  /**
    * 顏色模板處理函數
    */
   onColorModuleItemTap(e) {
@@ -507,51 +517,20 @@ Page({
       imageFilter: operation,
       choseColorModule: colorModuleId,
     })
-    console.log("here:" + operation + " " + colorModuleId)
   },
 
 
   //-----------------------------前後交互函數-----------------------------------------//
   //請求文字模板
-  getTextModule(sourceText, color) {
+  getTextModule(sourceText, color, fontSize, id) {
     var textModule = {
-      nodes: [{
-        name: 'div',
-        attrs: {
-          style: 'display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; transform: scale(0.3, 0.3);'
-        },
-        children: [{
-          name: 'div',
-          attrs: {
-            style: 'font-size: 50pt; font-family:; letter-spacing: 10px; line-height: 95%;'
-          },
-          children: [{
-            type: 'text',
-            text: '05:20'
-          }]
-        },
-        {
-          name: 'div',
-          attrs: {
-            style: 'font-size: 13pt; letter-spacing: 8px; color:' + color + ';',
-          },
-          children: [{
-            type: 'text',
-            text: sourceText,
-          }]
-        },
-        {
-          name: 'div',
-          attrs: {
-            style: 'font-size: 10pt;'
-          },
-          children: [{
-            type: 'text',
-            text: 'Let time stop at this moment'
-          }]
-        }]
-      }],
+      nodes: "<div style='display: flex; flex-direction: column;justify-content: center; align-items: center; color: " + color + "; transform: scale(" + fontSize + "," + fontSize + ");'>"
+      + "<div style='font-size: 50pt; font-family:; letter-spacing: 10rpx;'>05:20</div>"
+      + "<div style='letter-spacing: 10rpx;'>" + sourceText + "</div>"
+      + "<div style='font-size: 10pt'>Let time stop at this moment</div>"
+      + "</div>",
       defaltValue: {},
+      id: id,
     }
     return textModule;
   },
