@@ -1,5 +1,24 @@
 // page/imageDiary/imageDiary.js
-import { ParseText, UploadImage } from 'api.js'
+import { ParseText, UploadImage } from "../../common/util.js";
+
+/**
+ * -------------未完成
+ * 1、input点击空白处时失去焦点函数有问题：提示blur，但是setData没有执行。
+ * 2、从叙事模式转回非叙事模式时，超出的字怎么处理，
+ * 3、在手机测试palceholder是会跟着主页面滑动
+ * 4、数据格式怎么设计
+ * 5、字体大小滑块
+ * 6、布局
+ * 7、wx.choosedImage()有问题,getImageInfo默认两种选择方式
+ * 8、图片宽度显示太大
+ * 9、slider控制文本放大缩小
+ * 
+ * -------------已完成
+ * 1、去掉键盘上方的完成按钮
+ * 2、解决再次弹起键盘时弹窗会向上偏移
+ * 3、api.js移到common.util.js
+ * 4、修改index.display点击事件:toImageDiary和chooseImageTap
+ */
 
 
 let app = getApp()
@@ -16,8 +35,9 @@ Page({
       { name: 'Mood', value: '心情滤镜' },
     ],
     zIndex: 0,
-    uploadedImageHeight: 0,
+    imgUrl: '',
     uploadedImageWidth: 0,
+    uploadedImageHeigth: 0,
     //富文本節點：用於handedText顯示
     textModule: [],
     /**
@@ -32,8 +52,9 @@ Page({
     inputValue: '',
     inputCursor: 0,
     inputMaxLength: 25,
+    fontSize: "1pt",
+    showFontSizeSlider: true,   //打开字体选择slider
     switchChecked: false,  //是否选中叙事模式
-    switchDisabled: false,  //是否禁用叙事模式 
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -56,10 +77,15 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
-      
+    this.setData({
+      imgUrl: wx.getStorageSync('imgUrl'),
+      uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
+      uploadedImageHeigth: wx.getStorageSync('uploadedImageHeigth'),
+    })
   },
 
   onReady: function () {
+
   },
   onShow: function () {
 
@@ -79,7 +105,7 @@ Page({
     var currentStatu = e.currentTarget.dataset.statu;
     this.util(currentStatu)
     //調用文字模板函數
-    if(this.data.inputLength != 0)
+    if (this.data.inputLength != 0)
       this.getTextModule();
   },
   util: function (currentStatu) {
@@ -109,7 +135,7 @@ Page({
       // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象  
       this.setData({
         animationData: animation
-      })
+      });
 
       //关闭  
       if (currentStatu == "close") {
@@ -119,7 +145,7 @@ Page({
           }
         );
       }
-    }.bind(this), 200)
+    }.bind(this), 200);
 
     // 显示  
     if (currentStatu == "open") {
@@ -142,7 +168,6 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
   },
 
   /**
@@ -157,14 +182,14 @@ Page({
    */
   textareaOnInputEvent: function (e) {
     this.setData({
-      inputCursor: e.detail.cursor,
+      inputCursor: e.detail.cursor,         //暂时没用
       inputLength: e.detail.value.length,
     })
   },
+
   /**
    * textarea獲得焦點處理函數
    */
-
   textareaOnFocusEvent: function (e) {
     var keyboardHeight = e.detail.height;
     //建立動畫：拉起鍵盤，彈窗向上偏移
@@ -179,7 +204,6 @@ Page({
     this.setData({
       keyboardHeight: keyboardHeight,
       animationData: animation.export(),
-      // switchDisabled: !this.data.switchDisabled,
     });
     wx.showToast({
       title: 'focus',
@@ -201,9 +225,7 @@ Page({
     this.setData({
       inputValue: value,
       animationData: animation.export(),
-      // switchDisabled: !this.data.switchDisabled,
     });
-    // console.log(this.data.switchDisabled);
     wx.showToast({
       title: 'blur',
     })
@@ -226,21 +248,21 @@ Page({
   },
 
   //开关叙事模式
-  switchModel(){
+  switchModel() {
     var that = this;
     this.setData({
       switchChecked: !this.data.switchChecked,
     });
-    if(this.data.switchChecked){
+    if (this.data.switchChecked) {
       that.setData({
         inputMaxLength: 50,
       })
-    }else{
+    } else {
       that.setData({
         inputMaxLength: 25,
-        inputLength: that.data.inputValue.length, 
+        inputLength: that.data.inputValue.length,
       });
-      
+
     }
     console.log(that.data.inputMaxLength);
   },
@@ -268,6 +290,7 @@ Page({
         console.log("该id不存在！");
     }
   },
+
   // 点击dictum下拉列表
   optionDictum(e) {
     let target = e.currentTarget;
@@ -374,14 +397,21 @@ Page({
   },
 
   // 上传图片接口
-  doUpload() {
+  doUpload(choose) {
     // 选择图片
-
     var that = this;
+    let srcType = []; 
+    console.log(choose);
+
+    if(choose === "album"){
+      srcType.push("album");
+    }else{
+      srcType.push("camera");
+    }
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
+      sourceType: srcType,
       success: (res) => {
         let tempFilePaths = res.tempFilePaths;
         wx.getImageInfo({
@@ -412,7 +442,6 @@ Page({
                 uploadedImageWidth: res.width * app.globalData.pixelRatio,
               });
             }
-            console.log("外面：" + that.data.uploadedImageHeight + " " + that.data.uploadedImageWidth);
           }
         });
         UploadImage(tempFilePaths[0])
@@ -464,31 +493,47 @@ Page({
           type: 'text',
           text: '05:20'
         }]
+      },
+      {
+        name: 'div',
+        attrs: {
+          style: 'font-size:10pt ; letter-spacing: 8px;'
         },
-        {
-          name: 'div',
-          attrs: {
-            style: 'font-size: 13pt; letter-spacing: 8px;'
-          },
-          children: [{
-            type: 'text',
-            text: this.data.inputValue
-          }]
+        children: [{
+          type: 'text',
+          text: this.data.inputValue,
+        }]
+      },
+      {
+        name: 'div',
+        attrs: {
+          style: 'font-size: 10pt;'
         },
-        {
-          name: 'div',
-          attrs: {
-            style: 'font-size: 10pt;'
-          },
-          children: [{
-            type: 'text',
-            text: 'Let time stop at this moment'
-          }]
+        children: [{
+          type: 'text',
+          text: 'Let time stop at this moment'
         }]
       }]
-      this.setData({
-        textModule: textModule,
-        showModuleText: true,
-      })
-  }
+    }]
+    this.setData({
+      textModule: textModule,
+      showModuleText: true,
+    })
+  },
+
+  //显示字体大小选择器
+  showSlider() {
+    console.log("我被点击了！");
+    this.setData({
+      showFontSizeSlider: !this.data.showFontSizeSlider,
+    });
+  },
+
+
+  changeFontSize(e) {
+    console.log(e.detail.value);
+    this.setData({
+      fontSize: e.detail.value,
+    });
+  },
 })

@@ -4,7 +4,6 @@ Page({
   data: {
     //時間軸
     diaryData: {},
-
     //導航抽屜
     userInfo: {},
     check: false,   //是否触发滑动操作
@@ -17,6 +16,7 @@ Page({
     startTime: 0,
     endTime: 0,
   },
+
   /**
    * 生命週期函數
    */
@@ -25,7 +25,7 @@ Page({
     this.getDiaryData();
   },
 
-  onUnload(){
+  onUnload() {
 
   },
 
@@ -169,6 +169,7 @@ Page({
       animationData: animation.export()
     });
   },
+
   onPortraitTap: function (e) {
     var data = this.data;
     if (data.state !== 0) {
@@ -188,6 +189,7 @@ Page({
       animationData: animation.export()
     });
   },
+
   onMainPageTap: function (e) {
     var data = this.data;
     if (data.state !== 3) {
@@ -205,36 +207,125 @@ Page({
   },
 
   toImageDiary: function () {
+
     wx.navigateTo({
       url: '../imageDiary/imageDiary',
     })
   },
 
+  // 上傳圖片
+  chooseImageTap() {
+    wx.showActionSheet({
+      itemList: ['本地上传', '拍照上传'],
+      success: (res) => {
+        if (!res.cancel) {
+          if (res.tapIndex == 0) {
+            this.doUpload('album')
+          } else if (res.tapIndex == 1) {
+            this.doUpload('camera')
+          }
+        }
+      }
+    })
+  },
+
+  // 上传图片接口
+  doUpload(choose) {
+    // 选择图片
+    var that = this;
+    let srcType = [];
+    if (choose === "album") {
+      srcType.push("album");
+    } else {
+      srcType.push("camera");
+    }
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: srcType,
+      success: (res) => {
+        let tempFilePaths = res.tempFilePaths;
+        let imgUrl = ' ';
+        let uploadedImageWidth = 0;
+        let uploadedImageHeigth = 0;
+        wx.getImageInfo({
+          src: tempFilePaths[0],
+          success: (res) => {
+            if (res.height > res.width) {
+              res.width *= (0.95 * 0.8 * 1094) / res.height;
+              imgUrl = tempFilePaths;
+              uploadedImageWidth = res.width;
+              uploadedImageHeigth = res.height * app.globalData.pixelRatio;
+            } else if (res.height == res.width) {
+              imgUrl = tempFilePaths;
+              uploadedImageWidth = 750;
+              uploadedImageHeigth = 750;
+            }
+            else {
+              res.height *= 750 / res.width;
+              imgUrl = tempFilePaths;
+              uploadedImageWidth = res.width * app.globalData.pixelRatio;
+              uploadedImageHeigth = res.height;
+            }
+          },
+          //   UploadImage(tempFilePaths[0])
+          //     .then((res) => {
+          //       wx.hideLoading();
+          //       wx.showToast({
+          //         title: '上传成功',
+          //         icon: 'success',
+          //         duration: 2000,
+          //       })
+          //       console.log("upload images completed: " + res.imgUrl)
+          //     })
+          //     .catch((e) => {
+          //       wx.hideLoading()
+          //       wx.showToast({
+          //         title: '上传失败: ' + e,
+          //         icon: 'fail',
+          //         duration: 2000,
+          //       })
+          //       console.log("upload images fail:" + e)
+          //     })
+          // },
+          fail: function (res) { },
+          complete: function (res) {
+            wx.setStorageSync('imgUrl', imgUrl);
+            wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
+            wx.setStorageSync('uploadedImageHeigth', uploadedImageHeigth);
+            wx.navigateTo({
+              url: '../imageDiary/imageDiary',
+            })
+          }
+        })
+      }
+    })
+  },
   getDiaryData() {
     var diaryData = [
-{
-      diary: {
-        text: [],
+      {
+        diary: {
+          text: [],
           image: [{
             imageURL: '/images/image-test.jpeg',
           }],
-      },
-  date: [2018, 5, 1, 'Sat'],
-},
-  {
-    diary: {
-      text: [{
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
+        },
+        date: [2018, 5, 1, 'Sat'],
       },
       {
-        head: '今天过得很快乐',
-        lookthrough: '我是这里',
-      }],
-      image: [],
-    },
-    date: [2018, 5, 5, 'Sat'],
-  }
+        diary: {
+          text: [{
+            head: '今天过得很快乐',
+            lookthrough: '我是这里',
+          },
+          {
+            head: '今天过得很快乐',
+            lookthrough: '我是这里',
+          }],
+          image: [],
+        },
+        date: [2018, 5, 5, 'Sat'],
+      }
     ];
     this.setData({
       diaryData: diaryData,
