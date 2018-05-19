@@ -388,7 +388,10 @@ radio{
 .fl { float: left;}  
 .fr { float: right;}  
 
-
+.slider-changeSize{
+  width: 90%;
+  position: absolute;
+}
 
 
 

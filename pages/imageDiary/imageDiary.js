@@ -1,6 +1,25 @@
 // page/imageDiary/imageDiary.js
-import { ParseText, UploadImage } from 'api.js'
-import { getCurrentPageUrl, getCurrentPageUrlWithArgs} from '../../common/util.js'
+
+import { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs } from "../../common/util.js";
+
+/**
+ * -------------未完成
+ * 1、input点击空白处时失去焦点函数有问题：提示blur，但是setData没有执行。
+ * 2、从叙事模式转回非叙事模式时，超出的字怎么处理，
+ * 3、在手机测试palceholder是会跟着主页面滑动
+ * 4、数据格式怎么设计
+ * 5、字体大小滑块
+ * 6、布局
+ * 7、wx.choosedImage()有问题,getImageInfo默认两种选择方式
+ * 8、图片宽度显示太大
+ * 9、slider控制文本放大缩小
+ * 
+ * -------------已完成
+ * 1、去掉键盘上方的完成按钮
+ * 2、解决再次弹起键盘时弹窗会向上偏移
+ * 3、api.js移到common.util.js
+ * 4、修改index.display点击事件:toImageDiary和chooseImageTap
+ */
 
 let app = getApp()
 
@@ -16,8 +35,9 @@ Page({
       { name: 'Mood', value: '心情滤镜' },
     ],
     zIndex: 0,
-    uploadedImageHeight: 0,
+    imgUrl: '',
     uploadedImageWidth: 0,
+    uploadedImageHeigth: 0,
     doesTextReady: false,
     //富文本節點：用於handedText顯示
     textModule: [],
@@ -29,66 +49,66 @@ Page({
     //顏色模板預覽參數
     choseColorModule: -1,
     colorModuleScrollView: [
-        //適度提亮
-    {
-      backgroundColor: "#dfdfdf",
-      color: "black",
-      id: 0,
-    },
-        //適度壓暗
-    {
-      backgroundColor: "#808080",
-      color: "white",
-      id: 1,
-    },
-        //懷舊風 米黃
-    {
-      backgroundColor: "#f7de5f",
-      color: "black",
-      id: 2,
-    },
-        //清新藍
-    {
-      backgroundColor: "#10b2fa",
-      color: "white",
-      id: 3,
-    },
-        //白
-    {
-      backgroundColor: "white",
-      color: "black",
-      id: 4,
-    },
-        //黑
-    {
-      backgroundColor: "black",
-      color: "white",
-      id: 5,
-    },
-        //純灰度黃字
-    {
-      backgroundColor: "#333333",
-      color: "#f7de5f",
-      id: 6,
-    },
-        //懷舊灰黑字
-    {
-      backgroundColor: "#d9bea0",
-      color: "black",
-      id: 7,
-    },
-        //清新綠
-    {
-      backgroundColor: "#07e59c",
-      color: "black",
-      id: 8,
-    },
-        //低飽和度
-    {
-      backgroundColor: "#f5e9bf",
-      color: "black",
-      id: 9,
-    },
+      //適度提亮
+      {
+        backgroundColor: "#dfdfdf",
+        color: "black",
+        id: 0,
+      },
+      //適度壓暗
+      {
+        backgroundColor: "#808080",
+        color: "white",
+        id: 1,
+      },
+      //懷舊風 米黃
+      {
+        backgroundColor: "#f7de5f",
+        color: "black",
+        id: 2,
+      },
+      //清新藍
+      {
+        backgroundColor: "#10b2fa",
+        color: "white",
+        id: 3,
+      },
+      //白
+      {
+        backgroundColor: "white",
+        color: "black",
+        id: 4,
+      },
+      //黑
+      {
+        backgroundColor: "black",
+        color: "white",
+        id: 5,
+      },
+      //純灰度黃字
+      {
+        backgroundColor: "#333333",
+        color: "#f7de5f",
+        id: 6,
+      },
+      //懷舊灰黑字
+      {
+        backgroundColor: "#d9bea0",
+        color: "black",
+        id: 7,
+      },
+      //清新綠
+      {
+        backgroundColor: "#07e59c",
+        color: "black",
+        id: 8,
+      },
+      //低飽和度
+      {
+        backgroundColor: "#f5e9bf",
+        color: "black",
+        id: 9,
+      },
     ],
     /**
      *  彈窗頁
@@ -101,8 +121,9 @@ Page({
     inputValue: '',
     inputCursor: 0,
     inputMaxLength: 25,
+    fontSize: "1pt",
+    showFontSizeSlider: true,   //打开字体选择slider
     switchChecked: false,  //是否选中叙事模式
-    switchDisabled: false,  //是否禁用叙事模式 
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumSecond: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     showDictumThird: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -125,7 +146,6 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
-
     var array = []
     for(var i = 0; i < 10; i ++){
       var defaultTextModule = this.getTextModule('配有英文的模板', 'black', 0.3, i);
@@ -133,10 +153,14 @@ Page({
     }
     this.setData({
       textModuleScrollView: array,
+      imgUrl: wx.getStorageSync('imgUrl'),
+      uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
+      uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
     })
   },
 
   onReady: function () {
+
   },
   onShow: function () {
 
@@ -154,7 +178,7 @@ Page({
     var currentStatu = e.currentTarget.dataset.statu;
     this.util(currentStatu)
     //調用文字模板函數
-    if(this.data.inputLength != 0)
+    if (this.data.inputLength != 0)
       this.getTextModule();
   },
   util: function (currentStatu) {
@@ -184,7 +208,7 @@ Page({
       // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象  
       this.setData({
         animationData: animation
-      })
+      });
 
       //关闭  
       if (currentStatu == "close") {
@@ -194,7 +218,7 @@ Page({
           }
         );
       }
-    }.bind(this), 200)
+    }.bind(this), 200);
 
     // 显示  
     if (currentStatu == "open") {
@@ -217,7 +241,6 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
   },
 
   /**
@@ -232,14 +255,14 @@ Page({
    */
   textareaOnInputEvent: function (e) {
     this.setData({
-      inputCursor: e.detail.cursor,
+      inputCursor: e.detail.cursor,         //暂时没用
       inputLength: e.detail.value.length,
     })
   },
+
   /**
    * textarea獲得焦點處理函數
    */
-
   textareaOnFocusEvent: function (e) {
     var keyboardHeight = e.detail.height;
     //建立動畫：拉起鍵盤，彈窗向上偏移
@@ -254,7 +277,6 @@ Page({
     this.setData({
       keyboardHeight: keyboardHeight,
       animationData: animation.export(),
-      // switchDisabled: !this.data.switchDisabled,
     });
     wx.showToast({
       title: 'focus',
@@ -276,9 +298,7 @@ Page({
     this.setData({
       inputValue: value,
       animationData: animation.export(),
-      // switchDisabled: !this.data.switchDisabled,
     });
-    // console.log(this.data.switchDisabled);
     wx.showToast({
       title: 'blur',
     })
@@ -301,21 +321,21 @@ Page({
   },
 
   //开关叙事模式
-  switchModel(){
+  switchModel() {
     var that = this;
     this.setData({
       switchChecked: !this.data.switchChecked,
     });
-    if(this.data.switchChecked){
+    if (this.data.switchChecked) {
       that.setData({
         inputMaxLength: 50,
       })
-    }else{
+    } else {
       that.setData({
         inputMaxLength: 25,
-        inputLength: that.data.inputValue.length, 
+        inputLength: that.data.inputValue.length,
       });
-      
+
     }
     console.log(that.data.inputMaxLength);
   },
@@ -343,6 +363,7 @@ Page({
         console.log("该id不存在！");
     }
   },
+
   // 点击dictum下拉列表
   optionDictum(e) {
     let target = e.currentTarget;
@@ -443,9 +464,9 @@ Page({
   /**
    * 顏色模板處理函數
    */
-  onColorModuleItemTap(e){
+  onColorModuleItemTap(e) {
     var colorModuleId = e.currentTarget.dataset.colorModuleId;
-    if(colorModuleId == this.data.choseColorModule){
+    if (colorModuleId == this.data.choseColorModule) {
       this.setData({
         imageFilter: "",
         choseColorModule: -1,
@@ -453,7 +474,7 @@ Page({
       return;
     }
     var operation = "";
-    switch(colorModuleId){
+    switch (colorModuleId) {
       case 0:
         operation = "contrast(150%);";
         break;
@@ -512,12 +533,19 @@ Page({
   // 上传图片接口
   doUpload(choose) {
     // 选择图片
-
     var that = this;
+    let srcType = [];
+    console.log(choose);
+
+    if (choose === "album") {
+      srcType.push("album");
+    } else {
+      srcType.push("camera");
+    }
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
-      sourceType: [choose],
+      sourceType: srcType,
       success: (res) => {
         let tempFilePaths = res.tempFilePaths;
         wx.getImageInfo({
@@ -548,7 +576,7 @@ Page({
                 uploadedImageWidth: res.width * app.globalData.pixelRatio,
               });
             }
-            console.log("外面：" + that.data.uploadedImageHeight + " " + that.data.uploadedImageWidth);
+            console.log("imageDiary:" + this.data.uploadedImageWidth + " , " + this.data.uploadedImageHeigth);
           }
         });
         UploadImage(tempFilePaths[0])
@@ -588,5 +616,21 @@ Page({
       id: id,
     }
     return textModule;
-  }
+  },
+
+  //显示字体大小选择器
+  showSlider() {
+    console.log("我被点击了！");
+    this.setData({
+      showFontSizeSlider: !this.data.showFontSizeSlider,
+    });
+  },
+
+
+  changeFontSize(e) {
+    console.log(e.detail.value);
+    this.setData({
+      fontSize: e.detail.value,
+    });
+  },
 })

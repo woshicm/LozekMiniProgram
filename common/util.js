@@ -1,3 +1,5 @@
+let globalData = getApp().globalData
+
 /*获取当前页url*/
 function getCurrentPageUrl() {
   var pages = getCurrentPages()    //获取加载的页面
@@ -24,7 +26,59 @@ function getCurrentPageUrlWithArgs() {
   return urlWithArgs
 }
 
-module.exports = {
-  getCurrentPageUrl: getCurrentPageUrl,
-  getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs
+
+
+
+function ParseText(text) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.parseText,
+      data: {
+        text: text
+      },
+      header: {
+        "token": globalData.token
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.text)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
 }
+
+/*上传图片*/
+function UploadImage(path) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.uploadFile({
+      url: globalData.api.uploadImage,
+      filePath: path,
+      formData: {
+        description: "xxxxx"
+      },
+      header: {
+        "token": globalData.token
+      },
+      name: 'image',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(JSON.parse(res.data))
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      }
+    })
+  });
+  return promise
+}
+
+export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs }

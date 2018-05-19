@@ -24,11 +24,11 @@
               </view>
               <view class='index-display-aDay'>
                 <!-- 對每天的文本日記遍歷 -->
-                <scroll-view wx:if='{{displayItem.diary.text.length != 0}}' scroll-x='true' class='index-display-text-scrollView'>
-                  <view wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-text-item'>
-                    <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
-                  </view>
-                </scroll-view>
+                  <scroll-view wx:if='{{displayItem.diary.text.length != 0}}' scroll-x='true' class='index-display-text-scrollView'>
+                      <view wx:key="this" wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-text-item'>
+                        <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
+                      </view>
+                  </scroll-view>
                 <!-- 對每天的圖片日記遍歷 -->
                 <view wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
                   <scroll-view scroll-x class='index-display-image-scrollView'>
@@ -65,7 +65,7 @@
     </view>
   </view>
   <view class='index-bottom modify-shadow-main-up'>
-    <button class="index-bottom-item" bindtap='toImageDiary'>
+    <button class="index-bottom-item" bindtap='chooseImageTap'>
       <image src='/images/icon/imageDiaryLogo.png' class="image-diaryLogo" mode="widthFix"></image>
     </button>
     <view class='modify-divideLine-dark' style="width: 3rpx; height: 122rpx;"></view>
