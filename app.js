@@ -5,12 +5,14 @@ App({
      */
     pixelRatio: wx.getSystemInfoSync().pixelRatio,
     token:'1',
+    baseURL: 'http://localhost:8000/',
+    // baseURL: 'http://111.230.24.245/,
     api: {
-      login: 'http://111.230.24.245/login',
+      login: '',
       // getDiarys : base + '/diarys',
-      // getDiary : base + '/diary',
+      getDiary : '',
       uploadImage: '',
-      parseText: 'http://111.230.24.245/parsetext'
+      parseText: ''
     },
   },
   onLaunch: function () {
@@ -27,7 +29,7 @@ App({
     this.globalData.api.login = this.globalData.baseURL + 'login'
     this.globalData.api.uploadImage = this.globalData.baseURL + 'upload'
     this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
-    this.globalData.api.getDiarys = this.globalData.baseURL + 'diarys'
+    this.globalData.api.getDiary = this.globalData.baseURL + 'diary'
   },
   login: function (callback){
     wx.login({
