@@ -25,7 +25,7 @@ let app = getApp()
 
 Page({
   data: {
-    test: '',
+    test: true,
     /**
      * imageDiary頁
      */
@@ -36,9 +36,11 @@ Page({
     ],
     zIndex: 0,
     imgUrl: '',
-    uploadedImageWidth: 0,
+    uploadedImageWidth: 0,  
     uploadedImageHeigth: 0,
-    doesTextReady: false,
+    doesTextReady: true,
+    isMoveable: true,
+    isShowTools: false,
     //富文本節點：用於handedText顯示
     textModule: [],
     //照片濾鏡
@@ -156,6 +158,7 @@ Page({
       uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
       uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
     })
+    
   },
 
   onReady: function () {
@@ -265,23 +268,22 @@ Page({
    * textarea獲得焦點處理函數
    */
   textareaOnFocusEvent: function (e) {
-    var keyboardHeight = e.detail.height;
-    //建立動畫：拉起鍵盤，彈窗向上偏移
-    var animation = wx.createAnimation({
-      duration: 200,  //动画时长  
-      timingFunction: "linear", //线性  
-      delay: 0  //0则不延迟  
-    });
-    this.animation = animation;
-    animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
-    console.log(-1 * keyboardHeight)
-    this.setData({
-      keyboardHeight: keyboardHeight,
-      animationData: animation.export(),
-    });
-    wx.showToast({
-      title: 'focus',
-    })
+    // var keyboardHeight = e.detail.height;
+    // //建立動畫：拉起鍵盤，彈窗向上偏移
+    // var animation = wx.createAnimation({
+    //   duration: 200,  //动画时长  
+    //   timingFunction: "linear", //线性  
+    //   delay: 0  //0则不延迟  
+    // });
+    // this.animation = animation;
+    // animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
+    // this.setData({
+    //   keyboardHeight: keyboardHeight,
+    //   animationData: animation.export(),
+    // });
+    // wx.showToast({
+    //   title: 'focus',
+    // })
   },
   /**
    * textarea失去焦点处理函数
@@ -289,20 +291,25 @@ Page({
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     this.parseInputValue(value);
-    var animation = wx.createAnimation({
-      duration: 200,  //动画时长  
-      timingFunction: "linear", //线性  
-      delay: 0  //0则不延迟  
-    });
-    this.animation = animation;
-    animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
+    // var animation = wx.createAnimation({
+    //   duration: 200,  //动画时长  
+    //   timingFunction: "linear", //线性  
+    //   delay: 0  //0则不延迟  
+    // });
+    // this.animation = animation;
+    // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
+    // this.setData({
+    //   inputValue: value,
+    //   animationData: animation.export(),
+    // });
+    // wx.showToast({
+    //   title: 'blur',
+    // })
     this.setData({
       inputValue: value,
-      animationData: animation.export(),
+      doesTextReady: !this.data.doesTextReady,
+      isMoveable: !this.data.isMoveable,
     });
-    wx.showToast({
-      title: 'blur',
-    })
   },
   //调用api处理输入文字 
   parseInputValue(value) {
@@ -505,96 +512,6 @@ Page({
 
 
   //-----------------------------前後交互函數-----------------------------------------//
-  // 上傳圖片
-  chooseImageTap() {
-    wx.showActionSheet({
-      itemList: ['本地上传', '拍照上传'],
-      success: (res) => {
-        if (!res.cancel) {
-          if (res.tapIndex == 0) {
-            this.doUpload('album')
-          } else if (res.tapIndex == 1) {
-            this.doUpload('camera')
-          }
-        }
-      }
-    })
-  },
-
-  // 上传图片接口
-  doUpload(choose) {
-    // 选择图片
-    var that = this;
-    let srcType = [];
-    console.log(choose);
-
-    if (choose === "album") {
-      srcType.push("album");
-    } else {
-      srcType.push("camera");
-    }
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: srcType,
-      success: (res) => {
-        let tempFilePaths = res.tempFilePaths;
-        wx.getImageInfo({
-          src: tempFilePaths[0],
-          success: (res) => {
-            if (res.height > res.width) {
-              res.width *= (0.95 * 0.8 * 1094) / res.height;
-              that.setData({
-                showAddButton: false,
-                imgUrl: tempFilePaths,
-                uploadedImageHeight: res.height * app.globalData.pixelRatio,
-                uploadedImageWidth: res.width,
-              });
-            } else if (res.height == res.width) {
-              that.setData({
-                showAddButton: false,
-                imgUrl: tempFilePaths,
-                uploadedImageHeight: 750,
-                uploadedImageWidth: 750,
-              });
-            }
-            else {
-              res.height *= 750 / res.width;
-              that.setData({
-                showAddButton: false,
-                imgUrl: tempFilePaths,
-                uploadedImageHeight: res.height,
-                uploadedImageWidth: res.width * app.globalData.pixelRatio,
-              });
-            }
-            console.log("imageDiary:" + this.data.uploadedImageWidth + " , " + this.data.uploadedImageHeigth);
-          }
-        });
-        UploadImage(tempFilePaths[0])
-          .then((res) => {
-            wx.hideLoading();
-            wx.showToast({
-              title: '上传成功',
-              icon: 'success',
-              duration: 2000,
-            })
-            console.log("upload images completed: " + res.imgUrl)
-          })
-          .catch((e) => {
-            wx.hideLoading()
-            wx.showToast({
-              title: '上传失败: ' + e,
-              icon: 'fail',
-              duration: 2000,
-            })
-            console.log("upload images fail:" + e)
-          })
-      },
-      fail: function (res) { },
-      complete: function (res) { }
-    })
-  },
-
   //請求文字模板
   getTextModule(sourceText, color) {
     var textModule = {
@@ -639,11 +556,11 @@ Page({
     return textModule;
   },
 
-  //显示字体大小选择器
-  showSlider() {
+  //显示文本工具栏
+  showTools() {
     console.log("我被点击了！");
     this.setData({
-      showFontSizeSlider: !this.data.showFontSizeSlider,
+      isShowTools: !this.data.isShowTools,
     });
   },
 
@@ -654,4 +571,12 @@ Page({
       fontSize: e.detail.value,
     });
   },
+
+  changeTextReady(){
+    this.setData({
+      isShowTools: !this.data.isShowTools,
+      isMoveable: !this.data.isMoveable,
+      doesTextReady: !this.data.doesTextReady,
+    })
+  }
 })

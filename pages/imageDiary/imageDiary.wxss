@@ -43,7 +43,7 @@
 
 .input-text {
   font-size: 13pt;
-  margin-top: 8rpx;
+  /* margin-top: 8rpx; */
   width: 100%；
 }
 
@@ -387,10 +387,10 @@ radio{
 .fr { float: right;}  
 
 .slider-changeSize{
-  width: 90%;
-  position: absolute;
-}
+  width: 40%;
 
+  height: 20rpx;
+}
 
 
 
