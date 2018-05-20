@@ -254,7 +254,7 @@ Page({
           src: tempFilePaths[0],
           success: (res) => {
             if (res.height > res.width) {
-              res.width *= (0.95 * 0.8 * 1200) / res.height;
+              res.width *= (0.95 * 0.8 * 1150) / res.height;
               imgUrl = tempFilePaths;
               uploadedImageWidth = res.width;
               uploadedImageHeight = res.height * app.globalData.pixelRatio;
@@ -295,10 +295,37 @@ Page({
             wx.setStorageSync('imgUrl', imgUrl);
             wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
             wx.setStorageSync('uploadedImageHeight', uploadedImageHeight);
+            //获取图片base64编码
+            // let reader = new FileReader();
+            // let base64 = "";
+            // reader.readAsArrayBuffer(new Blob(imgUrl));
+            // reader.onload = function (e) {
+            //   let arrayBuffer = reader.result;
+            //   base64 = wx.arrayBufferToBase64(arrayBuffer)
+            //   console.log(base64)
+            // }
+            //发起api滤镜
+            // wx.request({
+            //   url: 'https://api.ai.qq.com/fcgi-bin/vision/vision_imgfilter',
+            //   data:{
+            //     "app_id": 1106918284,
+            //     "time_stamp": 2,
+            //     "noce_str": "sadsadefadsfas",
+            //      "sign": "",
+            //      "filter": 1, 
+            //      "iamge": ,
+            //   },
+            // header:{
+            //   "content-type": "aplication/json"
+            // },
+            // success:(res)=>{
+            //   console.log(res.data)
+            // }
+            // })
             wx.navigateTo({
               url: '../imageDiary/imageDiary',
             });
-            
+
           }
         })
       }

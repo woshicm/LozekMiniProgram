@@ -2,25 +2,6 @@
 
 import { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs } from "../../common/util.js";
 
-/**
- * -------------未完成
- * 1、input点击空白处时失去焦点函数有问题：提示blur，但是setData没有执行。
- * 2、从叙事模式转回非叙事模式时，超出的字怎么处理，
- * 3、在手机测试palceholder是会跟着主页面滑动
- * 4、数据格式怎么设计
- * 5、字体大小滑块
- * 6、布局
- * 7、wx.choosedImage()有问题,getImageInfo默认两种选择方式
- * 8、图片宽度显示太大
- * 9、slider控制文本放大缩小
- * 
- * -------------已完成
- * 1、去掉键盘上方的完成按钮
- * 2、解决再次弹起键盘时弹窗会向上偏移
- * 3、api.js移到common.util.js
- * 4、修改index.display点击事件:toImageDiary和chooseImageTap
- */
-
 let app = getApp()
 
 Page({
@@ -36,20 +17,19 @@ Page({
     ],
     zIndex: 0,
     imgUrl: '',
-    uploadedImageWidth: 0,  
+    uploadedImageWidth: 0,
     uploadedImageHeigth: 0,
-    doesTextReady: true,
-    isMoveable: true,
-    isShowTools: false,
+
     //富文本節點：用於handedText顯示
     textModule: [],
     //照片濾鏡
     imageFilter: "",
     //文本模板預覽參數
-    choseTextModule: 0,
+    choseTextModuleId: 0,
+    choseTextModule: "",
     textModuleScrollView: [],
     //顏色模板預覽參數
-    choseColorModule: -1,
+    choseColorModuleId: -1,
     colorModuleScrollView: [
       //適度提亮
       {
@@ -124,6 +104,10 @@ Page({
     inputCursor: 0,
     inputMaxLength: 25,
     fontSize: "1pt",
+    rchTextSize: 0.5, //设置模板的大小
+    isTextEmpty: true,
+    isMoveable: true,
+    isShowTools: true,
     showFontSizeSlider: true,   //打开字体选择slider
     switchChecked: false,  //是否选中叙事模式
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -148,18 +132,11 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
-    var array = []
-    for(var i = 0; i < 10; i ++){
-      var defaultTextModule = this.getTextModule('配有英文的模板', 'black', 0.3, i);
-      array.push(defaultTextModule)
-    }
     this.setData({
-      textModuleScrollView: array,
       imgUrl: wx.getStorageSync('imgUrl'),
       uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
       uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
     })
-    
   },
 
   onReady: function () {
@@ -290,6 +267,16 @@ Page({
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     this.parseInputValue(value);
+    if (value.length == 0) {
+      //隨機調用名言模板
+    }
+    else {
+      var array = []
+      for (var i = 0; i < 10; i++) {
+        var suitableTextModule = this.getTextModule(value, 'black', 0.3, i);
+        array.push(suitableTextModule)
+      }
+    }
     // var animation = wx.createAnimation({
     //   duration: 200,  //动画时长  
     //   timingFunction: "linear", //线性  
@@ -306,8 +293,10 @@ Page({
     // })
     this.setData({
       inputValue: value,
-      doesTextReady: !this.data.doesTextReady,
+      isTextEmpty: !this.data.isTextEmpty,
       isMoveable: !this.data.isMoveable,
+      textModuleScrollView: array,
+      choseTextModule: this.getTextModule(value, 'black', this.data.rchTextSize, 0),
     });
   },
   //调用api处理输入文字 
@@ -460,12 +449,16 @@ Page({
   /**
    * 文字模板處理函數
    */
-  onTextModuleItemTap(e){
-    var textModuleId = e.currentTarget.dataset.textModuleId;
-    if (textModuleId == this.data.choseTextModule)
+  onTextModuleItemTap(e) {
+    var choseTextModuleId = e.currentTarget.dataset.textModuleId;
+    if (choseTextModuleId == this.data.choseTextModuleId)
       return;
+    var color = "black";
+    if (this.data.choseColorModuleId != -1)
+      color = this.data.colorModuleScrollView[this.data.choseColorModuleId].color;
     this.setData({
-      choseTextModule: textModuleId,
+      choseTextModuleId: choseTextModuleId,
+      choseTextModule: this.getTextModule(this.data.inputValue, color, this.data.rchTextSize, choseTextModuleId)
     })
   },
   /**
@@ -473,10 +466,10 @@ Page({
    */
   onColorModuleItemTap(e) {
     var colorModuleId = e.currentTarget.dataset.colorModuleId;
-    if (colorModuleId == this.data.choseColorModule) {
+    if (colorModuleId == this.data.choseColorModuleId) {
       this.setData({
         imageFilter: "",
-        choseColorModule: -1,
+        choseColorModuleId: -1,
       })
       return;
     }
@@ -515,7 +508,8 @@ Page({
     }
     this.setData({
       imageFilter: operation,
-      choseColorModule: colorModuleId,
+      choseColorModuleId: colorModuleId,
+      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.rchTextSize, this.data.choseTextModuleId)
     })
   },
 
@@ -542,20 +536,28 @@ Page({
     });
   },
 
-  //改变文本大小
-  changeFontSize(e) {
-    console.log(e.detail.value);
+  //改变富文本大小
+  changeRichSize(e) {
     this.setData({
-      fontSize: e.detail.value,
+      rchTextSize: e.detail.value * 0.025,
+      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.rchTextSize, 0),
     });
   },
 
   //选择显示输入框还是富文本
-  changeTextReady(){
+  changeTextReady() {
     this.setData({
       isShowTools: !this.data.isShowTools,
       isMoveable: !this.data.isMoveable,
-      doesTextReady: !this.data.doesTextReady,
+      isTextEmpty: !this.data.isTextEmpty,
     })
-  }
+  },
+
+  //改变富文本大小
+  changingRichSize(e) {
+    this.setData({
+      rchTextSize: e.detail.value * 0.025,
+      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.rchTextSize, 0),
+    });
+  },
 })
