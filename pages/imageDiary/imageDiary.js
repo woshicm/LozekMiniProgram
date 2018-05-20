@@ -1,5 +1,6 @@
 // page/imageDiary/imageDiary.js
-import { ParseText, UploadImage } from "../../common/util.js";
+
+import { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs } from "../../common/util.js";
 
 /**
  * -------------未完成
@@ -20,12 +21,11 @@ import { ParseText, UploadImage } from "../../common/util.js";
  * 4、修改index.display点击事件:toImageDiary和chooseImageTap
  */
 
-
 let app = getApp()
 
 Page({
   data: {
-    test: '',
+    test: true,
     /**
      * imageDiary頁
      */
@@ -36,17 +36,21 @@ Page({
     ],
     zIndex: 0,
     imgUrl: '',
-    uploadedImageWidth: 0,
+    uploadedImageWidth: 0,  
     uploadedImageHeigth: 0,
-    doesTextReady: false,
+    isTextEmpty: true,
+    isMoveable: true,
+    isShowTools: false,
     //富文本節點：用於handedText顯示
     textModule: [],
     //照片濾鏡
     imageFilter: "",
-    //顏色模板預覽參數
+    //文本模板預覽參數
+    choseTextModuleId: 0,
+    choseTextModule: "",
     textModuleScrollView: [],
-    choseColorModule: -1,
-    colorModuleBorder: "",
+    //顏色模板預覽參數
+    choseColorModuleId: -1,
     colorModuleScrollView: [
       //適度提亮
       {
@@ -145,13 +149,7 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
-    var defaultTextModule = this.getTextModule('配有英文的模板', 'black');
-    var array = []
-    for (var i = 0; i < 6; i++) {
-      array.push(defaultTextModule)
-    }
     this.setData({
-      textModuleScrollView: array,
       imgUrl: wx.getStorageSync('imgUrl'),
       uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
       uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
@@ -165,10 +163,8 @@ Page({
 
   },
   onHide: function () {
-
   },
   onUnload: function () {
-
   },
 
   //-----------------------------前端函數-----------------------------------------//
@@ -265,23 +261,22 @@ Page({
    * textarea獲得焦點處理函數
    */
   textareaOnFocusEvent: function (e) {
-    var keyboardHeight = e.detail.height;
-    //建立動畫：拉起鍵盤，彈窗向上偏移
-    var animation = wx.createAnimation({
-      duration: 200,  //动画时长  
-      timingFunction: "linear", //线性  
-      delay: 0  //0则不延迟  
-    });
-    this.animation = animation;
-    animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
-    console.log(-1 * keyboardHeight)
-    this.setData({
-      keyboardHeight: keyboardHeight,
-      animationData: animation.export(),
-    });
-    wx.showToast({
-      title: 'focus',
-    })
+    // var keyboardHeight = e.detail.height;
+    // //建立動畫：拉起鍵盤，彈窗向上偏移
+    // var animation = wx.createAnimation({
+    //   duration: 200,  //动画时长  
+    //   timingFunction: "linear", //线性  
+    //   delay: 0  //0则不延迟  
+    // });
+    // this.animation = animation;
+    // animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
+    // this.setData({
+    //   keyboardHeight: keyboardHeight,
+    //   animationData: animation.export(),
+    // });
+    // wx.showToast({
+    //   title: 'focus',
+    // })
   },
   /**
    * textarea失去焦点处理函数
@@ -289,20 +284,37 @@ Page({
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     this.parseInputValue(value);
-    var animation = wx.createAnimation({
-      duration: 200,  //动画时长  
-      timingFunction: "linear", //线性  
-      delay: 0  //0则不延迟  
-    });
-    this.animation = animation;
-    animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
+    if(value.length == 0){
+      //隨機調用名言模板
+    }
+    else{
+      var array = []
+      for (var i = 0; i < 10; i++) {
+        var suitableTextModule = this.getTextModule(value, 'black', 0.3, i);
+        array.push(suitableTextModule)
+      }
+    }
+    // var animation = wx.createAnimation({
+    //   duration: 200,  //动画时长  
+    //   timingFunction: "linear", //线性  
+    //   delay: 0  //0则不延迟  
+    // });
+    // this.animation = animation;
+    // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
+    // this.setData({
+    //   inputValue: value,
+    //   animationData: animation.export(),
+    // });
+    // wx.showToast({
+    //   title: 'blur',
+    // })
     this.setData({
       inputValue: value,
-      animationData: animation.export(),
+      isTextEmpty: !this.data.isTextEmpty,
+      isMoveable: !this.data.isMoveable,
+      textModuleScrollView: array,
+      choseTextModule: this.getTextModule(value, 'black', 0.5, 0),
     });
-    wx.showToast({
-      title: 'blur',
-    })
   },
   //调用api处理输入文字 
   parseInputValue(value) {
@@ -452,14 +464,29 @@ Page({
   },
 
   /**
+   * 文字模板處理函數
+   */
+  onTextModuleItemTap(e){
+    var choseTextModuleId = e.currentTarget.dataset.textModuleId;
+    if (choseTextModuleId == this.data.choseTextModuleId)
+      return;
+    var color = "black"; 
+    if(this.data.choseColorModuleId != -1)
+      color = this.data.colorModuleScrollView[this.data.choseColorModuleId].color;
+    this.setData({
+      choseTextModuleId: choseTextModuleId,
+      choseTextModule: this.getTextModule(this.data.value, color, 0.5, choseTextModuleId)
+    })
+  },
+  /**
    * 顏色模板處理函數
    */
   onColorModuleItemTap(e) {
     var colorModuleId = e.currentTarget.dataset.colorModuleId;
-    if (colorModuleId == this.data.choseColorModule) {
+    if (colorModuleId == this.data.choseColorModuleId) {
       this.setData({
         imageFilter: "",
-        choseColorModule: -1,
+        choseColorModuleId: -1,
       })
       return;
     }
@@ -498,152 +525,32 @@ Page({
     }
     this.setData({
       imageFilter: operation,
-      choseColorModule: colorModuleId,
+      choseColorModuleId: colorModuleId,
+      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, 0.5, this.data.choseTextModuleId)
     })
-    console.log("here:" + operation + " " + colorModuleId)
   },
 
 
   //-----------------------------前後交互函數-----------------------------------------//
-  // 上傳圖片
-  chooseImageTap() {
-    wx.showActionSheet({
-      itemList: ['本地上传', '拍照上传'],
-      success: (res) => {
-        if (!res.cancel) {
-          if (res.tapIndex == 0) {
-            this.doUpload('album')
-          } else if (res.tapIndex == 1) {
-            this.doUpload('camera')
-          }
-        }
-      }
-    })
-  },
-
-  // 上传图片接口
-  doUpload(choose) {
-    // 选择图片
-    var that = this;
-    let srcType = [];
-    console.log(choose);
-
-    if (choose === "album") {
-      srcType.push("album");
-    } else {
-      srcType.push("camera");
-    }
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: srcType,
-      success: (res) => {
-        let tempFilePaths = res.tempFilePaths;
-        wx.getImageInfo({
-          src: tempFilePaths[0],
-          success: (res) => {
-            if (res.height > res.width) {
-              res.width *= (0.95 * 0.8 * 1094) / res.height;
-              that.setData({
-                showAddButton: false,
-                imgUrl: tempFilePaths,
-                uploadedImageHeight: res.height * app.globalData.pixelRatio,
-                uploadedImageWidth: res.width,
-              });
-            } else if (res.height == res.width) {
-              that.setData({
-                showAddButton: false,
-                imgUrl: tempFilePaths,
-                uploadedImageHeight: 750,
-                uploadedImageWidth: 750,
-              });
-            }
-            else {
-              res.height *= 750 / res.width;
-              that.setData({
-                showAddButton: false,
-                imgUrl: tempFilePaths,
-                uploadedImageHeight: res.height,
-                uploadedImageWidth: res.width * app.globalData.pixelRatio,
-              });
-            }
-            console.log("imageDiary:" + this.data.uploadedImageWidth + " , " + this.data.uploadedImageHeigth);
-          }
-        });
-        UploadImage(tempFilePaths[0])
-          .then((res) => {
-            wx.hideLoading();
-            wx.showToast({
-              title: '上传成功',
-              icon: 'success',
-              duration: 2000,
-            })
-            console.log("upload images completed: " + res.imgUrl)
-          })
-          .catch((e) => {
-            wx.hideLoading()
-            wx.showToast({
-              title: '上传失败: ' + e,
-              icon: 'fail',
-              duration: 2000,
-            })
-            console.log("upload images fail:" + e)
-          })
-      },
-      fail: function (res) { },
-      complete: function (res) { }
-    })
-  },
-
   //請求文字模板
-  getTextModule(sourceText, color) {
+  getTextModule(sourceText, color, fontSize, id) {
     var textModule = {
-      nodes: [{
-        name: 'div',
-        attrs: {
-          style: 'display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; transform: scale(0.3, 0.3);'
-        },
-        children: [{
-          name: 'div',
-          attrs: {
-            style: 'font-size: 50pt; font-family:; letter-spacing: 10px; line-height: 95%;'
-          },
-          children: [{
-            type: 'text',
-            text: '05:20'
-          }]
-        },
-        {
-          name: 'div',
-          attrs: {
-            style: 'font-size: 13pt; letter-spacing: 8px; color:' + color + ';',
-          },
-          children: [{
-            type: 'text',
-            text: sourceText,
-          }]
-        },
-        {
-          name: 'div',
-          attrs: {
-            style: 'font-size: 10pt;'
-          },
-          children: [{
-            type: 'text',
-            text: 'Let time stop at this moment'
-          }]
-        }]
-      }],
+      nodes: "<div style='display: flex; flex-direction: column;justify-content: center; align-items: center; color: " + color + "; transform: scale(" + fontSize + "," + fontSize + ");'>"
+      + "<div style='font-size: 50pt; font-family:; letter-spacing: 10rpx;'>05:20</div>"
+      + "<div style='letter-spacing: 10rpx;'>" + sourceText + "</div>"
+      + "<div style='font-size: 10pt'>Let time stop at this moment</div>"
+      + "</div>",
       defaltValue: {},
+      id: id,
     }
     return textModule;
   },
 
-  //显示字体大小选择器
-  showSlider() {
+  //显示文本工具栏
+  showTools() {
     console.log("我被点击了！");
     this.setData({
-      showFontSizeSlider: !this.data.showFontSizeSlider,
+      isShowTools: !this.data.isShowTools,
     });
   },
 
@@ -654,4 +561,12 @@ Page({
       fontSize: e.detail.value,
     });
   },
+
+  changeTextReady(){
+    this.setData({
+      isShowTools: !this.data.isShowTools,
+      isMoveable: !this.data.isMoveable,
+      isTextEmpty: !this.data.isTextEmpty,
+    })
+  }
 })

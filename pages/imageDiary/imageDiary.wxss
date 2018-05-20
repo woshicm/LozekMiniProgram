@@ -43,7 +43,7 @@
 
 .input-text {
   font-size: 13pt;
-  margin-top: 8rpx;
+  /* margin-top: 8rpx; */
   width: 100%；
 }
 
@@ -70,7 +70,7 @@
 }
 .view-userOperationArea{
   width: 100%;
-  height: 1094rpx;
+  height: 1150rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,25 +91,41 @@
 }
 
 .view-mainLayout{
-  height: 1200rpx;
+  height: 1150rpx;
 }
 
 .view-layoutFirst {
   background-color: #f5f5f5;
   width: 750rpx;
-  height: 75%;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .view-layoutSecond {
-  height: 25%;
+  height: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
+.view-layoutSecond-shareButton{
+  height: 20%;
+}
+.view-layoutSecond-preview{
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: 20rpx;
+}
+.view-layoutSecond-preview-textModule{
+  height: 40%;
+}
+.view-layoutSecond-preview-colorModule{
+  height: 50%;
+}
 .view-layoutSecond-text {
     width: 86%;
     font-size: 13pt;
@@ -190,14 +206,15 @@
 }
 .movableArea-userInput{
   position: fixed;  
-  
   z-index: 1;  
 }
 .colorModuleScrollView{
-  height: 115rpx;
+  height: 100%;
   width: 750rpx;
   display: flex;
   white-space: nowrap;
+  position: relative;
+  top: 40rpx;
 }
 .colorModuleScrollView-item{
    display: inline-block;
@@ -217,28 +234,13 @@
 .textModuleScrollView{
   height: 170rpx;
   width: 750rpx;
-  display: flex;
   white-space: nowrap;
+  position: relative;
 }
 .textModuleScrollView-item{
-   display: inline-block;
-   width: 170rpx;
-   height: 100%;
-   position: relative;
-   bottom: 65rpx;
-   padding-left: 10rpx;
-   padding-right: 10rpx;
-}
-.textModuleScrollView-item-button{
-  text-align: center;
-  width: 107rpx;
-  height: 100%;
-  font-weight: 500;
-  border: none;
-  border-radius: 0%;
-}
-.textModuleScrollView-item-richText{
-  transform: scale(2, 2);
+  display: inline-block;
+  width: 170rpx;
+  height: 50%;
 }
 button::after {
   border-radius: 0;
@@ -387,10 +389,10 @@ radio{
 .fr { float: right;}  
 
 .slider-changeSize{
-  width: 90%;
+  width: 40%;
   position: absolute;
+  height: 20rpx;
 }
-
 
 
 

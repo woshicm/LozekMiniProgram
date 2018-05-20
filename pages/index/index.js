@@ -254,7 +254,7 @@ Page({
           src: tempFilePaths[0],
           success: (res) => {
             if (res.height > res.width) {
-              res.width *= (0.95 * 0.8 * 1200) / res.height;
+              res.width *= (0.95 * 0.8 * 1150) / res.height;
               imgUrl = tempFilePaths;
               uploadedImageWidth = res.width;
               uploadedImageHeight = res.height * app.globalData.pixelRatio;
