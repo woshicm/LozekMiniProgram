@@ -81,4 +81,66 @@ function UploadImage(path) {
   return promise
 }
 
-export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs }
+
+function getDiary() {
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.getDiary,
+      header: {
+        "token": globalData.token
+      },
+      method: 'GET',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+    })
+  });
+  return promise
+}
+
+function uploadTextDiary(data) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.saveDiary,
+      data: data,
+      header: {
+        "token": globalData.token
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.status)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+
+function uploadImageDiary(url){
+  return UploadImage(url)
+}
+
+function SaveDiary(data){
+  console.log(data['type'] == 1)
+  if(data['type']==1){
+    return uploadImageDiary(data['imageURL'])
+  }else{
+    return uploadTextDiary(data)
+  }
+}
+
+export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, getDiary, SaveDiary }

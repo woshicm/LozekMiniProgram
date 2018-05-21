@@ -1,6 +1,7 @@
 // page/imageDiary/imageDiary.js
 
-import { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs } from "../../common/util.js";
+// 导入方法统一以大写字母开头
+import { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, SaveDiary } from "../../common/util.js";
 
 let app = getApp()
 
@@ -560,4 +561,21 @@ Page({
       choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.rchTextSize, 0),
     });
   },
+  /**
+   * saveDiaryText 
+   */
+  saveDiaryText(){
+    console.log('s' + this.data.imgUrl)
+    let diary = {
+      'type':1,
+      'imageURL': this.data.imgUrl[0]
+    }
+    SaveDiary(diary)
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((e)=>{
+      console.log(e)
+    })
+  }
 })
