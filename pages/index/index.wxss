@@ -142,7 +142,7 @@
    height: 100%;
 }
 .index-display-image-scrollView{
-  width: 750rpx;
+  width: 600rpx;
   display: flex;
   white-space: nowrap;
 }
