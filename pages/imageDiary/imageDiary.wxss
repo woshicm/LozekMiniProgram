@@ -1,4 +1,5 @@
 /* pages/imageDiary/imageDiary.wxss */
+
 .checkgroup-threeItems {
   zoom: 80%;
   display: flex;
@@ -9,11 +10,11 @@
 }
 
 .img-addphoto {
-   height: 138rpx; 
+  height: 138rpx;
 }
 
-.img-uploaded{
-  box-shadow: 0rpx 0rpx 6rpx 2rpx rgba(0,0,0,0.38);
+.img-uploaded {
+  box-shadow: 0rpx 0rpx 6rpx 2rpx rgba(0, 0, 0, 0.38);
 }
 
 .img-helpLogo {
@@ -43,8 +44,7 @@
 
 .input-text {
   font-size: 13pt;
-  /* margin-top: 8rpx; */
-  width: 100%；
+  width: 100%；;
 }
 
 .text-displayLength {
@@ -65,16 +65,18 @@
   flex: 1;
 }
 
-.text-userInput{
+.text-userInput {
   font-size: 13pt;
 }
-.view-userOperationArea{
+
+.view-userOperationArea {
   width: 100%;
   height: 1150rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .view-dictum {
   margin-top: 6%;
 }
@@ -87,11 +89,10 @@
 .view-help-and-displayLength {
   display: flex;
   justify-content: space-between;
-  
 }
 
-.view-mainLayout{
-  height: 1150rpx;
+.view-mainLayout {
+  height: 1200rpx;
 }
 
 .view-layoutFirst {
@@ -109,10 +110,12 @@
   flex-direction: column;
   align-items: center;
 }
-.view-layoutSecond-shareButton{
+
+.view-layoutSecond-shareButton {
   height: 20%;
 }
-.view-layoutSecond-preview{
+
+.view-layoutSecond-preview {
   height: 80%;
   display: flex;
   flex-direction: column;
@@ -120,16 +123,20 @@
   position: relative;
   top: 20rpx;
 }
-.view-layoutSecond-preview-textModule{
+
+.view-layoutSecond-preview-textModule {
   height: 40%;
 }
-.view-layoutSecond-preview-colorModule{
+
+.view-layoutSecond-preview-colorModule {
   height: 50%;
 }
+
 .view-layoutSecond-text {
-    width: 86%;
-    font-size: 13pt;
+  width: 86%;
+  font-size: 13pt;
 }
+
 .view-line {
   height: 2rpx;
   width: 100%;
@@ -179,36 +186,38 @@
 
 .view-select-box-first {
   background: #fff;
-   width: 50%; 
-   position: relative; 
-   padding-right: 44rpx;
+  width: 50%;
+  position: relative;
+  padding-right: 44rpx;
 }
 
 .view-select-box-second {
-    background: #fff;
-   width: 100%; 
-   position: relative;
+  background: #fff;
+  width: 100%;
+  position: relative;
 }
 
 .view-select-layout {
   display: flex;
   flex-direction: row;
-    justify-content: space-around; 
-   margin-top: 8rpx;
+  justify-content: space-around;
+  margin-top: 8rpx;
 }
 
-.view-select-style-layout{
+.view-select-style-layout {
   position: relative;
 }
 
-.view-show-text{
+.view-show-text {
   font-size: 13pt;
 }
-.movableArea-userInput{
-  position: fixed;  
-  z-index: 1;  
+
+.movableArea-userInput {
+  position: fixed;
+  z-index: 1;
 }
-.colorModuleScrollView{
+
+.colorModuleScrollView {
   height: 100%;
   width: 750rpx;
   display: flex;
@@ -216,12 +225,14 @@
   position: relative;
   top: 40rpx;
 }
-.colorModuleScrollView-item{
-   display: inline-block;
-   width: 110rpx;
-   height: 100%;
+
+.colorModuleScrollView-item {
+  display: inline-block;
+  width: 110rpx;
+  height: 100%;
 }
-.colorModuleScrollView-item-button{
+
+.colorModuleScrollView-item-button {
   width: 100%;
   height: 100%;
   font-weight: 500;
@@ -231,24 +242,27 @@
   align-items: center;
   justify-content: center;
 }
-.textModuleScrollView{
+
+.textModuleScrollView {
   height: 170rpx;
   width: 750rpx;
   white-space: nowrap;
   position: relative;
 }
-.textModuleScrollView-item{
+
+.textModuleScrollView-item {
   display: inline-block;
   width: 170rpx;
   height: 50%;
 }
+
 button::after {
   border-radius: 0;
   border: none;
 }
 
-
 /*天气 时空 心情滤镜  */
+
 .view-threeItems {
   margin-top: 16rpx;
   font-size: 9pt;
@@ -268,131 +282,176 @@ button::after {
   width: 41px !important;
   height: 20px !important;
 }
+
 /**
  *修飾樣式*/
- .modify-divideLine-light{
-  background-color: rgba(55,121,205,0.12);
-} 
-.modify-divideLine-dark{
-  background-color: rgba(55,121,205,0.38);
-}
-.modify-shadow-main-down{
-  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(0,0,0,0.38);
-}
-.modify-shadow-main-up{
-  box-shadow: 0rpx -2rpx 8rpx 0rpx rgba(0,0,0,0.18);
+
+.modify-divideLine-light {
+  background-color: rgba(55, 121, 205, 0.12);
 }
 
-/*button*/  
-.btn-toEdit {  
-  width: 80%;  
-  padding: 20rpx 0;  
-  border-radius: 10rpx;  
-  text-align: center;  
-  margin: 0rpx 10%;  
-  background: #fafafa;  
-  color: #3f8ae9;  
-}  
-  
-/*mask*/  
-.drawer-screen {  
-  width: 100%;  
-  height: 100%;  
-  position: fixed;  
-  top: 0;  
-  left: 0;  
-  z-index: 1000;  
-  background: #000;  
-  opacity: 0.5;  
-   overflow: hidden;   
-}  
-  
-/*content*/  
-.drawer_box {  
-  width: 650rpx;  
-  overflow: hidden;  
-  position: fixed;  
-  top: 50%;  
-  left: 0;  
-  z-index: 1001;  
-  background: #FAFAFA;  
-  margin: -150px 50rpx 0 50rpx;  
-  border-radius: 3px;  
-}  
-  
-.drawer-title{  
-  padding:15px;  
-  font: 20px "microsoft yahei";  
-  text-align: center;  
-}  
-.drawer-content {  
-  width: 90%; 
+.modify-divideLine-dark {
+  background-color: rgba(55, 121, 205, 0.38);
+}
+
+.modify-shadow-main-down {
+  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(0, 0, 0, 0.38);
+}
+
+.modify-shadow-main-up {
+  box-shadow: 0rpx -2rpx 8rpx 0rpx rgba(0, 0, 0, 0.18);
+}
+
+/*button*/
+
+.btn-toEdit {
+  width: 80%;
+  padding: 20rpx 0;
+  border-radius: 10rpx;
+  text-align: center;
+  margin: 0rpx 10%;
+  background: #fafafa;
+  color: #3f8ae9;
+}
+
+/*mask*/
+
+.drawer-screen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+}
+
+/*content*/
+
+.drawer_box {
+  width: 650rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 1001;
+  background: #fafafa;
+  margin: -150px 50rpx 0 50rpx;
+  border-radius: 3px;
+}
+
+.drawer-title {
+  padding: 15px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+}
+
+.drawer-content {
+  width: 90%;
   height: 210px;
   margin-left: 5%;
   margin-right: 5%;
-}  
-  
-.btn_ok{  
-  padding: 10px;  
-  font: 20px "microsoft yahei";  
-  text-align: center;  
-  border-top: 1px solid #E8E8EA;  
-  color: #3CC51F;  
-}  
-  
-.top{  
-    padding-top:8px;  
-}  
-.bottom {  
-    padding-bottom:8px;  
-}  
-.title {  
-    height: 30px;  
-    line-height: 30px;  
-    width: 160rpx;  
-    text-align: center;  
-    display: inline-block;  
-    font: 300 28rpx/30px "microsoft yahei";  
-}  
-  
-.input_base {  
-    border: 2rpx solid #ccc;  
-    padding-left: 10rpx;  
-    margin-right: 50rpx;  
-}  
-.input_h30{  
-    height: 30px;  
-    line-height: 30px;  
-}  
-.input_h60{  
-    height: 60px;  
-}  
-.input_view{  
-    font: 12px "microsoft yahei";  
-    background: #fff;  
-    color:#000;  
-    line-height: 30px;  
-}  
-  
-input {  
-    font: 12px "microsoft yahei";  
-    background: #fff;  
-    color:#000 ;  
-}  
-radio{  
-    margin-right: 20px;  
-}  
-.grid { display: -webkit-box; display: box; }  
-.col-0 {-webkit-box-flex:0;box-flex:0;}  
-.col-1 {-webkit-box-flex:1;box-flex:1;}  
-.fl { float: left;}  
-.fr { float: right;}  
-
-.slider-changeSize{
-  width: 40%;
-  position: absolute;
-  height: 20rpx;
 }
 
+.btn_ok {
+  padding: 10px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+  border-top: 1px solid #e8e8ea;
+  color: #3cc51f;
+}
 
+.top {
+  padding-top: 8px;
+}
 
+.bottom {
+  padding-bottom: 8px;
+}
+
+.title {
+  height: 30px;
+  line-height: 30px;
+  width: 160rpx;
+  text-align: center;
+  display: inline-block;
+  font: 300 28rpx/30px "microsoft yahei";
+}
+
+.input_base {
+  border: 2rpx solid #ccc;
+  padding-left: 10rpx;
+  margin-right: 50rpx;
+}
+
+.input_h30 {
+  height: 30px;
+  line-height: 30px;
+}
+
+.input_h60 {
+  height: 60px;
+}
+
+.input_view {
+  font: 12px "microsoft yahei";
+  background: #fff;
+  color: #000;
+  line-height: 30px;
+}
+
+input {
+  font: 12px "microsoft yahei";
+  background: #fff;
+  color: #000;
+}
+
+radio {
+  margin-right: 20px;
+}
+
+.grid {
+  display: -webkit-box;
+  display: box;
+}
+
+.col-0 {
+  -webkit-box-flex: 0;
+  box-flex: 0;
+}
+
+.col-1 {
+  -webkit-box-flex: 1;
+  box-flex: 1;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.slider-changeRichSize {
+  width: 80%;
+  position: fixed;
+  top: 870rpx;
+  padding-right: 40rpx;
+}
+
+.img-changeTextStatus{
+  height: 80rpx;
+  position: fixed;
+  left: 400rpx;
+  top: 600rpx;
+}
+
+.img-EditDictum{
+    height: 80rpx;
+    position: fixed;
+    left: 400rpx;
+    top: 700rpx;
+}
