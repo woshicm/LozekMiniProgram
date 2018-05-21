@@ -1,4 +1,4 @@
-import { ParseText, UploadImage } from "../../common/util.js";
+import { ParseText, UploadImage, getDiary } from "../../common/util.js";
 
 var app = getApp()
 
@@ -24,9 +24,11 @@ Page({
    */
 
   onLoad(options) {
-    this.getDiaryData();
-  },
 
+  },
+  onShow(){
+    this.displayDiary()
+  },
   onUnload() {
 
   },
@@ -295,43 +297,56 @@ Page({
             wx.setStorageSync('imgUrl', imgUrl);
             wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
             wx.setStorageSync('uploadedImageHeight', uploadedImageHeight);
+            //获取图片base64编码
+            // let reader = new FileReader();
+            // let base64 = "";
+            // reader.readAsArrayBuffer(new Blob(imgUrl));
+            // reader.onload = function (e) {
+            //   let arrayBuffer = reader.result;
+            //   base64 = wx.arrayBufferToBase64(arrayBuffer)
+            //   console.log(base64)
+            // }
+            //发起api滤镜
+            // wx.request({
+            //   url: 'https://api.ai.qq.com/fcgi-bin/vision/vision_imgfilter',
+            //   data:{
+            //     "app_id": 1106918284,
+            //     "time_stamp": 2,
+            //     "noce_str": "sadsadefadsfas",
+            //      "sign": "",
+            //      "filter": 1, 
+            //      "iamge": ,
+            //   },
+            // header:{
+            //   "content-type": "aplication/json"
+            // },
+            // success:(res)=>{
+            //   console.log(res.data)
+            // }
+            // })
             wx.navigateTo({
               url: '../imageDiary/imageDiary',
             });
-            
+
           }
         })
       }
     })
   },
-  getDiaryData() {
-    var diaryData = [
-      {
-        diary: {
-          text: [],
-          image: [{
-            imageURL: '/images/image-test.jpeg',
-          }],
-        },
-        date: [2018, 5, 1, 'Sat'],
-      },
-      {
-        diary: {
-          text: [{
-            head: '今天过得很快乐',
-            lookthrough: '我是这里',
-          },
-          {
-            head: '今天过得很快乐',
-            lookthrough: '我是这里',
-          }],
-          image: [],
-        },
-        date: [2018, 5, 5, 'Sat'],
-      }
-    ];
-    this.setData({
-      diaryData: diaryData,
+  displayDiary() {
+    getDiary()
+    .then((res)=>{
+      this.setData({
+        diaryData: res.diary,
+      })
     })
+    .catch(()=>{
+      app.relogin(()=>{
+        this.displayDiary()
+      })
+    })
+    // this.setData({
+    //   diaryData: diaryData,
+    // })
   }
 })
