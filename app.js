@@ -10,6 +10,7 @@ App({
     api: {
       login: '',
       // getDiarys : base + '/diarys',
+      saveDiary: '',
       getDiary : '',
       uploadImage: '',
       parseText: ''
@@ -32,6 +33,7 @@ App({
     this.globalData.api.uploadImage = this.globalData.baseURL + 'upload'
     this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
     this.globalData.api.getDiary = this.globalData.baseURL + 'diary'
+    this.globalData.api.saveDiary = this.globalData.baseURL + 'diary'
   },
   
   login: function (callback){
@@ -62,7 +64,13 @@ App({
             this.globalData.token = wx.getStorageSync("token")
           }) 
         }else{
-          this.globalData.token = wx.getStorageSync("token")
+          // Check whether the token has expired.
+          if(!this.tokenIsExpired())
+            this.globalData.token = wx.getStorageSync("token")
+          else
+            this.login(() => {
+              this.globalData.token = wx.getStorageSync("token")
+            }) 
         }
       },
       fail: (res) => {
@@ -74,7 +82,7 @@ App({
       },
     })
   },
-  relogin: ()=> {
+  relogin: (callback)=> {
     let app = getApp()
     wx.login({
       success: (res) => {
@@ -87,12 +95,18 @@ App({
           success: (res) => {
             wx.setStorageSync('token', res.data.token)
             app.globalData.token = wx.getStorageSync("token")
+            callback()
           }
         })
       },
-      fail: function (res) { },
+      fail: function (res) { 
+        console.log("login error: " + res)
+      },
       complete: function (res) { },
     })
+  },
+  tokenIsExpired(){
+    return true
   },
   getUserInfo: function (cb) {
     var that = this

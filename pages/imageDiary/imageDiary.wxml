@@ -21,7 +21,7 @@
     <image class="img-changeTextStatus" src="/images/image-Dot.svg" hidden="{{isShowTools}}" bindtap='changeTextReady'></image>
     <image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>
     <!--分享按钮  -->
-    <view class='view-layoutSecond-shareButton'>
+    <view class='view-layoutSecond-shareButton' bindtap='saveDiaryText'>
       <image src="/images/icon-imageDiary-shareButton.png" class='img-share'></image>
     </view>
     <view class='view-layoutSecond-preview'>

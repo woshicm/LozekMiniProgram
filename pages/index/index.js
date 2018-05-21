@@ -1,4 +1,4 @@
-import { ParseText, UploadImage } from "../../common/util.js";
+import { ParseText, UploadImage, getDiary } from "../../common/util.js";
 
 var app = getApp()
 
@@ -24,7 +24,7 @@ Page({
    */
 
   onLoad(options) {
-    this.getDiaryData();
+    this.displayDiary();
   },
 
   onUnload() {
@@ -331,34 +331,20 @@ Page({
       }
     })
   },
-  getDiaryData() {
-    var diaryData = [
-      {
-        diary: {
-          text: [],
-          image: [{
-            imageURL: '/images/image-test.jpeg',
-          }],
-        },
-        date: [2018, 5, 1, 'Sat'],
-      },
-      {
-        diary: {
-          text: [{
-            head: '今天过得很快乐',
-            lookthrough: '我是这里',
-          },
-          {
-            head: '今天过得很快乐',
-            lookthrough: '我是这里',
-          }],
-          image: [],
-        },
-        date: [2018, 5, 5, 'Sat'],
-      }
-    ];
-    this.setData({
-      diaryData: diaryData,
+  displayDiary() {
+    getDiary()
+    .then((res)=>{
+      this.setData({
+        diaryData: res.diary,
+      })
     })
+    .catch(()=>{
+      app.relogin(()=>{
+        this.displayDiary()
+      })
+    })
+    // this.setData({
+    //   diaryData: diaryData,
+    // })
   }
 })
