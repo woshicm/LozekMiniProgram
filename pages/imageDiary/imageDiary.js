@@ -565,7 +565,6 @@ Page({
    * saveDiaryText 
    */
   saveDiaryText(){
-    console.log('s' + this.data.imgUrl)
     let diary = {
       'type':1,
       'imageURL': this.data.imgUrl[0]
