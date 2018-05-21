@@ -163,8 +163,14 @@ Page({
 
   },
   onHide: function () {
+    wx.showModal({
+      title: '提示',
+      content: '是否放棄修改？',
+    })
+    console("onHide")
   },
   onUnload: function () {
+    console.log("onUnload")
   },
 
   //-----------------------------前端函數-----------------------------------------//
@@ -475,7 +481,7 @@ Page({
       color = this.data.colorModuleScrollView[this.data.choseColorModuleId].color;
     this.setData({
       choseTextModuleId: choseTextModuleId,
-      choseTextModule: this.getTextModule(this.data.value, color, 0.5, choseTextModuleId)
+      choseTextModule: this.getTextModule(this.data.inputValue, color, 0.5, choseTextModuleId)
     })
   },
   /**
