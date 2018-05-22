@@ -105,6 +105,7 @@ function getDiary() {
   return promise
 }
 
+<<<<<<< Updated upstream
 function uploadTextDiary(data) {
   let promise = new Promise(function (resolve, reject) {
     wx.request({
@@ -143,3 +144,6 @@ function SaveDiary(data){
 }
 
 export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, getDiary, SaveDiary }
+=======
+export { ParseText, UploadImage, getDiary }
+>>>>>>> Stashed changes
