@@ -132,7 +132,6 @@ function uploadImageDiary(url){
 }
 
 function SaveDiary(data){
-  console.log(data['type'] == 1)
   if(data['type']==1){
     return uploadImageDiary(data['imageURL'])
   }else{

@@ -24,9 +24,11 @@ Page({
    */
 
   onLoad(options) {
-    this.displayDiary();
-  },
 
+  },
+  onShow(){
+    this.displayDiary()
+  },
   onUnload() {
 
   },
