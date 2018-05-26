@@ -139,4 +139,26 @@ function SaveDiary(data){
   }
 }
 
-export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, getDiary, SaveDiary }
+//获取当前时间信息
+function GetCurrentTime () {
+  var now = new Date();
+  var yy = now.getFullYear();
+  var mm = now.getMonth() + 1;
+  var dd = now.getDate();
+  var days = new Array();
+  var hh = now.getHours();
+  var min = now.getMinutes();
+  var ss = now.getSeconds();
+  days[0] = "Sun";
+  days[1] = "Mon";
+  days[2] = "Tue";
+  days[3] = "Wed";
+  days[4] = "Thur";
+  days[5] = "Fri";
+  days[6] = "Sat";
+  var day = days[now.getDay()]
+  var array = {yy, mm, dd, day, hh, min, ss};
+  return array;
+}
+
+export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, getDiary, SaveDiary, GetCurrentTime }

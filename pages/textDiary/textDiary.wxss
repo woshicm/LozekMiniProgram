@@ -1,0 +1,52 @@
+.layout-main{
+  height: 1150rpx;
+  width: 750rpx;
+}
+.titleArea{
+  height: 14%;
+  margin-top: 20rpx;
+}
+.titleArea-title{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+.titleArea-dateDisplay{
+  font-size: 12pt;
+  height: 30%;
+  margin-bottom: 20rpx;
+}
+.title-inputTitle{
+  height: 60%;
+  width: 60%;
+  font-size: 17pt;
+  position: retative;
+  top: 30rpx;
+}
+.titleArea-dateDisplay{
+  margin-left: 25rpx;
+}
+.functionArea{
+  height: 5%;
+  border-bottom: 2rpx solid rgba(55,121,205,0.12);
+  display: flex;
+  flex-direction: row;
+}
+.functionArea-image{
+  height: 60%;
+  position: relative;
+  top: 10rpx;
+}
+.diaryArea{
+  height: 80%;
+  width: 700rpx;
+  margin-left: 25rpx;
+  margin-right: 25rpx;
+  margin-top: 20rpx;
+}
+.diary-diaryInputTextArea{
+  width: 100%;
+  height: 100%;
+  font-size: 12pt;
+}

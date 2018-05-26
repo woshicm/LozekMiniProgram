@@ -44,7 +44,6 @@
         </scroll-view>
       </swiper-item>
     </swiper>
-    <!-- 底部功能入口 -->
     <view class='index-display-buttonView modify-shadow-button'>
       <button class='index-display-button' style='width: 75rpx; margin-right: 0rpx;'>
         <image src='/images/icon/ic_my_location.svg' class="image-index-displayButton"></image>
@@ -60,16 +59,18 @@
       </button>
     </view>
   </view>
+      <!-- 底部功能入口 -->
   <view class='index-bottom modify-shadow-main-up'>
     <button class="index-bottom-item" bindtap='chooseImageTap'>
       <image src='/images/icon/imageDiaryLogo.png' class="image-diaryLogo" mode="widthFix"></image>
     </button>
     <view class='modify-divideLine-dark' style="width: 3rpx; height: 122rpx;"></view>
-    <button class="index-bottom-item">
+    <button class="index-bottom-item" bindtap='onToTextDiaryPageTap'>
       <image src="/images/icon/writingDiaryLogo.png" class="image-diaryLogo" mode="widthFix"></image>
     </button>
   </view>
 </view>
+<!-- 抽屉页 -->
 <view class='page-drawerPage' animation='{{animationData}}' style='left:{{drawerMenuLeft}}rpx;' bindtouchstart='onMainPageTouchstart' bindtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend'>
   <view class='drawerPersonalInfo'>
     <open-data type="userAvatarUrl" class='image-portraitOfDrawer'></open-data>
