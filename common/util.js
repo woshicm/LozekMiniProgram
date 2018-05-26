@@ -26,9 +26,6 @@ function getCurrentPageUrlWithArgs() {
   return urlWithArgs
 }
 
-
-
-
 function ParseText(text) {
   let promise = new Promise(function (resolve, reject) {
     wx.request({

@@ -255,19 +255,17 @@ Page({
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
+            imgUrl = tempFilePaths[0];
             if (res.height > res.width) {
               res.width *= (0.95 * 0.8 * 1150) / res.height;
-              imgUrl = tempFilePaths;
               uploadedImageWidth = res.width;
               uploadedImageHeight = res.height * app.globalData.pixelRatio;
             } else if (res.height == res.width) {
-              imgUrl = tempFilePaths;
               uploadedImageWidth = 750;
               uploadedImageHeight = 750;
             }
             else {
               res.height *= 750 / res.width;
-              imgUrl = tempFilePaths;
               uploadedImageWidth = res.width * app.globalData.pixelRatio;
               uploadedImageHeight = res.height;
             }

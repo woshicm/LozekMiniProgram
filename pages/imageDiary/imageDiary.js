@@ -96,19 +96,24 @@ Page({
     /**
      *  彈窗頁
      */
-    showModalStatus: true,
-    showAddButton: true,
     keyboardHeight: 0,
-    showEdit: false, //false显示文案,true显示名言
+    inputTitle: '',
     inputLength: 0,
     inputValue: '',
     inputCursor: 0,
     inputMaxLength: 25,
     fontSize: "1pt",
-    rchTextSize: 0.5, //设置模板的大小
-    isTextEmpty: true,
-    isMoveable: true,
-    isShowTools: true,
+    showModalStatus: true,
+    showAddButton: true,
+    richTextSize: 0.5, //设置模板的大小
+    isLengthOver: false,//检测输入内容长度是否超过25
+    isFocus: true,  //是否获得焦点
+    isMoveable: true, //是否可移动
+    isInputNull: true, //判断输入是否为空
+    isShowTools: false,    //显示工具栏
+    isNarrateModel: false, //是否叙事模式
+    isInputStatu: true,  //是否输入模式
+    showEdit: false, //false显示文案,true显示名言
     showFontSizeSlider: true,   //打开字体选择slider
     switchChecked: false,  //是否选中叙事模式
     showDictumFisrt: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -151,7 +156,7 @@ Page({
       title: '提示',
       content: '是否放棄修改？',
     })
-    console("onHide")
+    console.log("onHide")
   },
   onUnload: function () {
     console.log("onUnload")
@@ -241,10 +246,23 @@ Page({
    * 触发 input 编辑事件
    */
   textareaOnInputEvent: function (e) {
-    this.setData({
-      inputCursor: e.detail.cursor,         //暂时没用
-      inputLength: e.detail.value.length,
-    })
+    if (this.data.isLengthOver) {
+      this.setData({
+        isLengthOver: !this.data.isLengthOVer,
+      });
+      return this.data.inputValue;
+    }
+    switch (e.target.id) {
+      case 'title':
+        break;
+      case 'content':
+        this.setData({
+          inputCursor: e.detail.cursor,         //暂时没用
+          inputLength: e.detail.value.length,
+        });
+        break;
+      default: console.log("input函数有bug，快去消灭！");
+    }
   },
 
   /**
@@ -274,38 +292,58 @@ Page({
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     this.parseInputValue(value);
-    if (value.length == 0) {
+    switch (e.target.id) {
+      case 'title':
+        this.setData({
+          inputTitle: value,
+        });
+        break;
+      case 'content':
+        // var animation = wx.createAnimation({
+        //   duration: 200,  //动画时长  
+        //   timingFunction: "linear", //线性  
+        //   delay: 0  //0则不延迟  
+        // });
+        // this.animation = animation;
+        // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
+        // this.setData({
+        //   inputValue: value,
+        //   animationData: animation.export(),
+        // });
+        // wx.showToast({
+        //   title: 'blur',
+        // })
+        this.setData({
+          inputValue: value,
+        });
+        break;
+      default:
+        console.log("哈哈,失去焦点函数有bug!");
+    }
+  },
+
+  /**
+   * 确认输入内容并跳转
+   */
+  confirm() {
+    if (this.data.inputValue.length == 0) {
       //隨機調用名言模板
     }
     else {
       var array = []
       for (var i = 0; i < 10; i++) {
-        var suitableTextModule = this.getTextModule(value, 'black', 0.3, i);
+        var suitableTextModule = this.getTextModule(this.data.inputValue, 'black', 0.3, i);
         array.push(suitableTextModule)
       }
-    }
-    // var animation = wx.createAnimation({
-    //   duration: 200,  //动画时长  
-    //   timingFunction: "linear", //线性  
-    //   delay: 0  //0则不延迟  
-    // });
-    // this.animation = animation;
-    // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
-    // this.setData({
-    //   inputValue: value,
-    //   animationData: animation.export(),
-    // });
-    // wx.showToast({
-    //   title: 'blur',
-    // })
+    };
     this.setData({
-      inputValue: value,
-      isTextEmpty: !this.data.isTextEmpty,
+      isInputStatu: !this.data.isInputStatu,
       isMoveable: !this.data.isMoveable,
       textModuleScrollView: array,
-      choseTextModule: this.getTextModule(value, 'black', this.data.rchTextSize, 0),
-    });
+      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.richTextSize, 0),
+    })
   },
+
   //调用api处理输入文字 
   parseInputValue(value) {
     ParseText(value)
@@ -324,24 +362,23 @@ Page({
   },
 
   //开关叙事模式
-  switchModel() {
-    var that = this;
-    this.setData({
-      switchChecked: !this.data.switchChecked,
-    });
-    if (this.data.switchChecked) {
-      that.setData({
-        inputMaxLength: 50,
-      })
-    } else {
-      that.setData({
-        inputMaxLength: 25,
-        inputLength: that.data.inputValue.length,
-      });
-
-    }
-    console.log(that.data.inputMaxLength);
-  },
+  // switchModel() {
+  //   var that = this;
+  //   this.setData({
+  //     switchChecked: !this.data.switchChecked,
+  //   });
+  //   if (this.data.switchChecked) {
+  //     that.setData({
+  //       inputMaxLength: 50,
+  //     })
+  //   } else {
+  //     that.setData({
+  //       inputMaxLength: 25,
+  //       inputLength: that.data.inputValue.length,
+  //     });
+  //   }
+  //   console.log(that.data.inputMaxLength);
+  // },
   // 打开dictum下拉显示框
   selectDictum(e) {
 
@@ -516,7 +553,7 @@ Page({
     this.setData({
       imageFilter: operation,
       choseColorModuleId: colorModuleId,
-      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.rchTextSize, this.data.choseTextModuleId)
+      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.richTextSize, this.data.choseTextModuleId)
     })
   },
 
@@ -546,8 +583,8 @@ Page({
   //改变富文本大小
   changeRichSize(e) {
     this.setData({
-      rchTextSize: e.detail.value * 0.025,
-      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.rchTextSize, 0),
+      richTextSize: e.detail.value * 0.025,
+      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.richTextSize, 0),
     });
   },
 
@@ -556,31 +593,49 @@ Page({
     this.setData({
       isShowTools: !this.data.isShowTools,
       isMoveable: !this.data.isMoveable,
-      isTextEmpty: !this.data.isTextEmpty,
+      isInputStatu: !this.data.isInputStatu,
     })
   },
 
-  //改变富文本大小
-  changingRichSize(e) {
-    this.setData({
-      rchTextSize: e.detail.value * 0.025,
-      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.rchTextSize, 0),
-    });
-  },
   /**
    * saveDiaryText 
    */
-  saveDiaryText(){
+  saveDiaryText() {
     let diary = {
-      'type':1,
-      'imageURL': this.data.imgUrl[0]
+      'type': 1,
+      'imageURL': this.data.imgUrl
     }
     SaveDiary(diary)
-    .then((res)=>{
-      console.log(res)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  },
+  /**
+   * 切换叙事模式
+   */
+  changeToNarrate() {
+    let maxLength = this.data.inputMaxLength;
+    let value = this.data.inputValue;
+    let isOver = this.data.isLengthOver;
+    if (value.length > 25) {
+      value = value.slice(0, 25);
+      isOver = true;
+    }
+    if (maxLength == 25) {
+      maxLength = 50;
+    } else {
+      maxLength = 25;
+    }
+    this.setData({
+      isNarrateModel: !this.data.isNarrateModel,
+      isFocus: !this.data.isFocus,
+      inputMaxLength: maxLength,
+      inputValue: value,
+      isLengthOver: isOver,
     })
-    .catch((e)=>{
-      console.log(e)
-    })
-  }
+  },
+
 })
