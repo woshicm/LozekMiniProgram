@@ -255,19 +255,17 @@ Page({
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
+            imgUrl = tempFilePaths[0];
             if (res.height > res.width) {
-              res.width *= (0.95 * 0.8 * wx.getSystemInfoSync().windowHeight) / res.height;
-              imgUrl = tempFilePaths;
+              res.width *= (0.9 * 0.8 * wx.getSystemInfoSync().windowHeight) / res.height;
               uploadedImageWidth = res.width;
-              uploadedImageHeight = 0.95 * 0.8 * wx.getSystemInfoSync().windowHeight;
+              uploadedImageHeight = 0.9 * 0.8 * wx.getSystemInfoSync().windowHeight;
             } else if (res.height == res.width) {
-              imgUrl = tempFilePaths;
               uploadedImageWidth = wx.getSystemInfoSync().windowWidth;
               uploadedImageHeight = wx.getSystemInfoSync().windowWidth;
             }
             else {
               res.height *= wx.getSystemInfoSync().windowWidth / res.width;
-              imgUrl = tempFilePaths;
               uploadedImageWidth = wx.getSystemInfoSync().windowWidth;
               uploadedImageHeight = res.height;
             }

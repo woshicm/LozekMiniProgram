@@ -44,6 +44,7 @@
 
 .input-text {
   font-size: 13pt;
+  width: 80%;
 }
 
 .text-displayLength {
@@ -439,12 +440,12 @@ radio {
   height: 80rpx;
   position: fixed;
   left: 400rpx;
-  top: 600rpx;
+  top: 400rpx;
 }
 
 .img-EditDictum{
     height: 80rpx;
     position: fixed;
     left: 400rpx;
-    top: 700rpx;
+    top: 500rpx;
 }

@@ -8,31 +8,42 @@
     <image src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px; filter: {{imageFilter}};'></image>
     <movable-area class='movableArea-userInput' disabled="{{isMoveable}}" scale-area='true' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;'>
       <!-- <movable-view direction='all' scale='true' scale-min='0.5' scale-max='{{(uploadedImageHeight / choseTextModule.height > uploadedImageWidth / choseTextModule.width) ? uploadedImageWidth / (choseTextModule.width * pixelRatio) : uploadedImageHeight / (choseTextModule.height * pixelRatio)}}' style='width: {{choseTextModule.width}}px; height: {{choseTextModule.height}}px;'> -->
-       <textarea class="input-text" wx:key="this" hidden="{{!isTextEmpty}}" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入文案。' maxlength='{{inputMaxLength}}' placeholder-style='font-size: 13pt;'
-          show-confirm-bar='false' auto-focus="{{true}}"></textarea>
-      <movable-view hidden="{{isTextEmpty}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{choseTextModule.systemVariable.width}}px; height: {{choseTextModule.systemVariable.height}}px;' x='{{(uploadedImageWidth - choseTextModule.systemVariable.width) / 2}}px' y='{{(uploadedImageHeight - choseTextModule.systemVariable.height) / 2}}px' bindchange='onMovableAreaChangeEvent'>
+      <input class='input-text' style="" hidden="{{!(isInputStatu && isNarrateModel)}}" placeholder='请在这里输入标题' maxlength='6' focus="{{!isFocus}}" bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" id='title'></input>
+      <textarea class="input-text" wx:key="this" hidden="{{!isInputStatu}}" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入文案。' maxlength='{{inputMaxLength}}' placeholder-style='font-size: 13pt'
+        show-confirm-bar='false' focus="{{isFocus}}" id='content'></textarea>
+      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px'
+        bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent'>
         <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools'></rich-text>
       </movable-view>
     </movable-area>
   </view>
   <!--文本区  -->
   <view class='view-layoutSecond modify-shadow-main-up'>
-    <!-- <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' hidden="{{isShowTools}}" bindchange='changeRichSize' bindchanging='changingRichSize'></slider> -->
-    <image class="img-changeTextStatus" src="/images/image-Dot.svg" hidden="{{isShowTools}}" bindtap='changeTextReady'></image>
-    <image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>
+    <!--切换叙事模式  -->
+    <image class="img-changeTextStatus" src="/images/image-clock.svg" hidden="{{!isInputStatu}}" bindtap='changeToNarrate'></image>
+    <!--确认输入内容不再修改  -->
+    <image class='img-EditDictum' style="top: 300rpx;" src="/images/icon-imageDiary-help.svg" hidden="{{!isInputStatu}}" bindtap='confirm'></image>
+    <!--滑动放大  -->
+    <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' hidden="{{!isShowTools}}" bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}'></slider>
+    <!--切换输入状态  -->
+    <image class="img-changeTextStatus" src="/images/image-Dot.svg" hidden="{{!isShowTools}}" bindtap='changeTextReady'></image>
+    <!--打开名言窗口  -->
+    <image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{!isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>
     <!--分享按钮  -->
     <view class='view-layoutSecond-shareButton' bindtap='saveDiaryText'>
       <image src="/images/icon-imageDiary-shareButton.png" class='img-share'></image>
     </view>
     <view class='view-layoutSecond-preview'>
+      <!-- 文本模板预览区 -->
       <view class='view-layoutSecond-preview-textModule'>
         <scroll-view scroll-x='true' class='textModuleScrollView'>
           <view style='border: {{textModuleIndex == choseTextModuleId ? "4rpx solid #3f8ae9": ""}};' wx:key="this" wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap'
-            data-text-module-id='{{textModuleItem.id}}' disabled='{{false}}'>
+            data-text-module-id='{{textModuleItem.systemVariable.id}}' disabled='{{false}}'>
             <rich-text nodes="{{textModuleItem.nodes}}" style='position:relative; bottom: 45rpx; right: 40rpx;'></rich-text>
           </view>
         </scroll-view>
       </view>
+      <!-- 颜色模板预览区 -->
       <view class='view-layoutSecond-preview-colorModule'>
         <scroll-view scroll-x='true' class='colorModuleScrollView'>
           <view wx:key="this" wx:for='{{colorModuleScrollView}}' wx:for-item='colorModuleItem' wx:for-index='colorModuleIndex' class='colorModuleScrollView-item'>
@@ -153,6 +164,5 @@
         </view>
       </view> -->
     <!-- </view> -->
-
   </view>
 </view>
