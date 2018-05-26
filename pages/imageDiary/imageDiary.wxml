@@ -24,11 +24,11 @@
     <!--确认输入内容不再修改  -->
     <image class='img-EditDictum' style="top: 300rpx;" src="/images/icon-imageDiary-help.svg" hidden="{{!isInputStatu}}" bindtap='confirm'></image>
     <!--滑动放大  -->
-    <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' hidden="{{!isShowTools}}" bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}'></slider>
+    <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' hidden="{{isShowTools}}" bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}'></slider>
     <!--切换输入状态  -->
-    <image class="img-changeTextStatus" src="/images/image-Dot.svg" hidden="{{!isShowTools}}" bindtap='changeTextReady'></image>
+    <image class="img-changeTextStatus" src="/images/image-Dot.svg" hidden="{{isShowTools}}" bindtap='changeTextReady'></image>
     <!--打开名言窗口  -->
-    <image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{!isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>
+    <image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>
     <!--分享按钮  -->
     <view class='view-layoutSecond-shareButton' bindtap='saveDiaryText'>
       <image src="/images/icon-imageDiary-shareButton.png" class='img-share'></image>

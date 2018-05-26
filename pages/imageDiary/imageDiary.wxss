@@ -441,6 +441,7 @@ radio {
   position: fixed;
   left: 400rpx;
   top: 400rpx;
+  z-index: 20;
 }
 
 .img-EditDictum{
@@ -448,4 +449,5 @@ radio {
     position: fixed;
     left: 400rpx;
     top: 500rpx;
+    z-index: 20;
 }
