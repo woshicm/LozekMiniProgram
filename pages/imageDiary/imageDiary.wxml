@@ -55,7 +55,6 @@
       <!--content-->
       <!--使用animation属性指定需要执行的动画-->
       <view animation="{{animationData}}" class="drawer_box" hidden="{{showModalStatus}}">
-
         <!--drawer content-->
         <view class="drawer-content">
           <view class='view-model'>
@@ -71,7 +70,6 @@
               <text class='text-displayLength'>{{inputLength}}/{{inputMaxLength}}</text>
             </view>
           </view> -->
-
           <view class='view-eachItem view-dictum'>
             <text class='text-eachTitle'>名言</text>
             <view class='view-select-layout'>
