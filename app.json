@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/imageDiary/imageDiary"],
+    "pages/imageDiary/imageDiary",
+    "pages/textDiary/textDiary"],
   "window": {
       "backgroundTextStyle": "dark",
       "navigationBarBackgroundColor": "#1976d2",

@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, SaveDiary } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, getCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime } from "../../common/util.js";
 
 let app = getApp()
 
@@ -18,15 +18,17 @@ Page({
     ],
     zIndex: 0,
     imgUrl: '',
-    uploadedImageWidth: 0,
-    uploadedImageHeigth: 0,
 
     //富文本節點：用於handedText顯示
     textModule: [],
     //照片濾鏡
     imageFilter: "",
+    //选中模板预览参数
+    scaleMax: 10,
+    pixelRatio: app.globalData.pixelRatio,
     //文本模板預覽參數
     choseTextModuleId: 0,
+    richTextSize: 1,
     choseTextModule: "",
     textModuleScrollView: [],
     //顏色模板預覽參數
@@ -238,8 +240,9 @@ Page({
   },
 
   /**
-   * 触发 input 编辑事件
+   * textarea监听事件
    */
+  //input编辑
   textareaOnInputEvent: function (e) {
     this.setData({
       inputCursor: e.detail.cursor,         //暂时没用
@@ -247,9 +250,7 @@ Page({
     })
   },
 
-  /**
-   * textarea獲得焦點處理函數
-   */
+  // 聚焦
   textareaOnFocusEvent: function (e) {
     // var keyboardHeight = e.detail.height;
     // //建立動畫：拉起鍵盤，彈窗向上偏移
@@ -268,9 +269,7 @@ Page({
     //   title: 'focus',
     // })
   },
-  /**
-   * textarea失去焦点处理函数
-   */
+  //失焦
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     this.parseInputValue(value);
@@ -280,7 +279,7 @@ Page({
     else {
       var array = []
       for (var i = 0; i < 10; i++) {
-        var suitableTextModule = this.getTextModule(value, 'black', 0.3, i);
+        var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
         array.push(suitableTextModule)
       }
     }
@@ -298,13 +297,26 @@ Page({
     // wx.showToast({
     //   title: 'blur',
     // })
+    var choseTextModule = this.getTextModule(value, 'black', 1, 0);
+    var scaleMax;
     this.setData({
       inputValue: value,
       isTextEmpty: !this.data.isTextEmpty,
       isMoveable: !this.data.isMoveable,
       textModuleScrollView: array,
-      choseTextModule: this.getTextModule(value, 'black', this.data.rchTextSize, 0),
+      choseTextModule: choseTextModule,
     });
+  },
+
+  /**
+   * movableArea 监听事件
+   */
+  //移动
+  onMovableAreaChangeEvent(e){
+    var clientCoordinate = e.detail;
+    this.setData({
+      clientCoordinat: clientCoordinate,
+    })
   },
   //调用api处理输入文字 
   parseInputValue(value) {
@@ -516,7 +528,7 @@ Page({
     this.setData({
       imageFilter: operation,
       choseColorModuleId: colorModuleId,
-      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.rchTextSize, this.data.choseTextModuleId)
+      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.richTextSize, this.data.choseTextModuleId)
     })
   },
 
@@ -524,18 +536,64 @@ Page({
   //-----------------------------前後交互函數-----------------------------------------//
   //請求文字模板
   getTextModule(sourceText, color, fontSize, id) {
+    var currentTime = GetCurrentTime();
+    var temp = "";
     var textModule = {
-      nodes: "<div style='display: flex; flex-direction: column;justify-content: center; align-items: center; color: " + color + "; transform: scale(" + fontSize + "," + fontSize + ");'>"
-      + "<div style='font-size: 50pt; font-family:; letter-spacing: 10rpx;'>05:20</div>"
-      + "<div style='letter-spacing: 10rpx;'>" + sourceText + "</div>"
-      + "<div style='font-size: 10pt'>Let time stop at this moment</div>"
+      nodes: "<div style=' align-items: center; color: " + color + "; transform: scale(" + fontSize + "," + fontSize + ");width: 126px; height: 84px; padding: 0px; text-align: center;'>"
+      + "<div style='font-size: 39px; letter-spacing: 3px; height: 60%;'>" + (temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min) + "</div>"
+      + "<div style='letter-spacing: 2px; height: 20%; font-size: 12px; margin:0px;'>" + (sourceText == '' ? '让时间停在这一刻' : sourceText) + "</div>"
+      + "<div style='font-size: 8px; margin:0px;padding: 0px;height: 20%'>Let time stop at this moment</div>"
       + "</div>",
-      defaltValue: {},
-      id: id,
+      systemVariable: {
+        defaultValue: '让时间停在这一刻',
+        id: id,
+        height: 84,
+        width: 126,
+        hasTime: true,
+        time: temp,
+        hasLocation: false,
+        marginLeft: 8,
+        marginTop: 6,
+      },
+      userVariable: {
+        color: color,
+        fontSize: fontSize,
+      }
     }
     return textModule;
   },
 
+  //返回文字模板
+  putTextModule(){
+    var beginPoint = [this.data.choseTextModule.systemVariable.marginbLeft + this.data.clientCoordinat.x, this.data.clientCoordinat.y]; 
+    var height = this.data.choseTextModule.systemVariable.height;
+    var actions = [
+      {
+        'action': 'text',
+        'text': choseTextModule.systemVariable.time,
+        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
+        'font-style': 'letter-spacing: 3px;',
+        'font-color': this.data.choseTextModule.systemVariable.time,
+        'font-size': '39px',
+      },
+      {
+        'action': 'text',
+        'text': this.data.inputValue,
+        'position': [beginPoint.x, beginPoint.y + height * 0.6 +(height * 0.2 - 12) / 2],
+        'font-style': 'letter-spacing: 2px;',
+        'font-color': this.data.choseTextModule.userVariable.color,
+        'font-size': '12px',
+      },
+      {
+        'action': 'text',
+        'text': 'Let time stop at this moment',
+        'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
+        'font-style': 'letter-spacing: 2px;',
+        'font-color': this.data.choseTextModule.userVariable.color,
+        'font-size': 8,
+      },
+    ]
+  },
   //显示文本工具栏
   showTools() {
     this.setData({
@@ -547,7 +605,7 @@ Page({
   changeRichSize(e) {
     this.setData({
       rchTextSize: e.detail.value * 0.025,
-      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.rchTextSize, 0),
+      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.richTextSize, 0),
     });
   },
 
@@ -571,9 +629,11 @@ Page({
    * saveDiaryText 
    */
   saveDiaryText(){
+    var actions = this.putTextModule();
     let diary = {
       'type':1,
-      'imageURL': this.data.imgUrl[0]
+      'imageURL': this.data.imgUrl[0],
+      'actions': actions,
     }
     SaveDiary(diary)
     .then((res)=>{
