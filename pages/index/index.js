@@ -257,16 +257,16 @@ Page({
           success: (res) => {
             imgUrl = tempFilePaths[0];
             if (res.height > res.width) {
-              res.width *= (0.95 * 0.8 * 1150) / res.height;
+              res.width *= (0.9 * 0.8 * wx.getSystemInfoSync().windowHeight) / res.height;
               uploadedImageWidth = res.width;
-              uploadedImageHeight = res.height * app.globalData.pixelRatio;
+              uploadedImageHeight = 0.9 * 0.8 * wx.getSystemInfoSync().windowHeight;
             } else if (res.height == res.width) {
-              uploadedImageWidth = 750;
-              uploadedImageHeight = 750;
+              uploadedImageWidth = wx.getSystemInfoSync().windowWidth;
+              uploadedImageHeight = wx.getSystemInfoSync().windowWidth;
             }
             else {
-              res.height *= 750 / res.width;
-              uploadedImageWidth = res.width * app.globalData.pixelRatio;
+              res.height *= wx.getSystemInfoSync().windowWidth / res.width;
+              uploadedImageWidth = wx.getSystemInfoSync().windowWidth;
               uploadedImageHeight = res.height;
             }
           },
@@ -346,5 +346,11 @@ Page({
     // this.setData({
     //   diaryData: diaryData,
     // })
+  },
+//文本日记跳转监听事件
+  onToTextDiaryPageTap(){
+    wx.navigateTo({
+      url: '../textDiary/textDiary',
+    })
   }
 })

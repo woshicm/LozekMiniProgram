@@ -1,0 +1,30 @@
+<view class='layout-main'>
+  <!-- 下拉页面 -->
+  <!-- <view class='dropDownArea'>
+    <view></view>
+  </view> -->
+  <!-- 標題輸入 -->
+  <view wx:if='{{titleValue.length == 0}}' class='titleArea'>
+    <view class='titleArea-dateDisplay'>
+      2018/5/24 星期四 多云 
+    </view>
+    <view class='titleArea-title'>
+      <input type='text' placeholder='请输入标题' maxlength='15' focus='true' class='title-inputTitle' placeholder-style='font-size: 10pt; width: 160rpx;' bindblur='onTitleInputBlurEvent' bindfocus='onTitleInputFocusEvent' style='border-bottom:{{inputBottomLineColor}};'></input>
+    </view>
+  </view>
+  <!-- 標題顯示 -->
+  <view wx:else>
+    
+  </view>
+  <!-- 功能區 -->
+  <view hidden='{{showFunctionArea}}' class='functionArea'>
+    <image src='/images/icon/icon-textDiary-indent.svg' class='functionArea-image' />
+    <image src='/images/icon/icon-textDiary-dictionary.svg' class='functionArea-image' />
+    <image src='/images/icon/icon-textDiary-pedia.svg' class='functionArea-image' />
+    <image src='/images/icon/icon-textDiary-snap.svg' class='functionArea-image' />
+  </view>
+  <!-- 正文 -->
+  <view class='diaryArea'>
+    <textarea class='diary-diaryInputTextArea' placeholder='请输入正文' placeholder-style='font-size: 10pt;' bindfocus='onDiaryAreaFocusEvent' bindblur='onDiaryAreaBlurEvent'></textarea>
+  </view>
+</view>

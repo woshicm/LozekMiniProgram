@@ -195,8 +195,8 @@
   right: 20rpx;
 }
 button::after {
-    border-radius: 0;
-    border: none;
+  border-radius: 0;
+  border: none;
 }
 .icon-drawer{
   width: 50rpx;
@@ -214,19 +214,4 @@ button::after {
 }
 .drawer-optionLine{
   padding-top: 10rpx;
-}
-.modify-divideLine-light{
-  background-color: rgba(55,121,205,0.12);
-}
-.modify-divideLine-dark{
-  background-color: rgba(55,121,205,0.38);
-}
-.modify-shadow-main-down{
-  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(0,0,0,0.38);
-}
-.modify-shadow-main-up{
-  box-shadow: 0rpx -2rpx 4rpx 0rpx rgba(0,0,0,0.38);
-}
-.modify-shadow-button{
-  box-shadow: 2rpx 2rpx 2rpx 0rpx rgba(0,0,0,0.38);
 }
