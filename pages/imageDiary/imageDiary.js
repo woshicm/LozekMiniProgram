@@ -642,24 +642,26 @@ Page({
 
   //返回文字模板
   putTextModule(){
-    var beginPoint = [this.data.choseTextModule.systemVariable.marginbLeft + this.data.clientCoordinat.x, this.data.clientCoordinat.y]; 
+    var beginPoint = {'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x, 
+                      'y': this.data.clientCoordinat.y}; 
+    console.log(this.data.choseTextModule.systemVariable.marginLeft)
     var height = this.data.choseTextModule.systemVariable.height;
     var actions = [
       {
         'action': 'text',
-        'text': choseTextModule.systemVariable.time,
+        'text': this.data.choseTextModule.systemVariable.time,
         'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
-        'font-style': 'letter-spacing: 3px;',
-        'font-color': this.data.choseTextModule.systemVariable.time,
-        'font-size': '39px',
+        'font-style': '',
+        'font-color': '',
+        'font-size': 39,
       },
       {
         'action': 'text',
         'text': this.data.inputValue,
         'position': [beginPoint.x, beginPoint.y + height * 0.6 +(height * 0.2 - 12) / 2],
-        'font-style': 'letter-spacing: 2px;',
+        'font-style': '',
         'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': '12px',
+        'font-size': 12,
       },
       {
         'action': 'text',
@@ -670,6 +672,7 @@ Page({
         'font-size': 8,
       },
     ]
+    return actions
   },
   //显示文本工具栏
   showTools() {
@@ -705,13 +708,14 @@ Page({
       'imageURL': this.data.imgUrl[0],
       'actions': actions,
     }
-    SaveDiary(diary)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+    console.log(actions)
+    // SaveDiary(diary)
+    //   .then((res) => {
+    //     console.log(res)
+    //   })
+    //   .catch((e) => {
+    //     console.log(e)
+    //   })
   },
   /**
    * 切换叙事模式
