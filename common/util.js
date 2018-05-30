@@ -139,6 +139,7 @@ function SaveDiary(data){
   }
 }
 
+
 //获取当前时间信息
 function GetCurrentTime () {
   var now = new Date();
