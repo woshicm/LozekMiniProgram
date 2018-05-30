@@ -647,7 +647,7 @@ Page({
     var actions = [
       {
         'action': 'text',
-        'text': choseTextModule.systemVariable.time,
+        'text': this.data.choseTextModule.systemVariable.time,
         'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
         'font-style': 'letter-spacing: 3px;',
         'font-color': this.data.choseTextModule.systemVariable.time,
@@ -702,7 +702,7 @@ Page({
     var actions = this.putTextModule();
     let diary = {
       'type':1,
-      'imageURL': this.data.imgUrl[0],
+      'imageURL': this.data.imgUrl,
       'actions': actions,
     }
     SaveDiary(diary)

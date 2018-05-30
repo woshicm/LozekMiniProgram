@@ -1,4 +1,5 @@
 <view class="page-mainPage" animation='{{animationData}}' style='left:{{mainPageLeft}}rpx;' bindtouchstart='onMainPageTouchstart' catchtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend' bindtap='onMainPageTap'>
+
   <view style='height: 149rpx;'>
     <view class="color-main" style='height: 119rpx;'>
       <open-data type="userAvatarUrl" class='image-portrait' catchtap='onPortraitTap'></open-data>
@@ -21,20 +22,22 @@
               <view class='index-display-timeLine'>
                 <!-- 這裡對日期加減的操作尚待完善 -->
                 <timeLine isLast='{{index == diaryData.length - 1}}' dash='{{index===0?false:!(diaryData[index-1].date[2] === displayItem.date[2] - 1)}}' date='{{displayItem.date}}' status='{{(displayItem.diary.text.length != 0 && displayItem.diary.image.length != 0) ? "both" : (displayItem.diary.image.length != 0 ? "image_only" : "text_only")}}'></timeLine>
+
               </view>
               <view class='index-display-aDay'>
                 <!-- 對每天的文本日記遍歷 -->
-                  <scroll-view wx:if='{{displayItem.diary.text.length != 0}}' scroll-x='true' class='index-display-text-scrollView'>
-                      <view wx:key="this" wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-text-item'>
-                        <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
-                      </view>
-                  </scroll-view>
+                <scroll-view wx:if='{{displayItem.diary.text.length != 0}}' scroll-x='true' class='index-display-text-scrollView'>
+                  <view wx:key="this" wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' class='index-display-text-item'>
+                    <textCard head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}'></textCard>
+                  </view>
+                </scroll-view>
+
                 <!-- 對每天的圖片日記遍歷 -->
-                  <scroll-view scroll-x='true' class='index-display-image-scrollView' wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
-                      <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' class='index-display-image-item' style='margin-right: 30rpx;'>
-                        <imageCard imageURL='{{imageItem.imageURL}}'></imageCard>
-                      </view>
-                  </scroll-view>
+                <scroll-view scroll-x='true' class='index-display-image-scrollView' wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
+                  <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' wx:for-index='imgIndex' class='index-display-image-item' style='margin-right: 30rpx;'>
+                    <imageCard id='{{"imgCard" + index}}' imageURL='{{imageItem.imageURL}}' data-index="{{index}}" data-urls='{{displayItem.diary.image}}' bindtap='previewImage' bindlongpress='onShareAppMessage' ></imageCard>
+                  </view>
+                </scroll-view>
               </view>
             </view>
           </view>
@@ -59,7 +62,7 @@
       </button>
     </view>
   </view>
-      <!-- 底部功能入口 -->
+  <!-- 底部功能入口 -->
   <view class='index-bottom modify-shadow-main-up'>
     <button class="index-bottom-item" bindtap='chooseImageTap'>
       <image src='/images/icon/imageDiaryLogo.png' class="image-diaryLogo" mode="widthFix"></image>
