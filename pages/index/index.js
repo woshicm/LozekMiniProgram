@@ -4,6 +4,9 @@ const app = getApp()
 
 Page({
   data: {
+    shareImageURL: '', //要分享的图片
+    deleteImageDIaryId: '', //要删除的图片日记的id
+    isShowTools: false, //是否显示图片工具菜单
     //時間軸
     diaryData: {},
     //導航抽屜
@@ -215,7 +218,7 @@ Page({
   toImageDiary: function () {
 
     wx.navigateTo({
-      url: '../imageDiary/imageDiary',
+      // url: '../imageDiary/imageDiary',
     })
   },
 
@@ -294,9 +297,9 @@ Page({
           // },
           fail: function (res) { },
           complete: function (res) {
-            wx.setStorageSync('imgUrl', imgUrl);
-            wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
-            wx.setStorageSync('uploadedImageHeight', uploadedImageHeight);
+            // wx.setStorageSync('imgUrl', imgUrl);
+            // wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
+            // wx.setStorageSync('uploadedImageHeight', uploadedImageHeight);
             //获取图片base64编码
             // let reader = new FileReader();
             // let base64 = "";
@@ -325,7 +328,7 @@ Page({
             // }
             // })
             wx.navigateTo({
-              url: '../imageDiary/imageDiary',
+              url: '../imageDiary/imageDiary?imgInfo=' + [imgUrl, uploadedImageWidth, uploadedImageHeight],
             });
 
           }
@@ -333,6 +336,8 @@ Page({
       }
     })
   },
+
+  //显示日记的数据
   displayDiary() {
     getDiary()
       .then((res) => {
@@ -345,10 +350,8 @@ Page({
           this.displayDiary()
         })
       })
-    // this.setData({
-    //   diaryData: diaryData,
-    // })
   },
+
   //文本日记跳转监听事件
   onToTextDiaryPageTap() {
     wx.navigateTo({
@@ -366,19 +369,48 @@ Page({
   },
 
   /**
+   * 5/30/2018 by yjj
+   * 显示image编辑菜单
+   */
+  showImageEditTools(e){
+    this.setData({
+      shareImageURL: e.currentTarget.dataset.imageurl,
+      deleteImageDIaryId: e.currentTarget.dataset.index,
+      isShowTools: !this.data.isShowTools,
+    })
+  },
+
+  /**
+   * 5/30/2018 by yjj
+   * 点击空白处隐藏编辑菜单
+   */
+  click_block(){
+    this.setData({
+      shareImageURL: '',
+      isShowTools: !this.data.isShowTools,
+    })
+  },
+
+  /**
    * 5/28/2018 by yjj
    * 删除图片
    */
   deleteImage(e) {
     var that = this;
-    var images = that.data.images;
-    var index = e.currentTarget.dataset.index;//获取当前长按图片下标
     wx.showModal({
       title: '提示',
       content: '确定要删除此图片吗？',
       success: function (res) {
         if (res.confirm) {
+          wx.request({
+            url: app.globalData.api.deleteImageDiary,
+            data:{
+              'id': that.data.deleteImageDiaryId,
+            },
+            method: 'POST',
+          })
           console.log('点击确定了');
+          that.displayDiary()
         } else if (res.cancel) {
           console.log('点击取消了');
           return false;
@@ -389,7 +421,7 @@ Page({
 
   /**
    * 5/28/2018 by yjj
-   * 分享给联系人
+   * 分享
    */
   onShareAppMessage(options) {
     var that = this;
@@ -417,10 +449,9 @@ Page({
     };
     // 来自页面内的按钮的转发
     if (options.from == 'button') {
-      var eData = options.target.dataset;
-      console.log(eData.name);     // shareBtn
+      console.log("that.data.shareImageURL: " + that.data.shareImageURL)
       // 此处可以修改 shareObj 中的内容
-      shareObj.path = '/pages/btnname/btnname?btn_name=' + eData.name;
+      shareObj.path = '/pages/previewDiary/previewDiary?imgUrl=' + that.data.shareImageURL 
     }
     // 返回shareObj
     return shareObj;

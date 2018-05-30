@@ -35,7 +35,18 @@
                 <!-- 對每天的圖片日記遍歷 -->
                 <scroll-view scroll-x='true' class='index-display-image-scrollView' wx:if='{{displayItem.diary.image.length != 0}}' style='margin-top: 10rpx;'>
                   <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' wx:for-index='imgIndex' class='index-display-image-item' style='margin-right: 30rpx;'>
-                    <imageCard id='{{"imgCard" + index}}' imageURL='{{imageItem.imageURL}}' data-index="{{index}}" data-urls='{{displayItem.diary.image}}' bindtap='previewImage' bindlongpress='onShareAppMessage' ></imageCard>
+                    <imageCard id='{{"imgCard" + index}}' imageURL='{{imageItem.imageURL}}' data-index="{{index}}" data-urls='{{displayItem.diary.image}}' data-imageurl='{{imageItem.imageURL}}' bindtap='previewImage' bindlongpress='showImageEditTools'></imageCard>
+                    <!--遮蔽层-->
+                    <view class="drawer-screen" hidden="{{!isShowTools}}" bindtap='click_block'></view>
+                    <!--content-->
+                    <!--使用animation属性指定需要执行的动画-->
+                    <view animation="{{animationData}} " class="drawer_box " hidden="{{!isShowTools}}">
+                      <!--drawer content-->
+                      <view class="drawer-content ">
+                        <button bindtap='deleteImage'>删除</button>
+                         <button open-type='share'>分享</button> 
+                      </view>
+                    </view>
                   </view>
                 </scroll-view>
               </view>

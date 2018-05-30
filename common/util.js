@@ -127,21 +127,21 @@ function uploadTextDiary(data) {
   return promise
 }
 
-function uploadImageDiary(url){
+function uploadImageDiary(url) {
   return UploadImage(url)
 }
 
-function SaveDiary(data){
-  if(data['type']==1){
+function SaveDiary(data) {
+  if (data['type'] == 1) {
     return uploadImageDiary(data['imageURL'])
-  }else{
+  } else {
     return uploadTextDiary(data)
   }
 }
 
 
 //获取当前时间信息
-function GetCurrentTime () {
+function GetCurrentTime() {
   var now = new Date();
   var yy = now.getFullYear();
   var mm = now.getMonth() + 1;
@@ -158,8 +158,15 @@ function GetCurrentTime () {
   days[5] = "Fri";
   days[6] = "Sat";
   var day = days[now.getDay()]
-  var array = {yy, mm, dd, day, hh, min, ss};
+  var array = {
+    yy, mm, dd, day, hh, min,
+  }
   return array;
+}
+
+//删除图片
+function deleteImageDIary() {
+  
 }
 
 export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, getDiary, SaveDiary, GetCurrentTime }

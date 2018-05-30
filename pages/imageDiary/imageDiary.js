@@ -142,10 +142,11 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
+    let imgInfo = options.imgInfo.split(',')
     this.setData({
-      imgUrl: wx.getStorageSync('imgUrl'),
-      uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
-      uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
+      imgUrl: imgInfo[0],
+      uploadedImageWidth: imgInfo[1],
+      uploadedImageHeight: imgInfo[2],
     })
   },
 
@@ -691,6 +692,7 @@ Page({
 
   //选择显示输入框还是富文本
   changeTextReady() {
+    console.log("你点不到我！")
     this.setData({
       isShowTools: !this.data.isShowTools,
       isMoveable: !this.data.isMoveable,
@@ -709,13 +711,13 @@ Page({
       'actions': actions,
     }
     console.log(actions)
-    // SaveDiary(diary)
-    //   .then((res) => {
-    //     console.log(res)
-    //   })
-    //   .catch((e) => {
-    //     console.log(e)
-    //   })
+    SaveDiary(diary)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   },
   /**
    * 切换叙事模式

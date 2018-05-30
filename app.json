@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/imageDiary/imageDiary",
-    "pages/textDiary/textDiary"
+    "pages/textDiary/textDiary",
+    "pages/previewDiary/previewDiary"
   ],
   "window": {
     "backgroundTextStyle": "dark",

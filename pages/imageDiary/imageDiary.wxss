@@ -442,16 +442,16 @@ radio {
   padding-right: 40rpx;
 }
 
-.img-changeTextStatus{
+.img-changeTextStatus {
   height: 80rpx;
   position: fixed;
   left: 400rpx;
   top: 400rpx;
 }
 
-.img-EditDictum{
-    height: 80rpx;
-    position: fixed;
-    left: 400rpx;
-    top: 500rpx;
+.img-EditDictum {
+  height: 80rpx;
+  position: fixed;
+  left: 400rpx;
+  top: 500rpx;
 }
