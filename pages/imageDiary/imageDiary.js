@@ -642,9 +642,10 @@ Page({
 
   //返回文字模板
   putTextModule(){
-    var beginPoint = {'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x, 
-                      'y': this.data.clientCoordinat.y}; 
-    console.log(this.data.choseTextModule.systemVariable.marginLeft)
+    var beginPoint = {
+      'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x - (app.globalData.windowWidth - this.data.uploadedImageWidth) / 2,
+      'y': this.data.clientCoordinat.y - (app.globalData.windowHeight * 0.9 * 0.8 - this.data.uploadedImageHeight) / 2
+      }; 
     var height = this.data.choseTextModule.systemVariable.height;
     var actions = [
       {
@@ -659,7 +660,7 @@ Page({
         'action': 'text',
         'text': this.data.inputValue,
         'position': [beginPoint.x, beginPoint.y + height * 0.6 +(height * 0.2 - 12) / 2],
-        'font-style': '',
+        'font-style': 'letter-spacing: 2px;',
         'font-color': this.data.choseTextModule.userVariable.color,
         'font-size': 12,
       },
@@ -705,17 +706,18 @@ Page({
     var actions = this.putTextModule();
     let diary = {
       'type':1,
-      'imageURL': this.data.imgUrl[0],
+      'imageURL': this.data.imgUrl,
+      'location': '',
       'actions': actions,
     }
     console.log(actions)
-    // SaveDiary(diary)
-    //   .then((res) => {
-    //     console.log(res)
-    //   })
-    //   .catch((e) => {
-    //     console.log(e)
-    //   })
+    SaveDiary(diary)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   },
   /**
    * 切换叙事模式

@@ -54,13 +54,14 @@ function ParseText(text) {
 }
 
 /*上传图片*/
-function UploadImage(path) {
+function UploadImage(data) {
   let promise = new Promise(function (resolve, reject) {
     wx.uploadFile({
       url: globalData.api.uploadImage,
-      filePath: path,
+      filePath: data['imageURL'],
       formData: {
-        description: "xxxxx"
+        'location': data['location'] || 'No Location' ,
+        'actions': JSON.stringify(data['actions']),
       },
       header: {
         "token": globalData.token
@@ -127,13 +128,13 @@ function uploadTextDiary(data) {
   return promise
 }
 
-function uploadImageDiary(url){
-  return UploadImage(url)
+function uploadImageDiary(data){
+  return UploadImage(data)
 }
 
 function SaveDiary(data){
   if(data['type']==1){
-    return uploadImageDiary(data['imageURL'])
+    return uploadImageDiary(data)
   }else{
     return uploadTextDiary(data)
   }

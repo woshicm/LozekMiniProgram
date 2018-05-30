@@ -6,7 +6,7 @@ App({
     pixelRatio: wx.getSystemInfoSync().pixelRatio,
     token:'1',
     // baseURL: 'http://localhost:8000/',
-    baseURL: 'http://111.230.24.245/',
+    baseURL: 'https://www.louzek.xyz/',
     api: {
       login: '',
       // getDiarys : base + '/diarys',
@@ -15,6 +15,8 @@ App({
       uploadImage: '',
       parseText: ''
     },
+    windowWidth: '',
+    windowHeight: '',
   },
 
   onLaunch: function () {
@@ -34,6 +36,9 @@ App({
     this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
     this.globalData.api.getDiary = this.globalData.baseURL + 'diary'
     this.globalData.api.saveDiary = this.globalData.baseURL + 'diary'
+
+    this.globalData.windowWidth = wx.getSystemInfoSync().windowWidth;
+    this.globalData.windowHeight = wx.getSystemInfoSync().windowHeight;
   },
   
   login: function (callback){
