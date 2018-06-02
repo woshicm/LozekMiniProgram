@@ -236,7 +236,6 @@ Page({
   },
 
   // 上傳圖片
-<<<<<<< HEAD
   chooseImageTap(e) {
       this.initCurrentDiaryIndex()
       this.setData({
@@ -404,9 +403,7 @@ Page({
         })
       }, 1000
     )
-  }
-
-})
+  },
 
   /**
      * 6/1/2018 by yjj
@@ -587,3 +584,4 @@ Page({
       scrollHeight: this.data.diaryData.length * 414 //scroll-top大于显示的内容高度即可滑动到底部
     })
   }
+})
