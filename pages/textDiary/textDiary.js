@@ -27,7 +27,7 @@ Page({
     choseCount: 0,
   },
 
- //-----------------------------生命週期函數-----------------------------------------//
+  //-----------------------------生命週期函數-----------------------------------------//
   /**
      * 生命周期函数--监听页面加载
      */
@@ -92,14 +92,14 @@ Page({
   /**
    * 标题区-输入
    */
-      //聚焦
+  //聚焦
   onTitleInputFocusEvent() {
     var inputBottomLineColor = '5rpx solid #3f8ae9';
     this.setData({
       inputBottomLineColor: inputBottomLineColor,
     })
   },
-      //失焦
+  //失焦
   onTitleInputBlurEvent(e) {
     var inputBottomLineColor = '3rpx solid rgba(55,121,205,0.12)';
     var value = e.detail.value;
@@ -114,7 +114,7 @@ Page({
   /**
    * 标题区-展示
    */
-  onTitleTapEvent(){
+  onTitleTapEvent() {
     this.setData({
       hideTitle: true,
     })
@@ -155,7 +155,7 @@ Page({
       isDiaryTextMaskHidden: true,
     })
   },
-      //正文輸入的遮罩，確保拿到text值
+  //正文輸入的遮罩，確保拿到text值
   onDiaryAreaMaskTapEvent() {
     this.setData({
       isDiaryTextFocus: false,
@@ -172,8 +172,8 @@ Page({
       isDiaryTextFocus: true,
     })
   },
-      // 预览相片
-  onPreviewPhotoTapEvent(){
+  // 预览相片
+  onPreviewPhotoTapEvent() {
 
   },
 
@@ -183,11 +183,11 @@ Page({
   onAddPhotoTap() {
     this.doUpload();
   },
-  onDeletePhotoTap(e){
+  onDeletePhotoTap(e) {
     var addedPhoto = this.data.addedPhoto;
     var index = e.currentTarget.dataset.deleteIndex;
-    for (var i = index; i < addedPhoto.length - 1; i++){
-      addedPhoto[i] = addedPhoto[i+1]
+    for (var i = index; i < addedPhoto.length - 1; i++) {
+      addedPhoto[i] = addedPhoto[i + 1]
     }
     addedPhoto.pop();
     this.setData({
@@ -195,7 +195,7 @@ Page({
     })
   },
   //-----------------------------前後交互函數-----------------------------------------//
-      // 获取图片
+  // 获取图片
   doUpload() {
     var that = this;
     wx.chooseImage({
@@ -222,10 +222,10 @@ Page({
       }
     })
   },
-      //上传后台
+  //上传后台
   save() {
     var createdTime = GetCurrentTime();
-    if(this.data.textDiaryData.length != 0)
+    if (this.data.textDiaryData.length != 0)
       createdTime = this.data.textDiary.system.createdTime;
     var textDiaryData = {
       main: {
