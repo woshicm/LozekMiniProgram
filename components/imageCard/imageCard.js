@@ -21,10 +21,8 @@ Component({
   methods: {
     //预览图片
     previewImageDiary(){
-      let urls = this.properties.imageURL.split('&')
-      let imageOriginUrl = urls[0] + '&type=origin&'+ urls[1]
       wx.previewImage({
-        urls: [imageOriginUrl],
+        urls: [this.properties.imageURL + '&type=origin'],
       })
     },
   }
