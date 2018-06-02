@@ -1,14 +1,24 @@
-import { ParseText, UploadImage, getDiary } from "../../common/util.js";
+import { ParseText, UploadImage, GetDiary, DeleteDiary } from "../../common/util.js";
 
 const app = getApp()
 
 Page({
   data: {
-    shareImageURL: '', //要分享的图片
-    deleteImageDIaryId: '', //要删除的图片日记的id
-    isShowTools: false, //是否显示图片工具菜单
+    // windowHeight: app.globalData.windowHeight,
+
     //時間軸
     diaryData: {},
+    scrollHeight: 700,
+    //文本日记测试
+    text: {
+      head: '这是一个测试',
+      lookthrough: '我不知道干嘛'
+    },
+    currentDisplayDiaryType: 'allTypes',      //显示哪种日记
+    //日记区
+    currentDiaryDataIndex: -1,  //标记是由哪组日记触发长按动作
+    currentTextDiaryIndex: -1,  //标记是由哪个文本日记触发长按动作
+    currentImageDiaryIndex: -1, //标记是由哪个图片日记触发长按动作
     //導航抽屜
     userInfo: {},
     check: false,   //是否触发滑动操作
@@ -218,12 +228,13 @@ Page({
   toImageDiary: function () {
 
     wx.navigateTo({
-      // url: '../imageDiary/imageDiary',
+      url: '../imageDiary/imageDiary',
     })
   },
 
   // 上傳圖片
   chooseImageTap() {
+    this.initCurrentDiaryIndex()
     wx.showActionSheet({
       itemList: ['本地上传', '拍照上传'],
       success: (res) => {
@@ -300,15 +311,6 @@ Page({
             // wx.setStorageSync('imgUrl', imgUrl);
             // wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
             // wx.setStorageSync('uploadedImageHeight', uploadedImageHeight);
-            //获取图片base64编码
-            // let reader = new FileReader();
-            // let base64 = "";
-            // reader.readAsArrayBuffer(new Blob(imgUrl));
-            // reader.onload = function (e) {
-            //   let arrayBuffer = reader.result;
-            //   base64 = wx.arrayBufferToBase64(arrayBuffer)
-            //   console.log(base64)
-            // }
             //发起api滤镜
             // wx.request({
             //   url: 'https://api.ai.qq.com/fcgi-bin/vision/vision_imgfilter',
@@ -328,7 +330,7 @@ Page({
             // }
             // })
             wx.navigateTo({
-              url: '../imageDiary/imageDiary?imgInfo=' + [imgUrl, uploadedImageWidth, uploadedImageHeight],
+              url: '../imageDiary/imageDiary?imgUrl=' + imgUrl + '&imageWidth=' + uploadedImageWidth + '&imageHeight=' + uploadedImageHeight
             });
 
           }
@@ -339,10 +341,15 @@ Page({
 
   //显示日记的数据
   displayDiary() {
-    getDiary()
+    GetDiary()
       .then((res) => {
+        // this.setData({
+        //   diaryData: res.diary,
+        // })
+        let newDiaryData = res.diary
+        newDiaryData[0].diary.text.push(this.data.text)
         this.setData({
-          diaryData: res.diary,
+          diaryData: newDiaryData,
         })
       })
       .catch(() => {
@@ -354,29 +361,59 @@ Page({
 
   //文本日记跳转监听事件
   onToTextDiaryPageTap() {
+    this.initCurrentDiaryIndex()
     wx.navigateTo({
       url: '../textDiary/textDiary',
     })
   },
 
   /**
+     * 6/1/2018 by yjj
+     * 点击文本预览
+     */
+  previewTextDiary(e) {
+    this.textCard = this.selectComponent("#" + e.currentTarget.id) //将某个textDiary绑定textCard
+    this.textCard.previewTextDiary()
+  },
+
+  /**
    * 5/27/2018 by yjj
    * 点击图片预览
    */
-  previewImage(e) {
-    this.imageCard = this.selectComponent("#" + e.currentTarget.id);
-    this.imageCard.previewImage();
+  previewImageDiary(e) {
+    this.imageCard = this.selectComponent("#" + e.currentTarget.id) //将某个imageDiary绑定textCard
+    this.imageCard.previewImageDiary()
+  },
+
+  /**
+   * 6/1/2018 by yjj
+   * 显示textDiary编辑菜单
+   */
+  showTextDiaryEditMenu(e) {
+    this.setData({
+      currentDiaryDataIndex: e.currentTarget.dataset.diarydataindex,
+      currentTextDiaryIndex: e.currentTarget.dataset.textdiaryindex,
+    })
+  },
+
+  /**
+   * 6/1/2018 by yjj
+   * 点击编辑按钮跳转到textDiary
+   */
+  toTextDiary(e) {
+    this.initCurrentDiaryIndex()
+    this.textCard = this.selectComponent("#" + e.currentTarget.dataset.textdiaryid) //将某个textDiary绑定textCard
+    this.textCard.toTextDiary()
   },
 
   /**
    * 5/30/2018 by yjj
-   * 显示image编辑菜单
+   * 显示imageDiary编辑菜单
    */
-  showImageEditTools(e){
+  showImageDiaryEditMenu(e) {
     this.setData({
-      shareImageURL: e.currentTarget.dataset.imageurl,
-      deleteImageDIaryId: e.currentTarget.dataset.index,
-      isShowTools: !this.data.isShowTools,
+      currentDiaryDataIndex: e.currentTarget.dataset.diarydataindex,
+      currentImageDiaryIndex: e.currentTarget.dataset.imagediaryindex,
     })
   },
 
@@ -384,11 +421,8 @@ Page({
    * 5/30/2018 by yjj
    * 点击空白处隐藏编辑菜单
    */
-  click_block(){
-    this.setData({
-      shareImageURL: '',
-      isShowTools: !this.data.isShowTools,
-    })
+  click_block() {
+    this.initCurrentDiaryIndex()
   },
 
   /**
@@ -397,24 +431,22 @@ Page({
    */
   deleteImage(e) {
     var that = this;
+    this.initCurrentDiaryIndex()
     wx.showModal({
       title: '提示',
       content: '确定要删除此图片吗？',
       success: function (res) {
         if (res.confirm) {
-          wx.request({
-            url: app.globalData.api.deleteImageDiary,
-            data:{
-              'id': that.data.deleteImageDiaryId,
-            },
-            method: 'POST',
-          })
-          console.log('点击确定了');
-          that.displayDiary()
+          DeleteDiary(e.currentTarget.dataset.imageid)
         } else if (res.cancel) {
-          console.log('点击取消了');
-          return false;
+          return false
         }
+      },
+      complete: function (res) {
+        that.setData({
+          isShowTools: !that.data.isShowTools,
+        }),
+          that.displayDiary()
       }
     })
   },
@@ -425,6 +457,7 @@ Page({
    */
   onShareAppMessage(options) {
     var that = this;
+    this.initCurrentDiaryIndex()
     // 设置菜单中的转发按钮触发转发事件时的转发内容
     var shareObj = {
       title: "这是我的日记",        // 默认是小程序的名称(可以写slogan等)
@@ -435,7 +468,7 @@ Page({
         if (res.errMsg == 'shareAppMessage:ok') {
         }
       },
-      fail() {
+      fail(res) {
         // 转发失败之后的回调
         if (res.errMsg == 'shareAppMessage:fail cancel') {
           // 用户取消转发
@@ -448,12 +481,69 @@ Page({
       },
     };
     // 来自页面内的按钮的转发
+    console.log('options.target.id: ' + options.target.id)
     if (options.from == 'button') {
-      console.log("that.data.shareImageURL: " + that.data.shareImageURL)
-      // 此处可以修改 shareObj 中的内容
-      shareObj.path = '/pages/previewDiary/previewDiary?imgUrl=' + that.data.shareImageURL 
+      switch (options.target.id) {
+        //根据share-button的id区分是分享图片日记还是文本日记
+        case 'btnShareTextDiary':
+          shareObj.path = '/pages/shareDiary/shareDiary?title=' + options.target.dataset.head + '&content=' + options.target.dataset.lookthrough + '&type=textDiary'
+          break
+        default:
+          let imgName = options.target.dataset.imageurl.split('=')
+          let imgId = imgName[1].split('&')
+          shareObj.path = '/pages/shareDiary/shareDiary?name=' + imgId[0] + '&secondData=' + imgId[1] + "&type=imageDiary"
+          break
+      }
     }
     // 返回shareObj
     return shareObj;
   },
+
+  /**
+   * 5/31/2018 by yjj
+   * 改变日记显示的类别
+   */
+  changeDiaryDisplayType() {
+    var that = this
+    this.initCurrentDiaryIndex()
+    switch (this.data.currentDisplayDiaryType) {
+      case 'allTypes':
+        that.setData({
+          currentDisplayDiaryType: 'imageDiary'
+        })
+        break
+      case 'imageDiary':
+        that.setData({
+          currentDisplayDiaryType: 'textDiary'
+        })
+        break
+      default:
+        that.setData({
+          currentDisplayDiaryType: 'allTypes'
+        })
+    }
+  },
+
+  /**
+   * 6/1/2018 by yjj
+   * 初始化diary当前下标
+   */
+  initCurrentDiaryIndex() {
+    this.setData({
+      currentDiaryDataIndex: -1,
+      currentTextDiaryIndex: -1,
+      currentImageDiaryIndex: -1,
+    })
+  },
+
+  /**
+   * 6/1/2018 by yjj
+   * 定位到‘今天’/滑动到底部
+   */
+  locateToToday() {
+    this.initCurrentDiaryIndex()
+    this.setData({
+      scrollHeight: this.data.diaryData.length * 414 //scroll-top大于显示的内容高度即可滑动到底部
+    })
+  }
 })

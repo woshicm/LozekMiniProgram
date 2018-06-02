@@ -5,16 +5,25 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imgUrl: '',
+    textDiaryTitle: '',    //文本日记标题
+    textDiaryContent: '',  //文本日记内容
+    imageDiaryImgUrl: '',   //图片日记Url
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      imgUrl: options.imgUrl,
-    })
+    if (options.type == 'textDiary') {
+      this.setData({
+        textDiaryTitle: options.title,
+        textDiaryContent: options.content,
+      })
+    } else {
+      this.setData({
+        imageDiaryImgUrl: app.globalData.api.getShareDiary + '?name=' + options.name + '&' + options.secondData
+      })
+    }
   },
 
   /**
@@ -27,7 +36,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function (options) {
 
   },
 

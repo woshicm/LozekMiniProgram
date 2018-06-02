@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, getCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo } from "../../common/util.js";
 
 let app = getApp()
 
@@ -142,12 +142,17 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
-    let imgInfo = options.imgInfo.split(',')
     this.setData({
-      imgUrl: imgInfo[0],
-      uploadedImageWidth: imgInfo[1],
-      uploadedImageHeight: imgInfo[2],
+      imgUrl: options.imgUrl,
+      uploadedImageWidth: options.imageWidth,
+      uploadedImageHeight: options.imageHeight,
     })
+    // GetImageInfo(imageUrl) 
+    // .then((res) => {
+      //res就是要的信息
+    //   console.log(res)
+    //   }).catch((res) => {
+    // })
   },
 
   onReady: function () {
@@ -643,9 +648,10 @@ Page({
 
   //返回文字模板
   putTextModule(){
-    var beginPoint = {'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x, 
-                      'y': this.data.clientCoordinat.y}; 
-    console.log(this.data.choseTextModule.systemVariable.marginLeft)
+    var beginPoint = {
+      'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x - (app.globalData.windowWidth - this.data.uploadedImageWidth) / 2,
+      'y': this.data.clientCoordinat.y - (app.globalData.windowHeight * 0.9 * 0.8 - this.data.uploadedImageHeight) / 2
+      }; 
     var height = this.data.choseTextModule.systemVariable.height;
     var actions = [
       {
@@ -660,7 +666,7 @@ Page({
         'action': 'text',
         'text': this.data.inputValue,
         'position': [beginPoint.x, beginPoint.y + height * 0.6 +(height * 0.2 - 12) / 2],
-        'font-style': '',
+        'font-style': 'letter-spacing: 2px;',
         'font-color': this.data.choseTextModule.userVariable.color,
         'font-size': 12,
       },
@@ -708,6 +714,7 @@ Page({
     let diary = {
       'type':1,
       'imageURL': this.data.imgUrl,
+      'location': '',
       'actions': actions,
     }
     console.log(actions)

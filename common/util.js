@@ -1,7 +1,7 @@
 let globalData = getApp().globalData
 
 /*获取当前页url*/
-function getCurrentPageUrl() {
+function GetCurrentPageUrl() {
   var pages = getCurrentPages()    //获取加载的页面
   var currentPage = pages[pages.length - 1]    //获取当前页面的对象
   var url = currentPage.route    //当前页面url
@@ -9,7 +9,7 @@ function getCurrentPageUrl() {
 }
 
 /*获取当前页带参数的url*/
-function getCurrentPageUrlWithArgs() {
+function GetCurrentPageUrlWithArgs() {
   var pages = getCurrentPages()    //获取加载的页面
   var currentPage = pages[pages.length - 1]    //获取当前页面的对象
   var url = currentPage.route    //当前页面url
@@ -54,13 +54,14 @@ function ParseText(text) {
 }
 
 /*上传图片*/
-function UploadImage(path) {
+function UploadImage(data) {
   let promise = new Promise(function (resolve, reject) {
     wx.uploadFile({
       url: globalData.api.uploadImage,
-      filePath: path,
+      filePath: data['imageURL'],
       formData: {
-        description: "xxxxx"
+        'location': data['location'] || 'No Location',
+        'actions': JSON.stringify(data['actions']),
       },
       header: {
         "token": globalData.token
@@ -78,8 +79,7 @@ function UploadImage(path) {
   return promise
 }
 
-
-function getDiary() {
+function GetDiary() {
   let promise = new Promise(function (resolve, reject) {
     wx.request({
       url: globalData.api.getDiary,
@@ -102,7 +102,7 @@ function getDiary() {
   return promise
 }
 
-function uploadTextDiary(data) {
+function UploadTextDiary(data) {
   let promise = new Promise(function (resolve, reject) {
     wx.request({
       url: globalData.api.saveDiary,
@@ -127,15 +127,15 @@ function uploadTextDiary(data) {
   return promise
 }
 
-function uploadImageDiary(url) {
-  return UploadImage(url)
+function UploadImageDiary(data) {
+  return UploadImage(data)
 }
 
 function SaveDiary(data) {
   if (data['type'] == 1) {
-    return uploadImageDiary(data['imageURL'])
+    return UploadImageDiary(data)
   } else {
-    return uploadTextDiary(data)
+    return UploadTextDiary(data)
   }
 }
 
@@ -165,8 +165,47 @@ function GetCurrentTime() {
 }
 
 //删除图片
-function deleteImageDIary() {
-  
+function DeleteDiary(deleteDiaryId) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.deleteDiary,
+      header: {
+        "token": globalData.token
+      },
+      data: {
+        'id': deleteDiaryId,
+      },
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.status)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
 }
 
-export { ParseText, UploadImage, getCurrentPageUrl, getCurrentPageUrlWithArgs, getDiary, SaveDiary, GetCurrentTime }
+function GetImageInfo(src) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.getImageInfo({
+      src: src,
+      success: (res) => {
+        var item = {
+          url: src,
+          height: res.height,
+          width: res.width,
+        }
+        resolve(item)
+      },
+      fail: (res) => { reject(res) },
+    })
+  })
+  return promise
+}
+
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo }

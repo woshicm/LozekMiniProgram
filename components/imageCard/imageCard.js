@@ -20,9 +20,11 @@ Component({
   },
   methods: {
     //预览图片
-    previewImage(){
+    previewImageDiary(){
+      let urls = this.properties.imageURL.split('&')
+      let imageOriginUrl = urls[0] + '&type=origin&'+ urls[1]
       wx.previewImage({
-        urls: [this.properties.imageURL],
+        urls: [imageOriginUrl],
       })
     },
   }

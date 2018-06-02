@@ -4,19 +4,23 @@ App({
      * 設備參數
      */
     pixelRatio: wx.getSystemInfoSync().pixelRatio,
-    token:'1',
+    token: '1',
     // baseURL: 'http://localhost:8000/',
     // baseURL: 'https://111.230.24.245/',
     baseURL: 'https://www.louzek.xyz/',
+    getShareDiaryURL:'https://www.louzek.xyz:443/',
     api: {
       login: '',
       // getDiarys : base + '/diarys',
       saveDiary: '',
-      getDiary : '',
+      getDiary: '',
       uploadImage: '',
       parseText: '',
-      deleteImageDiary: '',
+      deleteDiary: '',
+      getShareDiary: '',
     },
+    windowWidth: '',
+    windowHeight: '',
   },
 
   onLaunch: function () {
@@ -30,62 +34,65 @@ App({
     this.checkToken()
   },
 
-  initAppData: function(){
+  initAppData: function () {
     this.globalData.api.login = this.globalData.baseURL + 'login'
     this.globalData.api.uploadImage = this.globalData.baseURL + 'upload'
     this.globalData.api.parseText = this.globalData.baseURL + 'parsetext'
     this.globalData.api.getDiary = this.globalData.baseURL + 'diary'
     this.globalData.api.saveDiary = this.globalData.baseURL + 'diary'
-    this.globalData.api.deleteImageDiary = this.globalData.baseURL + 'delete_diary' 
+    this.globalData.api.deleteDiary = this.globalData.baseURL + 'delete_diary'
+    this.globalData.api.getShareDiary = this.globalData.getShareDiaryURL + 'image'
+    this.globalData.windowWidth = wx.getSystemInfoSync().windowWidth;
+    this.globalData.windowHeight = wx.getSystemInfoSync().windowHeight;
   },
-  
-  login: function (callback){
+
+  login: function (callback) {
     wx.login({
-      success: (res)=> {
+      success: (res) => {
         wx.request({
           url: this.globalData.api.login,
           method: 'POST',
           data: {
             code: res.code
           },
-          success: (res)=>{
+          success: (res) => {
             wx.setStorageSync('token', res.data.token)
             callback()
           }
         })
       },
-      fail: function(res) {},
-      complete: function(res) {},
+      fail: function (res) { },
+      complete: function (res) { },
     })
   },
-  checkToken: function(){
+  checkToken: function () {
     let token = wx.getStorageSync("token") || null
     wx.checkSession({
-      success: (res)=> {
-        if(token == null){
-          this.login(()=>{
+      success: (res) => {
+        if (token == null) {
+          this.login(() => {
             this.globalData.token = wx.getStorageSync("token")
-          }) 
-        }else{
+          })
+        } else {
           // Check whether the token has expired.
-          if(!this.tokenIsExpired())
+          if (!this.tokenIsExpired())
             this.globalData.token = wx.getStorageSync("token")
           else
             this.login(() => {
               this.globalData.token = wx.getStorageSync("token")
-            }) 
+            })
         }
       },
       fail: (res) => {
         this.login(() => {
           this.globalData.token = wx.getStorageSync("token")
-        }) 
+        })
       },
-      complete: (res)=> {
+      complete: (res) => {
       },
     })
   },
-  relogin: (callback)=> {
+  relogin: (callback) => {
     let app = getApp()
     wx.login({
       success: (res) => {
@@ -102,13 +109,13 @@ App({
           }
         })
       },
-      fail: function (res) { 
+      fail: function (res) {
         console.log("login error: " + res)
       },
       complete: function (res) { },
     })
   },
-  tokenIsExpired(){
+  tokenIsExpired() {
     return true
   },
   getUserInfo: function (cb) {
@@ -119,7 +126,7 @@ App({
       //调用登录接口
       wx.login({
         success: function (res) {
-          if(res.code){
+          if (res.code) {
             wx.request({
               url: '',
               data: {

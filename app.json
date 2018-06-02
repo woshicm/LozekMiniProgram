@@ -3,7 +3,7 @@
     "pages/index/index",
     "pages/imageDiary/imageDiary",
     "pages/textDiary/textDiary",
-    "pages/previewDiary/previewDiary"
+    "pages/shareDiary/shareDiary"
   ],
   "window": {
     "backgroundTextStyle": "dark",
