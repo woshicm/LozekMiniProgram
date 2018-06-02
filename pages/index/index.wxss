@@ -147,7 +147,7 @@
 .index-display-text-scrollView {
   height: 120rpx;
   width: 750rpx;
-  display: flex;
+    display: flex;  
   white-space: nowrap;
 }
 
@@ -167,7 +167,7 @@
 
 .index-display-image-scrollView {
   width: 600rpx;
-  display: flex;
+   display: flex; 
   white-space: nowrap;
 }
 

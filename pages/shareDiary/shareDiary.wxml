@@ -8,3 +8,4 @@
 
 <!--图片日记  -->
 <image src='{{imageDiaryImgUrl}}' wx:if='{{imageDiaryImgurl != ""}}'></image>
+

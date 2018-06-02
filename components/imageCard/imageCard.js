@@ -22,7 +22,8 @@ Component({
     //预览图片
     previewImageDiary(){
       wx.previewImage({
-        urls: [this.properties.imageURL + '&type=origin'],
+        current: [], //当前显示图片的链接,不填则默认为urls的第一张
+        urls: [this.properties.imageURL, this.properties.imageURL + '&type=origin'], //需要预览的图片链接列表
       })
     },
   }

@@ -8,7 +8,10 @@ Page({
 
     //時間軸
     diaryData: {},
-    scrollHeight: 700,
+    scrollHeight: 0, //scroll-top的值，控制滚动到底部
+    currentSearchDiaryDataId: 'diaryDate0', //竖向定位到到哪一天，该值是子元素id
+    currentSerarchTextDiaryId: 'textCard0-0',//横向定位到哪个文本日记
+    currentSerarchImageDiaryId: 'imageCard0-0',//横向定位到哪个图片日记
     //文本日记测试
     text: {
       head: '这是一个测试',
@@ -19,6 +22,10 @@ Page({
     currentDiaryDataIndex: -1,  //标记是由哪组日记触发长按动作
     currentTextDiaryIndex: -1,  //标记是由哪个文本日记触发长按动作
     currentImageDiaryIndex: -1, //标记是由哪个图片日记触发长按动作
+    searchKeywords: '', //需要搜索的关键字
+    searchIndexArray: [], //保存匹配的字符串的下标
+    isChangeSearchKeywords: false, //关键字是否改变
+    keywordsArraryIndex: 0, //搜索到匹配关键字的数组的下标
     //導航抽屜
     userInfo: {},
     check: false,   //是否触发滑动操作
@@ -370,7 +377,9 @@ Page({
         //   diaryData: res.diary,
         // })
         let newDiaryData = res.diary
-        newDiaryData[0].diary.text.push(this.data.text)
+        newDiaryData[3].diary.text.push(this.data.text)
+        newDiaryData[3].diary.text.push(this.data.text)
+        newDiaryData[4].diary.text.push(this.data.text)
         this.setData({
           diaryData: newDiaryData,
         })
@@ -580,7 +589,95 @@ Page({
   locateToToday() {
     this.initCurrentDiaryIndex()
     this.setData({
-      scrollHeight: this.data.diaryData.length * 414 //scroll-top大于显示的内容高度即可滑动到底部
+      scrollHeight: 2000 //scroll-top大于显示的内容高度即可滑动到底部
     })
-  }
+  },
+
+  /**
+   * 6/2/2018 by yjj
+   * input获得焦点
+   */
+  inputOnFocus(e) {
+    this.initCurrentDiaryIndex()
+  },
+
+  /**
+   * 6/2/2018 by yjj
+   * input保留输入的值
+   */
+  changeSearchKeywords(e) { },
+
+  /**
+   * 6/2/2018 by yjj
+   * 搜索关键字并定位+高亮
+   */
+  searchKeywordsInThisPage(e) {
+    var that = this
+    var i = 0, diaryDataLen = 0, j = -1, k = -1, textDiaryLen = 0, imageDiaryLen = 0
+    let imageContent = ''
+    let head = ''
+    let lookthrough = ''
+    if (this.data.searchKeywords != e.detail.value) {
+      that.setData({
+        searchKeywords: e.detail.value,
+        isChangeSearchKeywords: true,
+        searchIndexArray: [],
+        keywordsArraryIndex: 0,
+      })
+    } else {
+      that.setData({
+        isChangeSearchKeywords: false,
+      })
+    }
+    let keyword = this.data.searchKeywords
+    //关键字改变执行if语句，重新遍历
+    if (this.data.isChangeSearchKeywords) {
+      for (i = 0, diaryDataLen = that.data.diaryData.length; i < diaryDataLen; i++) {
+        //imageDiary不为空时继续遍历
+        // if (diaryData[i].diary.image.length != 0) {
+        //   for (var j = 0, imageDiaryLen = diaryData[i].diary.image.length; j < imageDiaryLen; j++) {
+        //     if (diaryData[i].diary.image[j])
+        //   }
+        // }
+        //textDiary不为空时继续遍历
+        if (that.data.diaryData[i].diary.text.length != 0) {
+          j = -1
+          for (k = 0, textDiaryLen = that.data.diaryData[i].diary.text.length; k < textDiaryLen; k++) {
+            head = that.data.diaryData[i].diary.text[k].head  //标题
+            lookthrough = that.data.diaryData[i].diary.text[k].lookthrough//正文
+            if ((head.indexOf(keyword) != -1) || (lookthrough.indexOf(keyword) != -1)) {
+              that.data.searchIndexArray.push({ i, j, k })
+            }
+          }
+        }
+      }
+    }
+    //数组下标到数组长度时重置
+    if (this.data.keywordsArraryIndex == this.data.searchIndexArray.length) {
+      this.setData({
+        keywordsArraryIndex: 0
+      })
+    }
+    if ((that.data.searchIndexArray[that.data.keywordsArraryIndex].j) == -1) {
+      //本来想通过scroll-into-view进行定位的,但是失效，暂时没找到原因
+      // that.setData({
+      //   currentSearchDiaryDataId: "diaryDate" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i,
+      //   currentSerarchTextDiaryId: "textCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + that.data.searchIndexArray[that.data.keywordsArraryIndex].k,
+      //   currentSerarchImageDiaryId: "imageCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + 0,
+      //   keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
+      // })
+      this.setData({
+        scrollHeight: that.data.searchIndexArray[that.data.keywordsArraryIndex].i * 150,
+        keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
+      })
+    }
+  },
+
+  //handle event "scrolltoupper"
+  upper() { },
+  //handle event "scrolltolower"
+  lower() { },
+  //handle event "scroll"
+  scroll() { },
+
 })
