@@ -49,7 +49,7 @@
 
 .input-text {
   font-size: 13pt;
-  width: 80%;
+  width: 80%；;
 }
 
 .text-displayLength {
@@ -74,6 +74,14 @@
   font-size: 13pt;
 }
 
+.view-userOperationArea {
+  width: 100%;
+  height: 1150rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .view-dictum {
   margin-top: 6%;
 }
@@ -89,7 +97,7 @@
 }
 
 .view-mainLayout {
-  height: 1150rpx;
+  height: 1200rpx;
 }
 
 .view-layoutFirst {
@@ -230,8 +238,6 @@
 .movableArea-userInput {
   position: fixed;
   z-index: 1;
-  display: flex;
-  justify-content: center;
 }
 
 .colorModuleScrollView {
@@ -459,18 +465,16 @@ radio {
   z-index: 30;
 }
 
-.img-changeTextStatus{
+.img-changeTextStatus {
   height: 80rpx;
   position: fixed;
   left: 400rpx;
   top: 400rpx;
-  z-index: 20;
 }
 
-.img-EditDictum{
-    height: 80rpx;
-    position: fixed;
-    left: 400rpx;
-    top: 500rpx;
-    z-index: 20;
+.img-EditDictum {
+  height: 80rpx;
+  position: fixed;
+  left: 400rpx;
+  top: 500rpx;
 }

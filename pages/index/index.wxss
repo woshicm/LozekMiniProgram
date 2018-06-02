@@ -251,6 +251,7 @@ button::after {
   padding-top: 10rpx;
 }
 
+
 /*按钮涟漪效果*/
 .waves {
   border-radius: 100%;
@@ -274,4 +275,47 @@ button::after {
     transform: scale(5); /*因为涟漪的大小为标签的最长边，为了保证点击标签边缘时，涟漪也能覆盖整个标签，scale值最小应为2*/
     opacity: 0;
   }
+}
+
+/*mask*/
+
+.drawer-screen {
+  width: 100%;
+   height: 100%; 
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/*content*/
+
+.drawer_box {
+  height: 300rpx;
+  width: 300rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 70%;
+  left: 20%;
+  z-index: 1001;
+  background: #fafafa;
+  margin: -150px 50rpx 0 50rpx;
+   border-radius: 3px; 
+   
+}
+
+.drawer-title {
+  padding: 15px;
+  font: 20px "microsoft yahei";
+  text-align: center;
+}
+
+.drawer-content {
+  width: 40%;
+  height: 300px;
+  margin-left: 30%;
+  margin-right: 30%;
 }

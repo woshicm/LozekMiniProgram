@@ -2,14 +2,16 @@
   "pages": [
     "pages/index/index",
     "pages/imageDiary/imageDiary",
-    "pages/textDiary/textDiary"],
+    "pages/textDiary/textDiary",
+    "pages/shareDiary/shareDiary"
+  ],
   "window": {
-      "backgroundTextStyle": "dark",
-      "navigationBarBackgroundColor": "#1976d2",
-      "navigationBarTitleText": "路迹本",
-      "navigationBarTextStyle": "white"
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#1976d2",
+    "navigationBarTitleText": "路迹本",
+    "navigationBarTextStyle": "white"
   },
-  "networkTimeout":{
+  "networkTimeout": {
     "request": 5000,
     "uploadFile": 5000
   }

@@ -1,4 +1,8 @@
 Component({
+  options:{
+    multipleSlots: true //在组件定义时的选项中启用多slot支持
+  },
+  
   properties: {
     imageURL: {
       type: String,
@@ -15,5 +19,11 @@ Component({
   data: {
   },
   methods: {
+    //预览图片
+    previewImageDiary(){
+      wx.previewImage({
+        urls: [this.properties.imageURL + '&type=origin'],
+      })
+    },
   }
 })

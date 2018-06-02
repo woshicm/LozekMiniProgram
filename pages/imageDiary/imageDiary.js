@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, getCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo } from "../../common/util.js";
 
 let app = getApp()
 
@@ -143,10 +143,16 @@ Page({
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
     this.setData({
-      imgUrl: wx.getStorageSync('imgUrl'),
-      uploadedImageWidth: wx.getStorageSync('uploadedImageWidth'),
-      uploadedImageHeight: wx.getStorageSync('uploadedImageHeight'),
+      imgUrl: options.imgUrl,
+      uploadedImageWidth: options.imageWidth,
+      uploadedImageHeight: options.imageHeight,
     })
+    // GetImageInfo(imageUrl) 
+    // .then((res) => {
+      //res就是要的信息
+    //   console.log(res)
+    //   }).catch((res) => {
+    // })
   },
 
   onReady: function () {
@@ -642,16 +648,19 @@ Page({
 
   //返回文字模板
   putTextModule(){
-    var beginPoint = [this.data.choseTextModule.systemVariable.marginbLeft + this.data.clientCoordinat.x - (app.globalData.windowWidth - this.data.uploadedImageWidth) / 2, this.data.clientCoordinat.y - (app.globalData.windowHeight * 0.9 * 0.8 - this.data.uploadedImageHeight) / 2]; 
+    var beginPoint = {
+      'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x - (app.globalData.windowWidth - this.data.uploadedImageWidth) / 2,
+      'y': this.data.clientCoordinat.y - (app.globalData.windowHeight * 0.9 * 0.8 - this.data.uploadedImageHeight) / 2
+      }; 
     var height = this.data.choseTextModule.systemVariable.height;
     var actions = [
       {
         'action': 'text',
-        'text': choseTextModule.systemVariable.time,
+        'text': this.data.choseTextModule.systemVariable.time,
         'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
-        'font-style': 'letter-spacing: 3px;',
-        'font-color': this.data.choseTextModule.systemVariable.time,
-        'font-size': '39px',
+        'font-style': '',
+        'font-color': '',
+        'font-size': 39,
       },
       {
         'action': 'text',
@@ -659,7 +668,7 @@ Page({
         'position': [beginPoint.x, beginPoint.y + height * 0.6 +(height * 0.2 - 12) / 2],
         'font-style': 'letter-spacing: 2px;',
         'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': '12px',
+        'font-size': 12,
       },
       {
         'action': 'text',
@@ -670,6 +679,7 @@ Page({
         'font-size': '8px',
       },
     ]
+    return actions
   },
   //显示文本工具栏
   showTools() {
@@ -690,6 +700,7 @@ Page({
 
   //选择显示输入框还是富文本
   changeTextReady() {
+    console.log("你点不到我！")
     this.setData({
       isShowTools: !this.data.isShowTools,
       isMoveable: !this.data.isMoveable,
@@ -704,9 +715,11 @@ Page({
     var actions = this.putTextModule();
     let diary = {
       'type':1,
-      'imageURL': this.data.imgUrl[0],
+      'imageURL': this.data.imgUrl,
+      'location': '',
       'actions': actions,
     }
+    console.log(actions)
     SaveDiary(diary)
       .then((res) => {
         console.log(res)
