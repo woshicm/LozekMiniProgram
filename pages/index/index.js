@@ -37,6 +37,9 @@ Page({
     lastTranlateX: 0,  //上次动画效果的平移距离，用于校准left值
     startTime: 0,
     endTime: 0,
+    //按钮涟漪
+    waveEffectsOnImageButton: "",
+    waveEffectsOnTextButton: "",
   },
 
   /**
@@ -240,20 +243,36 @@ Page({
   },
 
   // 上傳圖片
-  chooseImageTap() {
-    this.initCurrentDiaryIndex()
-    wx.showActionSheet({
-      itemList: ['本地上传', '拍照上传'],
-      success: (res) => {
-        if (!res.cancel) {
-          if (res.tapIndex == 0) {
-            this.doUpload('album')
-          } else if (res.tapIndex == 1) {
-            this.doUpload('camera')
-          }
-        }
-      }
-    })
+  chooseImageTap(e) {
+      this.initCurrentDiaryIndex()
+      this.setData({
+        waveEffectsOnImageButton: "waves-effect-animation",
+      })
+      console.log(client)
+      var that = this;
+      setTimeout(
+        function () {
+          wx.showActionSheet({
+            itemList: ['本地上传', '拍照上传'],
+            success: (res) => {
+              if (!res.cancel) {
+                if (res.tapIndex == 0) {
+                  that.doUpload('album')
+                } else if (res.tapIndex == 1) {
+                  that.doUpload('camera')
+                }
+              }
+            }
+          })
+        },200
+      )
+      setTimeout(
+        function () {
+          that.setData({
+            waveEffectsOnImageButton: "",
+          })
+        }, 1000
+      )
   },
 
   // 上传图片接口
@@ -280,16 +299,21 @@ Page({
           success: (res) => {
             imgUrl = tempFilePaths[0];
             if (res.height > res.width) {
-              res.width *= (0.9 * 0.8 * wx.getSystemInfoSync().windowHeight) / res.height;
-              uploadedImageWidth = res.width;
-              uploadedImageHeight = 0.9 * 0.8 * wx.getSystemInfoSync().windowHeight;
+              var width = res.width * (0.9 * 0.8 * app.globalData.windowHeight) / res.height;
+              if (width > app.globalData.windowWidth){
+                uploadedImageWidth = app.globalData.windowWidth;
+                uploadedImageHeight = res.height * app.globalData.windowWidth / res.width;
+              } else{
+                uploadedImageWidth = width;
+                uploadedImageHeight = 0.9 * 0.8 * app.globalData.windowHeight;
+              }
             } else if (res.height == res.width) {
-              uploadedImageWidth = wx.getSystemInfoSync().windowWidth;
-              uploadedImageHeight = wx.getSystemInfoSync().windowWidth;
+              uploadedImageWidth = app.globalData.windowWidth;
+              uploadedImageHeight = app.globalData.windowWidth;
             }
             else {
-              res.height *= wx.getSystemInfoSync().windowWidth / res.width;
-              uploadedImageWidth = wx.getSystemInfoSync().windowWidth;
+              res.height *= app.globalData.windowWidth / res.width;
+              uploadedImageWidth = app.globalData.windowWidth;
               uploadedImageHeight = res.height;
             }
           },
@@ -368,12 +392,26 @@ Page({
       })
   },
 
-  //文本日记跳转监听事件
-  onToTextDiaryPageTap() {
+//文本日记跳转监听事件
+  onToTextDiaryPageTap(e){
     this.initCurrentDiaryIndex()
-    wx.navigateTo({
-      url: '../textDiary/textDiary',
+    this.setData({
+      waveEffectsOnTextButton: "waves-effect-animation",
     })
+    var that = this;
+    setTimeout(
+      function(){
+        wx.navigateTo({
+        url: '../textDiary/textDiary',
+      })
+      }, 200);
+    setTimeout(
+      function(){
+        that.setData({
+          waveEffectsOnTextButton: "",
+        })
+      }, 1000
+    )
   },
 
   /**

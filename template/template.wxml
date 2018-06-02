@@ -1,0 +1,5 @@
+<template name='rippleButton'>
+  <button style='width: 125px; height:40px; background-color: #27C4B4;color: white; opacity: {{opacity}}; box-shadow: {{box_shadow}}; display: flex; align-items: center; justify-content: center;' class='waves' bindtap='click' hover-class='wave-hover' hover-stay-time='200'>
+    你好
+  </button>
+</template>

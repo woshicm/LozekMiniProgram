@@ -146,21 +146,28 @@ function GetCurrentTime() {
   var yy = now.getFullYear();
   var mm = now.getMonth() + 1;
   var dd = now.getDate();
-  var days = new Array();
+  var days_en = new Array();
+  var days_cn = new Array();
   var hh = now.getHours();
   var min = now.getMinutes();
   var ss = now.getSeconds();
-  days[0] = "Sun";
-  days[1] = "Mon";
-  days[2] = "Tue";
-  days[3] = "Wed";
-  days[4] = "Thur";
-  days[5] = "Fri";
-  days[6] = "Sat";
-  var day = days[now.getDay()]
-  var array = {
-    yy, mm, dd, day, hh, min,
-  }
+  days_en[0] = "Sun";
+  days_en[1] = "Mon";
+  days_en[2] = "Tue";
+  days_en[3] = "Wed";
+  days_en[4] = "Thur";
+  days_en[5] = "Fri";
+  days_en[6] = "Sat";
+  days_cn[0] = "星期日";
+  days_cn[1] = "星期一";
+  days_cn[2] = "星期二";
+  days_cn[3] = "星期三";
+  days_cn[4] = "星期四";
+  days_cn[5] = "星期五";
+  days_cn[6] = "星期六";
+  var day_en = days_en[now.getDay()];
+  var day_cn = days_cn[now.getDay()]
+  var array = { yy, mm, dd, day_en, day_cn, hh, min, ss};
   return array;
 }
 

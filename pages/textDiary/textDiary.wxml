@@ -4,27 +4,87 @@
     <view></view>
   </view> -->
   <!-- 標題輸入 -->
-  <view wx:if='{{titleValue.length == 0}}' class='titleArea'>
+  <view wx:if='{{titleValue.length == 0 || hideTitle}}' class='titleArea'>
     <view class='titleArea-dateDisplay'>
-      2018/5/24 星期四 多云 
+      2018/5/24 星期四 多云
     </view>
     <view class='titleArea-title'>
-      <input type='text' placeholder='请输入标题' maxlength='15' focus='true' class='title-inputTitle' placeholder-style='font-size: 10pt; width: 160rpx;' bindblur='onTitleInputBlurEvent' bindfocus='onTitleInputFocusEvent' style='border-bottom:{{inputBottomLineColor}};'></input>
+      <input type='text' placeholder='请输入标题' maxlength='15' focus='true' class='title-inputTitle' placeholder-style='font-size: 10pt; width: 160rpx;' bindblur='onTitleInputBlurEvent' bindfocus='onTitleInputFocusEvent' style='border-bottom:{{inputBottomLineColor}};' value='{{titleValue}}'></input>
     </view>
   </view>
   <!-- 標題顯示 -->
-  <view wx:else>
-    
+  <view wx:else class='titleArea titleArea-display' bindtap='onTitleTapEvent'>
+    <view class='titleArea-display-text'>
+      <view class='titleArea-display-text-monthAndDay'>
+        <view style='fonr-size: 12pt; color: white;'>{{currentTime.mm}}</view>
+        <view style='font-size: 5pt; color: white;'>{{currentTime.day_cn}}</view>
+      </view>
+      <view class='titleArea-display-text-dd'>{{currentTime.dd}}</view>
+      <image class='titleArea-display-text-weather' src='/images/weather/{{currentWeather}}.svg' />
+      <view class='titleArea-display-text-title'>
+        <image src='/images/image-textDiary-title-forwardQuotation.png' class='titleArea-display-image-forwardQuotation' />
+        <view class='titleArea-display-text-title-text'>{{titleValue}}</view>
+        <image src='/images/image-textDiary-title-backwardQuotation.png' class='titleArea-display-image-backwardQuotation' />
+      </view>
+    </view>
+    <image src='/images/image-textDiary-titleBackground.svg' class='titleArea-display-background' />
   </view>
   <!-- 功能區 -->
-  <view hidden='{{showFunctionArea}}' class='functionArea'>
-    <image src='/images/icon/icon-textDiary-indent.svg' class='functionArea-image' />
-    <image src='/images/icon/icon-textDiary-dictionary.svg' class='functionArea-image' />
-    <image src='/images/icon/icon-textDiary-pedia.svg' class='functionArea-image' />
-    <image src='/images/icon/icon-textDiary-snap.svg' class='functionArea-image' />
+  <view hidden='{{state == "preview"}}' class='functionArea'>
+    <image src='/images/textDiary/indent.svg' class='functionArea-image' />
+    <image src='/images/textDiary/pedia.svg' class='functionArea-image' />
+    <image src='/images/textDiary/snap.svg' class='functionArea-image' />
+    <image src='/images/textDiary/goForward.svg' class='functionArea-image' style='height: 50%;' />
+    <image src='/images/textDiary/goBackward.svg' class='functionArea-image' style='height: 50%;' />
+    <image src='/images/textDiary/confirm.svg' class='functionArea-image' bindtap='onFunctionConfirmTap' />
   </view>
-  <!-- 正文 -->
-  <view class='diaryArea'>
-    <textarea class='diary-diaryInputTextArea' placeholder='请输入正文' placeholder-style='font-size: 10pt;' bindfocus='onDiaryAreaFocusEvent' bindblur='onDiaryAreaBlurEvent'></textarea>
+  <!-- 正文输入 -->
+  <view hidden='{{state == "preview"}}' class='diaryArea'>
+    <!-- <view class='diaryArea-mask' hidden='{{isDiaryTextMaskHidden}}' bindtap='onDiaryAreaMaskTapEvent'></view> -->
+    <textarea class='diary-diaryInputTextArea' placeholder='请输入正文' placeholder-style='font-size: 10pt;' bindfocus='onDiaryAreaFocusEvent' bindblur='onDiaryAreaBlurEvent' value='{{textValue}}' maxlength='-1' show-confirm-bar='false' focus='{{isDiaryTextFocus}}'></textarea>
+  </view>
+  <!-- 正文显示 -->
+  <view class='showDiary' hidden='{{state == "edit"}}'>
+    <scroll-view scroll-y class='showDiary-scrollView' bindtap='onShowDiaryTapEvent'>
+      <!-- 0.無圖片 -->
+      <view wx:if='{{addedPhoto.length == 0}}' class='showDiary-scrollView-item'>
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 1.一張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 1}}' class='showDiary-scrollView-item'>
+        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 300rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 300rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          mode='aspectFill' class='module-image module-image-leftTop' catchtap='{{onPreviewPhotoTapEvent}}' />
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 2.二張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 2}}' class='showDiary-scrollView-item'>
+        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          mode='aspectFill' class='module-image module-image-leftTop' catchtap='{{onPreviewPhotoTapEvent}}' />
+        <view style='height: 500rpx; width: 1rpx; float: right;'></view>
+        <image src='{{addedPhoto[1].url}}' style='{{addedPhoto[1].height >= addedPhoto[1].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[1].width >= addedPhoto[1].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          mode='aspectFill' class='module-image module-image-rightBottom' catchtap='{{onPreviewPhotoTapEvent}}' />
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 3.三張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 3}}' class='showDiary-scrollView-item'>
+      </view>
+      <!-- 4.四張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 4}}' class='showDiary-scrollView-item'>
+      </view>
+      <!-- 5.五張圖片 -->
+      <view wx:else class='showDiary-scrollView-item'>
+      </view>
+    </scroll-view>
+  </view>
+  <!-- 添加相片 -->
+  <view class='addPhoto' hidden='{{state == "preview"}}'>
+    <view class='modify-divideLine-light addPhoto-divideLine'></view>
+    <view class='addPhoto-photos'>
+      <block wx:for='{{addedPhoto}}' wx:for-item='photoItem' wx:for-index='photoIndex' wx:key='this'>
+        <image src='{{photoItem.url}}' class='addPhoto-photos-item' mode='aspectFill' style='{{photoIndex == 5 ? "margin-right: 0;" : ";"}}' />
+        <image src='/images/textDiary/deletePhoto.svg' class='addPhoto-photos-deletePhotoButton' style='left: {{35 + (photoIndex + 1) * 118 - 37 + photoIndex * 18}}rpx;' bindtap='onDeletePhotoTap' data-delete-index='{{photoIndex}}' />
+      </block>
+      <image wx:if='{{addedPhoto.length != 5}}' src='/images/textDiary/addPhoto.svg' class='addPhoto-photos-item' catchtap='onAddPhotoTap' />
+    </view>
   </view>
 </view>

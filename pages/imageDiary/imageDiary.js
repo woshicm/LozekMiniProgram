@@ -676,7 +676,7 @@ Page({
         'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
         'font-style': 'letter-spacing: 2px;',
         'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': 8,
+        'font-size': '8px',
       },
     ]
     return actions
@@ -685,7 +685,9 @@ Page({
   showTools() {
     this.setData({
       isShowTools: !this.data.isShowTools,
+      slideOutLayerTop: app.globalData.windowHeight * 0.8 - (app.globalData.windowHeight * 0.8 - this.data.uploadedImageHeight) / 2,
     });
+    console.log(this.data.slideOutLayerTop)
   },
 
   //改变富文本大小

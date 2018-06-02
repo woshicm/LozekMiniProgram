@@ -16,30 +16,31 @@
         <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools'></rich-text>
       </movable-view>
     </movable-area>
+    <!-- 滑出菜单层 -->
+    <view class='layoutFirst-slideOutLayout' style='top: {{slideOutLayerTop - 70}}px;' hidden="{{!isShowTools}}">
+      <!--滑动放大  -->
+      <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}' style='top: {{slideOutLayerTop - 50}}px;'></slider>
+      <!--切换叙事模式  -->
+      <image class="image-slideOutLayer-input" src="/images/image-imageDiary-story.svg" hidden="{{!isInputStatu}}" bindtap='changeToNarrate'></image>
+      <!--切换输入状态  -->
+      <image class="image-slideOutLayer-story" src="/images/image-imageDiary-input.svg" hidden="{{!isShowTools}}" bindtap='changeTextReady'></image>
+      <!--打开名言窗口  -->
+      <!--<image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{!isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>-->
+    </view>
   </view>
   <!--文本区  -->
   <view class='view-layoutSecond modify-shadow-main-up'>
-    <!--切换叙事模式  -->
-    <image class="img-changeTextStatus" src="/images/image-clock.svg" hidden="{{!isInputStatu}}" bindtap='changeToNarrate'></image>
-    <!--确认输入内容不再修改  -->
-    <image class='img-EditDictum' style="top: 300rpx;" src="/images/icon-imageDiary-help.svg" hidden="{{!isInputStatu}}" bindtap='confirm'></image>
-    <!--滑动放大  -->
-    <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' hidden="{{!isShowTools}}" bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}'></slider>
-    <!--切换输入状态  -->
-    <image class="img-changeTextStatus" src="/images/image-Dot.svg" hidden="{{!isShowTools}}" bindtap='changeTextReady'></image>
-    <!--打开名言窗口  -->
-    <image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{!isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>
     <!--分享按钮  -->
-    <view class='view-layoutSecond-shareButton' bindtap='saveDiaryText'>
+    <!-- <view class='view-layoutSecond-shareButton' bindtap='saveDiaryText'>
       <image src="/images/icon-imageDiary-shareButton.png" class='img-share'></image>
-    </view>
+    </view> -->
     <view class='view-layoutSecond-preview'>
       <!-- 文本模板预览区 -->
       <view class='view-layoutSecond-preview-textModule'>
         <scroll-view scroll-x='true' class='textModuleScrollView'>
           <view style='border: {{textModuleIndex == choseTextModuleId ? "4rpx solid #3f8ae9": ""}};' wx:key="this" wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap'
             data-text-module-id='{{textModuleItem.systemVariable.id}}' disabled='{{false}}'>
-            <rich-text nodes="{{textModuleItem.nodes}}" style='position:relative; bottom: 45rpx; right: 40rpx;'></rich-text>
+            <rich-text nodes="{{textModuleItem.nodes}}" style='position:relative; bottom: 35rpx; right: 35rpx;'></rich-text>
           </view>
         </scroll-view>
       </view>
@@ -51,6 +52,11 @@
               data-color-module-id='{{colorModuleItem.id}}' disabled='{{false}}'>T</button>
           </view>
         </scroll-view>
+      </view>
+      <!-- 分享層 -->
+      <view>
+        <image></image>
+        <image></image>
       </view>
     </view>
     <view class='view-layoutSecond-text'>
