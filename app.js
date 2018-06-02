@@ -4,9 +4,11 @@ App({
      * 設備參數
      */
     pixelRatio: wx.getSystemInfoSync().pixelRatio,
+    windowHeight: wx.getSystemInfoSync().windowHeight,
+    windowWidth: wx.getSystemInfoSync().windowWidth,
     token:'1',
     // baseURL: 'http://localhost:8000/',
-    baseURL: 'http://111.230.24.245/',
+    baseURL: 'https://111.230.24.245/',
     api: {
       login: '',
       // getDiarys : base + '/diarys',

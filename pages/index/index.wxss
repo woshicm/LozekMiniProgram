@@ -1,16 +1,18 @@
-.info{
+.info {
   font-weight: bold;
   font-size: 30px;
 }
-.page-mainPage{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #3f8ae9;
+
+.page-mainPage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #3f8ae9;
 }
-.page-drawerPage{
+
+.page-drawerPage {
   width: 580rpx;
   height: 100%;
   position: absolute;
@@ -19,15 +21,18 @@
   z-index: 580;
   background-color: yellow;
 }
-.color-main{
-  background-color: #3f8ae9; 
+
+.color-main {
+  background-color: #3f8ae9;
 }
-.color-grey100{
+
+.color-grey100 {
   background-color: #f5f5f5;
 }
-.image-portrait{
-  border-radius: 50%; 
-  width: 70rpx; 
+
+.image-portrait {
+  border-radius: 50%;
+  width: 70rpx;
   height: 70rpx;
   margin-left: 20rpx;
   margin-top: 10rpx;
@@ -35,7 +40,8 @@
   display: block;
   object-fit: cover;
 }
-.image-portraitOfDrawer{
+
+.image-portraitOfDrawer {
   width: 120rpx;
   height: 120rpx;
   margin: 100rpx 0rpx 20rpx -20rpx;
@@ -43,27 +49,32 @@
   overflow: hidden;
   display: block;
 }
-.image-diaryLogo{
+
+.image-diaryLogo {
   width: 60%;
 }
-.image-index-displayButton{
+
+.image-index-displayButton {
   height: 35rpx;
   width: 35rpx;
 }
-.image-index-displaySearchButton{
+
+.image-index-displaySearchButton {
   height: 50rpx;
   width: 50rpx;
   background-color: white;
   padding: 0rpx;
 }
-.image-trapezium{
+
+.image-trapezium {
   height: 100%;
   width: 40%;
   position: relative;
   bottom: 30rpx;
   right: 8rpx;
 }
-.image-clock{
+
+.image-clock {
   position: relative;
   width: 12%;
   height: 100%;
@@ -71,21 +82,25 @@
   bottom: 110rpx;
   z-index: 10;
 }
-.text-nicknameOfDrawer{
-    color: #333;
-    font-size: 12pt;
+
+.text-nicknameOfDrawer {
+  color: #333;
+  font-size: 12pt;
 }
-.text-options{
+
+.text-options {
   position: relative;
   top: -12rpx;
   margin-left: 30rpx;
   font-size: 12pt;
 }
-.index-bottom{
+
+.index-bottom {
   display: flex;
   flex-direction: row;
 }
-.index-display-buttonView{
+
+.index-display-buttonView {
   width: 558rpx;
   display: flex;
   position: relative;
@@ -93,66 +108,77 @@
   left: 12%;
   right: 10%;
 }
-.index-display-input{
+
+.index-display-input {
   background-color: white;
   display: flex;
   position: relative;
-  width: 100%; 
+  width: 100%;
   height: 55rpx;
-  margin-right: 0rpx; 
-  margin-left: 0rpx; 
+  margin-right: 0rpx;
+  margin-left: 0rpx;
   justify-content: flex-start;
 }
-.index-bottom-item{
+
+.index-bottom-item {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 122rpx; 
+  height: 122rpx;
   width: 374rpx;
-  background-color: #3f8ae9; 
+  background-color: #3f8ae9;
   border-radius: 0%;
   border-width: 0rpx;
   margin: 0rpx;
 }
-.index-scrollView{
+
+.index-scrollView {
   position: relative;
   height: 100%;
 }
-.index-display-list{
+
+.index-display-list {
   display: flex;
   top: 50rpx;
   margin-top: 30rpx;
 }
-.index-display-text-scrollView{
+
+.index-display-text-scrollView {
   height: 120rpx;
   width: 750rpx;
   display: flex;
   white-space: nowrap;
 }
-.index-display-text-item{
+
+.index-display-text-item {
   display: inline-block;
-   height: 100%;
+  height: 100%;
 }
+
 /* .index-display-image{
   display: flex;
 } */
-.index-display-image-item{
-   display: inline-block;
-   height: 100%;
+
+.index-display-image-item {
+  display: inline-block;
+  height: 100%;
 }
-.index-display-image-scrollView{
+
+.index-display-image-scrollView {
   width: 600rpx;
   display: flex;
   white-space: nowrap;
 }
-.index-display-textCard{
+
+.index-display-textCard {
   position: relative;
   right: 30rpx;
   top: 5rpx;
   margin-bottom: 45rpx;
 }
-.index-display-button{
+
+.index-display-button {
   height: 55rpx;
   display: flex;
   flex-direction: row;
@@ -163,55 +189,89 @@
   border-radius: 0%;
   background-color: white;
 }
-.index-display-timeLine{
+
+.index-display-timeLine {
   position: relative;
   top: 20rpx;
 }
-.index-display-noContent{
+
+.index-display-noContent {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.index-display-noContent-text{
+
+.index-display-noContent-text {
   font-size: 20pt;
   position: relative;
   top: 200rpx;
+}
 
+.index-display-noContent-image {
 }
-.index-display-noContent-image{
-  
-}
-.index-display-aDay-scrollView{
+
+.index-display-aDay-scrollView {
   width: 750rpx;
   position: relative;
   right: 20rpx;
   margin: 0rpx;
   bottom: 15rpx;
 }
-.index-display-aDay{
+
+.index-display-aDay {
   margin-top: 20rpx;
   position: relative;
   bottom: 40rpx;
   right: 20rpx;
 }
+
 button::after {
   border-radius: 0;
   border: none;
 }
-.icon-drawer{
+
+.icon-drawer {
   width: 50rpx;
   height: 50rpx;
   padding-top: 30rpx;
 }
-.drawerPersonalInfo{
-   padding-left: 270rpx;
+
+.drawerPersonalInfo {
+  padding-left: 270rpx;
 }
-.drawerOptions{
+
+.drawerOptions {
   padding-left: 130rpx;
   height: 400rpx;
   padding-top: 10rpx;
   margin-top: 30rpx;
 }
-.drawer-optionLine{
+
+.drawer-optionLine {
   padding-top: 10rpx;
+}
+
+/*按钮涟漪效果*/
+.waves {
+  border-radius: 100%;
+  background-color: black;
+  transform: scale(0);
+  width: 150rpx;
+  height: 150rpx;
+  position: absolute;
+}
+.waves-hover {
+}
+.waves-effect-animation {
+  animation: animation-definition 1s ease-out;
+}
+@keyframes animation-definition {
+  from {
+    transform: scale(0.1);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(5); /*因为涟漪的大小为标签的最长边，为了保证点击标签边缘时，涟漪也能覆盖整个标签，scale值最小应为2*/
+    opacity: 0;
+  }
 }

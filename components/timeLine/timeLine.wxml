@@ -1,7 +1,7 @@
 <view class='timeLine'>
   <view class='text'>
-    <text class='text-date' style='color:{{dateColor}};'>{{date[2]}}</text>
-    <text class='text-day' style='color:{{dayColor}};'>{{date[3]}}</text>
+    <text class='text-date' style='color:{{dateColor}};'>{{date.dd}}</text>
+    <text class='text-day' style='color:{{dayColor}};'>{{date.day_en}}</text>
   </view>
   <view class="image">
     <image src='{{imageURL}}' class='image-dot'></image>
@@ -18,8 +18,8 @@
 </view>
 <view class='timeLine-add' wx:if='{{show}}' style='top:{{todayTop}}rpx'>
   <view class='text'>
-    <text class='text-date' style='color: #f8bc71;'>{{today[2]}}</text>
-    <text class='text-day' style='color: #f7ce99'>{{today[3]}}</text>
+    <text class='text-date' style='color: #f8bc71;'>{{today.dd}}</text>
+    <text class='text-day' style='color: #f7ce99'>{{today.day_en}}</text>
   </view>
   <view class="image">
     <image src='/images/image-todayDot.svg' class='image-todayDot'></image>
