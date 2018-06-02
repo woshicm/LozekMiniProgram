@@ -15,21 +15,21 @@
     <swiper style='width: 100%; height: 89%'>
       <!-- 時間軸預覽 -->
       <swiper-item>
-        <scroll-view scroll-y class='index-scrollView' bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-top='{{scrollHeight}}'>
+        <scroll-view scroll-y="true" class='index-scrollView' bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-top='{{scrollHeight}}' scroll-into-view='{{currentSearchdiaryDataId}}'>
           <view wx:if='{{diaryData.length !== 0}}' style='padding-top: 5rpx;'>
-            <view class='index-display-list' wx:for='{{diaryData}}' wx:key='key' wx:for-item='displayItem' wx:for-index='diaryDataIndex'>
+            <view id='{{"diaryDate" + diaryDataIndex}}' class='index-display-list' wx:for='{{diaryData}}' wx:key='key' wx:for-item='displayItem' wx:for-index='diaryDataIndex'>
               <!-- 時間軸效果 -->
-              <!--遮蔽层-->
-              <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
               <view class='index-display-timeLine'>
                 <!-- 這裡對日期加減的操作尚待完善 -->
                 <timeLine isLast='{{index == diaryData.length - 1}}' dash='{{index===0?false:!(diaryData[index-1].date[2] === displayItem.date[2] - 1)}}' date='{{displayItem.date}}' status='{{(displayItem.diary.text.length != 0 && displayItem.diary.image.length != 0) ? "both" : (displayItem.diary.image.length != 0 ? "image_only" : "text_only")}}'></timeLine>
               </view>
               <view class='index-display-aDay'>
                 <!-- 對每天的文本日記遍歷 -->
-                <scroll-view wx:if='{{(displayItem.diary.text.length != 0) && (currentDisplayDiaryType == "textDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' scroll-x='true' class='index-display-text-scrollView'>
+                <scroll-view wx:if='{{(displayItem.diary.text.length != 0) && (currentDisplayDiaryType == "textDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' scroll-x='true' class='index-display-text-scrollView' scroll-into-view='{{currentSearchTextDiaryId}}'>
                   <view wx:key="this" wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' wx:for-index='textDiaryIndex' class='index-display-text-item'>
                     <textCard id='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}' head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}' data-diarydataindex='{{diaryDataIndex}}' data-textdiaryindex='{{textDiaryIndex}}' bindtap='previewTextDiary' bindlongpress='showTextDiaryEditMenu'></textCard>
+                    <!--遮蔽层-->
+              <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--content-->
                     <!--使用animation属性指定需要执行的动画-->
                     <view animation="{{animationData}} " class="drawer_box" sytle='background-color:red;' hidden="{{(textDiaryIndex == currentTextDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
@@ -44,9 +44,11 @@
                 </scroll-view>
 
                 <!-- 對每天的圖片日記遍歷 -->
-                <scroll-view scroll-x='true' class='index-display-image-scrollView' wx:if='{{(displayItem.diary.image.length != 0) && (currentDisplayDiaryType == "imageDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' style='margin-top: 10rpx;'>
+                <scroll-view scroll-x='true' class='index-display-image-scrollView' wx:if='{{(displayItem.diary.image.length != 0) && (currentDisplayDiaryType == "imageDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' style='margin-top: 10rpx;' scroll-into-view='{{currentSearchImageDiaryId}}'>
                   <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' wx:for-index='imageDiaryIndex' class='index-display-image-item' style='margin-right: 30rpx;'>
-                    <imageCard id='{{"imgCard" +diaryDataIndex+"-"+imageDiaryIndex}}' imageURL='{{imageItem.imageURL}}' data-imagediaryindex='{{imageDiaryIndex}}' data-diarydataindex='{{diaryDataIndex}}' bindtap='previewImageDiary' bindlongpress='showImageDiaryEditMenu'></imageCard>
+                    <imageCard id='{{"imageCard" +diaryDataIndex+"-"+imageDiaryIndex}}' imageURL='{{imageItem.imageURL}}' data-imagediaryindex='{{imageDiaryIndex}}' data-diarydataindex='{{diaryDataIndex}}' bindtap='previewImageDiary' bindlongpress='showImageDiaryEditMenu'></imageCard>
+                    <!--遮蔽层-->
+              <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--使用animation属性指定需要执行的动画-->
                     <view animation="{{animationData}} " class="drawer_box" style='height: 200rpx;' hidden="{{(imageDiaryIndex == currentImageDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
                       <!--drawer content-->
@@ -74,7 +76,8 @@
       <button class='index-display-button' style='width: 80rpx; margin-left: 0rpx; margin-right: 0rpx; padding: 0rpx;'>
         <image src='/images/icon/ic_search.svg' class="image-index-displaySearchButton"></image>
       </button>
-      <input type="text" class='index-display-input' maxlength='10'></input>
+      <input type="text" class='index-display-input' maxlength='10' placeholder='请输入关键字' placeholder-style='font-size: 15px; opacity: 0.3;'  confirm-type='search' bindblur='searchKeywordsInThisPage' bindinput='changeSearchKeywords'
+        bindfocus='inputOnFocus'></input>
       <view class='modify-divideLine-light' style='width: 3rpx'></view>
       <button class='index-display-button' style='width: 75rpx; margin-left: 0rpx;' catchtap='changeDiaryDisplayType'>
         <image src='/images/icon/ic_visibility.svg' class="image-index-displayButton"></image>
