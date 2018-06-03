@@ -166,7 +166,7 @@ Page({
   /**
    * 正文区-展示
    */
-  onShowDiaryTapEvent() {
+  onShowDiaryTapEvent(e) {
     this.setData({
       state: 'edit',
       isDiaryTextFocus: true,
@@ -174,7 +174,6 @@ Page({
   },
   // 预览相片
   onPreviewPhotoTapEvent() {
-
   },
 
   /**

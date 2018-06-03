@@ -605,7 +605,7 @@ Page({
       })
       return;
     }
-    data = {
+    var data = {
       imageURL: this.data.originalImageUrl,
       type: colorModuleId + 1,
     };
