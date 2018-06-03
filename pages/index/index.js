@@ -377,7 +377,10 @@ Page({
         //   diaryData: res.diary,
         // })
         let newDiaryData = res.diary
-        if(newDiaryData.length != 0){
+        // 这个操作会出问题啊，在我的日记数小于4的时候，会因为出错造成死循环
+        // 而且加入新的测试用例不是应该用 newDiaryData.push(textDiary)么，
+        // 往具体的diary里的text里push是啥操作
+        if(newDiaryData.length == 999){
           newDiaryData[3].diary.text.push(this.data.text)
           newDiaryData[3].diary.text.push(this.data.text)
           newDiaryData[4].diary.text.push(this.data.text)
