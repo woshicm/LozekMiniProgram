@@ -213,8 +213,11 @@ Page({
     })
   },
   // 预览相片
-  onPreviewPhotoTapEvent() {
-
+  onPreviewPhotoTapEvent(e) {
+    wx.previewImage({
+      current: [],
+      urls: [e.currentTarget.dataset.imageurl],
+    })
   },
 
   /**
@@ -232,6 +235,7 @@ Page({
     addedPhoto.pop();
     this.setData({
       addedPhoto: addedPhoto,
+      choseCount: this.data.choseCount - 1
     })
   },
   //-----------------------------前後交互函數-----------------------------------------//
@@ -255,9 +259,10 @@ Page({
         setTimeout(
           function () {
             that.setData({
+              choseCount: that.data.choseCount + tempFilePaths.length,
               addedPhoto: addedPhoto,
             })
-          },
+          }, 1000
         )
       }
     })
