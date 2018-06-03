@@ -11,6 +11,8 @@ Page({
     textDiaryData: [],
     //功能区
     snapshot: [],
+    textValueGoBackQueue: [],//回退队列
+    textValueGoForwardQueue: [], //前进队列
     //标题区
     titleValue: "",
     hideTitle: true,
@@ -25,6 +27,7 @@ Page({
     //上传图片区
     addedPhoto: [],
     choseCount: 0,
+
   },
 
   //-----------------------------生命週期函數-----------------------------------------//
@@ -65,7 +68,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
   },
 
   /**
@@ -125,22 +127,61 @@ Page({
    */
   onFunctionConfirmTap() {
     // 看不懂这个setTimeOut啥作用，解释一下呗
-    setTimeout(()=> {
-        var text = this.data.textValue;
-        text = text.replace(/ /g, "&nbsp;")
-        this.setData({
-          state: 'preview',
-          textValue_preview: text,
-        })
-        console.log("functionTap: " + text)
-      }, 50);
+    setTimeout(() => {
+      var text = this.data.textValue;
+      text = text.replace(/ /g, "&nbsp;")
+      this.setData({
+        state: 'preview',
+        textValue_preview: text,
+      })
+      console.log("functionTap: " + text)
+    }, 50);
     this.save();
+  },
+
+  //前进
+  goForwardTextValue() {
+    if (this.data.textValueGoBackQueue.length == 10) {
+      this.data.textValueGoBackQueue.shift()
+    }
+    this.data.textValueGoBackQueue.push(this.data.textValue)
+    if (this.data.textValueGoForwardQueue.length > 0) {
+      this.setData({
+        textValue: this.data.textValueGoForwardQueue.pop()
+      })
+    } else {
+      wx.showToast({
+        title: '不能前进了',
+      })
+    }
+  },
+
+  //撤销
+  goBackTextValue() {
+    var that = this
+    if (this.data.textValueGoBackQueue.length > 0) {
+      if (this.data.textValueGoForwardQueue.length == 10) {
+        that.data.textValueForwardQueue.shift()
+      }
+      this.data.textValueGoForwardQueue.push(this.data.textValue)
+      this.setData({
+        textValue: this.data.textValueGoBackQueue.pop()
+      })
+    } else {
+      wx.showToast({
+        title: '回到最初的起点',
+      })
+    }
   },
 
   /**
   * 正文区-输入
   */
   onDiaryAreaFocusEvent() {
+    if (this.data.textValueGoBackQueue.length == 10) {
+      this.data.textValueGoBackQueue.shift()
+    }
+    this.data.textValueGoBackQueue.push(this.data.textValue)
     this.setData({
       showFunctionArea: false,
       isDiaryTextMaskHidden: false,
@@ -172,8 +213,11 @@ Page({
     })
   },
   // 预览相片
-  onPreviewPhotoTapEvent() {
-
+  onPreviewPhotoTapEvent(e) {
+    wx.previewImage({
+      current: [],
+      urls: [e.currentTarget.dataset.imageurl],
+    })
   },
 
   /**
@@ -191,6 +235,7 @@ Page({
     addedPhoto.pop();
     this.setData({
       addedPhoto: addedPhoto,
+      choseCount: this.data.choseCount - 1
     })
   },
   //-----------------------------前後交互函數-----------------------------------------//
@@ -214,9 +259,10 @@ Page({
         setTimeout(
           function () {
             that.setData({
+              choseCount: that.data.choseCount + tempFilePaths.length,
               addedPhoto: addedPhoto,
             })
-          }, 100
+          }, 1000
         )
       }
     })
@@ -243,12 +289,13 @@ Page({
     //   }
     // }
     let textDiaryData = {
-        'type': 0,
-        'title': this.data.titleValue,
-        'text': this.data.textValue,
-        'images': this.data.addedPhoto,
-        'weather': "",
+      'type': 0,
+      'title': this.data.titleValue,
+      'text': this.data.textValue,
+      'images': this.data.addedPhoto,
+      'weather': "",
     }
+
     SaveDiary(textDiaryData)
       .then((res) => {
         console.log(res)

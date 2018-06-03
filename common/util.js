@@ -217,7 +217,7 @@ function GetCurrentTime() {
   days_cn[6] = "星期六";
   var day_en = days_en[now.getDay()];
   var day_cn = days_cn[now.getDay()]
-  var array = { yy, mm, dd, day_en, day_cn, hh, min, ss};
+  var array = { yy, mm, dd, day_en, day_cn, hh, min, ss };
   return array;
 }
 
@@ -265,4 +265,4 @@ function GetImageInfo(src) {
   return promise
 }
 
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo }
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo,  }

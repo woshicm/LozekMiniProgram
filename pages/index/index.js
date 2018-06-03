@@ -645,6 +645,7 @@ Page({
         //   }
         // }
         //textDiary不为空时继续遍历
+       
         if (that.data.diaryData[i].diary.text.length != 0) {
           j = -1
           for (k = 0, textDiaryLen = that.data.diaryData[i].diary.text.length; k < textDiaryLen; k++) {
@@ -663,17 +664,25 @@ Page({
         keywordsArraryIndex: 0
       })
     }
-    if ((that.data.searchIndexArray[that.data.keywordsArraryIndex].j) == -1) {
-      //本来想通过scroll-into-view进行定位的,但是失效，暂时没找到原因
-      // that.setData({
-      //   currentSearchDiaryDataId: "diaryDate" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i,
-      //   currentSerarchTextDiaryId: "textCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + that.data.searchIndexArray[that.data.keywordsArraryIndex].k,
-      //   currentSerarchImageDiaryId: "imageCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + 0,
-      //   keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
-      // })
-      this.setData({
-        scrollHeight: that.data.searchIndexArray[that.data.keywordsArraryIndex].i * 150,
-        keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
+    //捕捉没找到的异常
+    try{
+      if ((that.data.searchIndexArray[that.data.keywordsArraryIndex].j) == -1) {
+        //本来想通过scroll-into-view进行定位的,但是失效，暂时没找到原因
+        // that.setData({
+        //   currentSearchDiaryDataId: "diaryDate" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i,
+        //   currentSerarchTextDiaryId: "textCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + that.data.searchIndexArray[that.data.keywordsArraryIndex].k,
+        //   currentSerarchImageDiaryId: "imageCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + 0,
+        //   keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
+        // })
+        this.setData({
+          scrollHeight: that.data.searchIndexArray[that.data.keywordsArraryIndex].i * 150,
+          keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
+        })
+      }
+    }catch(e){
+      wx.showToast({
+        title: '对不起,没有搜索到该关键字的相关日记！',
+        icon: 'none'
       })
     }
   },

@@ -8,25 +8,16 @@
   color: #3f8ae9;
   position: relative;
 }
-
-.image-slideOutLayer-input {
+.image-slideOutLayer-input{
   position: fixed;
-  width: 46rpx;
-  height: 46rpx;
-  right: 15%;
+  top: -10rpx;
 }
-
-.image-slideOutLayer-switchMode {
-  width: 55rpx;
-  height: 55rpx;
+.image-slideOutLayer-input{
   position: fixed;
-  right: 2%;
 }
-
 .img-addphoto {
   height: 138rpx;
 }
-
 .img-uploaded {
   box-shadow: 0rpx 0rpx 6rpx 2rpx rgba(0, 0, 0, 0.38);
 }
@@ -57,8 +48,8 @@
 }
 
 .input-text {
-  position: fixed;
   font-size: 13pt;
+  width: 80%；;
 }
 
 .text-displayLength {
@@ -112,34 +103,37 @@
 .view-layoutFirst {
   background-color: #f5f5f5;
   width: 750rpx;
-  height: 70%;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-.layoutFirst-slideOutLayout {
+.layoutFirst-slideOutLayout{
   width: 750rpx;
-  height: 100px;
-  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  height: 60px;
+  background: linear-gradient(rgba(60, 60, 60, 0), rgba(60, 60, 60, 0.38));
+ /* box-shadow: 0px -10px 30px rgba(0, 0, 0, 0.1);*/
   position: fixed;
   z-index: 10;
   display: flex;
-  flex-direction: row;
+  justify-content: center;
 }
-
-.layoutFirst-otherFunctionLayout {
+.layoutFirst-otherFunctionLayout{
   width: 50rpx;
   height: 200rpx;
   background: linear-gradient(to right, rgba(60, 60, 60, 0), rgba(60, 60, 60, 0.38));
   position: fixed;
   left: 700rpx;
 }
-
 .view-layoutSecond {
-  height: 30%;
+  height: 20%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.view-layoutSecond-shareButton {
+  height: 20%;
 }
 
 .view-layoutSecond-preview {
@@ -152,11 +146,11 @@
 }
 
 .view-layoutSecond-preview-textModule {
-  height: 30%;
+  height: 40%;
 }
 
 .view-layoutSecond-preview-colorModule {
-  height: 35%;
+  height: 50%;
   margin: 0rpx;
   padding: 0rpx;
 }
@@ -164,32 +158,6 @@
 .view-layoutSecond-text {
   width: 86%;
   font-size: 13pt;
-}
-
-.view-layoutSecond-share {
-  height: 35%;
-  width: 750rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.view-layoutSecond-share-button {
-  width: 75rpx;
-  height: 75rpx;
-  position: relative;
-  top: 40rpx;
-  /* height: 100%;
-  width: 150rpx;
-  background-color: #3f8ae9;
-  display: flex;
-  align-items: center;
-  justify-content: center; */
-}
-
-.view-layoutSecond-share-button-text {
-  color: white;
-  font-size: 10pt;
 }
 
 .view-line {
@@ -270,10 +238,6 @@
 .movableArea-userInput {
   position: fixed;
   z-index: 1;
-  display: flex;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
 }
 
 .colorModuleScrollView {
@@ -294,7 +258,7 @@
 .colorModuleScrollView-item-button {
   width: 100%;
   height: 100%;
-  font-weight: bold;
+  font-weight: 500;
   border: none;
   border-radius: 0%;
   display: flex;
@@ -354,7 +318,7 @@ button::after {
 }
 
 .modify-shadow-main-down {
-  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(0, 0, 0, 0.54);
+  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(0, 0, 0, 0.38);
 }
 
 .modify-shadow-main-up {
@@ -387,13 +351,6 @@ button::after {
   overflow: hidden;
 }
 
-.mask-slideOutlayout{
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  width: 750rpx
-}
 /*content*/
 
 .drawer_box {
@@ -502,8 +459,9 @@ radio {
 }
 
 .slider-changeRichSize {
-  width: 70%;
+  width: 80%;
   position: fixed;
+  padding-right: 40rpx;
   z-index: 30;
 }
 
