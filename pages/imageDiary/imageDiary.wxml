@@ -5,27 +5,36 @@
 
   <!--图片区  -->
   <view class='view-layoutFirst'>
-    <image src='{{imgUrl}}' mode='aspectFit' class='img-uploaded' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px; filter: {{imageFilter}};'></image>
+    <image src='{{filteredImageUrl}}' mode='aspectFit' class='img-uploaded' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;'></image>
     <movable-area class='movableArea-userInput' disabled="{{isMoveable}}" scale-area='true' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;'>
-      <!-- <movable-view direction='all' scale='true' scale-min='0.5' scale-max='{{(uploadedImageHeight / choseTextModule.height > uploadedImageWidth / choseTextModule.width) ? uploadedImageWidth / (choseTextModule.width * pixelRatio) : uploadedImageHeight / (choseTextModule.height * pixelRatio)}}' style='width: {{choseTextModule.width}}px; height: {{choseTextModule.height}}px;'> -->
-      <input class='input-text' style="" hidden="{{!(isInputStatu && isNarrateModel)}}" placeholder='请在这里输入标题' maxlength='6' focus="{{!isFocus}}" bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" id='title'></input>
-      <textarea class="input-text" wx:key="this" hidden="{{!isInputStatu}}" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入文案。' maxlength='{{inputMaxLength}}' placeholder-style='font-size: 13pt'
-        show-confirm-bar='false' focus="{{isFocus}}" id='content'></textarea>
+      <!-- 叙事模式输入 -->
+      <block wx:if="{{mode == 'longText' && isInputStatu}}">
+        <input class='input-text' style="top: {{windowHeight * 0.8 * 0.9  / 2 - uploadedImageHeight / 4}}px; left: 188rpx;" placeholder='请在这里输入标题' maxlength='8' focus="{{isFocus}}" bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="titleInputOnBlurEvent"
+          id='title' value='{{inputTitle}}'></input>
+        <textarea class="input-text" style='left: 188rpx;' wx:key="this" hidden="{{}}" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入正文' maxlength='50' placeholder-style='font-size: 13pt;'
+          show-confirm-bar='false' id='content' value='{{inputValue}}'></textarea>
+      </block>
+      <!-- 散文模式输入 -->
+      <textarea wx:elif="{{isInputStatu}}" class="input-text" wx:key="this" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='美好的一天说点什么吧' maxlength='25' placeholder-style='font-size: 13pt;'
+        show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{uploadedImageHeight / 2}}px; left: 188rpx;'></textarea>
+
       <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px'
         bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent'>
         <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools'></rich-text>
       </movable-view>
     </movable-area>
     <!-- 滑出菜单层 -->
-    <view class='layoutFirst-slideOutLayout' style='top: {{slideOutLayerTop - 70}}px;' hidden="{{!isShowTools}}">
-      <!--滑动放大  -->
-      <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}' style='top: {{slideOutLayerTop - 50}}px;'></slider>
-      <!--切换叙事模式  -->
-      <image class="image-slideOutLayer-input" src="/images/image-imageDiary-story.svg" hidden="{{!isInputStatu}}" bindtap='changeToNarrate'></image>
-      <!--切换输入状态  -->
-      <image class="image-slideOutLayer-story" src="/images/image-imageDiary-input.svg" hidden="{{!isShowTools}}" bindtap='changeTextReady'></image>
-      <!--打开名言窗口  -->
-      <!--<image class='img-EditDictum' src="/images/icon-imageDiary-help.svg" hidden="{{!isShowTools}}" bindtap='powerDrawer' data-statu="open"></image>-->
+    <view class='layoutFirst-slideOutLayout' style='top: {{slideOutLayerTop - 99}}px;' hidden="{{!isShowTools}}">
+      <view class='mask-slideOutlayout'  style='top: {{slideOutLayerTop}}px; height: {{windowHeight}}px' catchtap='onSlideOutlayoutMaskTap'></view>
+      <block wx:if='{{!isShowConfirm}}'>
+        <!--滑动放大  -->
+        <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}' style='top: {{slideOutLayerTop - 40}}px;'></slider>
+        <!--切换输入状态  -->
+        <image class="image-slideOutLayer-input" src="/images/image-imageDiary-input.svg" hidden="{{!isShowTools}}" bindtap='changeTextReady' style='top: {{slideOutLayerTop - 35}}px; z-index: 30;'></image>
+        <!--切换叙事模式  -->
+        <image class="image-slideOutLayer-switchMode" src="/images/imageDiary/{{mode == 'shortText' ? 'longText.svg' : 'shortText.png'}}" hidden="{{!isShowTools && mode == 'longText'}}" bindtap='switchMode' style='top: {{slideOutLayerTop - 38}}px; z-index: 30;'></image>
+      </block>
+      <image wx:else src='/images/imageDiary/confirm.svg' bindtap='onSwitchModeConfirmTap' class='image-slideOutLayer-switchMode' style='top: {{slideOutLayerTop - 38}}px; z-index:30;' />
     </view>
   </view>
   <!--文本区  -->
@@ -53,10 +62,10 @@
           </view>
         </scroll-view>
       </view>
-      <!-- 分享層 -->
-      <view>
-        <image></image>
-        <image></image>
+      <!-- 分享 -->
+      <view class='view-layoutSecond-share'>
+        <image src='/images/imageDiary/share.svg' class='view-layoutSecond-share-button' style='right: 75rpx;' bindTap='onShareTap' />
+        <image src='/images/imageDiary/save.svg' class='view-layoutSecond-share-button' style='left: 75rpx;' bindtap='onSaveTap' />
       </view>
     </view>
     <view class='view-layoutSecond-text'>
@@ -109,64 +118,9 @@
               </view>
             </view>
           </view>
-
         </view>
         <view class="btn_ok" bindtap="powerDrawer" data-statu="close">确定</view>
       </view>
     </view>
-
-    <!-- 显示输入的文字 -->
-    <!-- <view class='view-eachItem' style='margin-top:10px'>
-        <text class="text-eachTitle" bindtap="powerDrawer" data-statu="open" style='{{inputLength == 0 ? "color: grey; font-size: 13pt;" : ""}};'>文案</text>
-        <view class='view-show-text' bindtap="powerDrawer" data-statu="open">{{inputValue}}</view>
-        <view class='view-line' bindtap="powerDrawer" data-statu="open" style='{{inputLength == 0 ? "background-color: grey;" : "height: 4rpx"}};'></view>
-      </view> -->
-
-    <!--显示样式  -->
-    <!-- <view class='view-eachItem view-style' style='margin-top: 5%;'>
-        <text class='text-eachTitle'>样式</text>
-        <view style='margin-top: 0%;'>
-          <slider show-value min='1' max='18' activeColor='#3f8ae9' block-size='20'></slider>
-        </view>
-      </view> -->
-
-    <!--天气、时空和心情滤镜  -->
-    <!-- <view class='view-eachItem' style='margin-top: 8%;'>
-        <checkbox-group class='checkgroup-threeItems' style='z-index:{{zIndex}}' bindchange="checkboxChange">
-          <label wx:key="this" wx:for="{{items}}">
-            <checkbox value="{{item}}" checked="{{item.checked}}" />{{item.value}}
-          </label>
-        </checkbox-group>
-      </view> -->
-    <!-- <view class='view-eachItem view-style'>
-        <text class='text-eachTitle'>样式</text>
-        <view class='view-select-layout view-select-style-layout' style='z-index:{{zIndex}}'>
-          <view class='view-select-box-first' style='padding-right:0rpx'>
-            <view class='view-select' id='styleFirst' catchtap='selectStyle'>
-              <text class='text-select'>{{dataStyleFirst[indexStyleFirst]}}</text>
-            </view>
-            <view class='view-option-box-first' style='height:{{showStyleFirst?(dataStyleFirst.length>5?300:datavFirst.length*60):0}}rpx;'>
-              <text class='text-option-box' style='{{indexStyleFirst==dataStyleFirst.length-1&&"border:0;"}}' wx:for='{{dataStyleFirst}}' wx:key='this' data-index='{{index}}' id='selectStyleFirst' catchtap='optionStyle'>{{item}}</text>
-            </view>
-          </view>
-          <view class='view-select-box-first' style='padding-right:0rpx'>
-            <view class='view-select' id='styleSecond' catchtap='selectStyle'>
-              <text class='text-select'>{{dataStyleSecond[indexStyleSecond]}}</text>
-            </view>
-            <view class='view-option-box-first' style='height:{{showStyleSecond?(dataStyleSecond.length>4?240:dataStyleSecond.length*60):0}}rpx;'>
-              <text class='text-option-box' style='{{indexStyleSecond==dataStyleSecond.length-1&&"border:0;"}}' wx:for='{{dataStyleSecond}}' wx:key='this' data-index='{{index}}' id='selectStyleSecond' catchtap='optionStyle'>{{item}}</text>
-            </view>
-          </view>
-          <view class='view-select-box-first' style='padding-right:0rpx'>
-            <view class='view-select' id='styleThird' catchtap='selectStyle'>
-              <text class='text-select' style='font-size:9pt'>{{dataStyleThird[indexStyleThird]}}</text>
-            </view>
-            <view class='view-option-box-first view-option-box-second' style='height:{{showStyleThird?(dataStyleThird.length>5?300:dataStyleThird.length*60):0}}rpx;'>
-              <text class='text-option-box' style='{{indexStyleThird==dataStyleThird.length-1&&"border:0;"}}' wx:for='{{dataStyleThird}}' wx:key='this' data-index='{{index}}' id='selectStyleThird' catchtap='optionStyle'>{{item}}</text>
-            </view>
-          </view>
-        </view>
-      </view> -->
-    <!-- </view> -->
   </view>
 </view>

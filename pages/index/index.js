@@ -298,13 +298,13 @@ Page({
           success: (res) => {
             imgUrl = tempFilePaths[0];
             if (res.height > res.width) {
-              var width = res.width * (0.9 * 0.8 * app.globalData.windowHeight) / res.height;
+              var width = res.width * (0.9 * 0.7 * app.globalData.windowHeight) / res.height;
               if (width > app.globalData.windowWidth){
                 uploadedImageWidth = app.globalData.windowWidth;
                 uploadedImageHeight = res.height * app.globalData.windowWidth / res.width;
               } else{
                 uploadedImageWidth = width;
-                uploadedImageHeight = 0.9 * 0.8 * app.globalData.windowHeight;
+                uploadedImageHeight = 0.9 * 0.7 * app.globalData.windowHeight;
               }
             } else if (res.height == res.width) {
               uploadedImageWidth = app.globalData.windowWidth;
@@ -377,9 +377,11 @@ Page({
         //   diaryData: res.diary,
         // })
         let newDiaryData = res.diary
-        newDiaryData[3].diary.text.push(this.data.text)
-        newDiaryData[3].diary.text.push(this.data.text)
-        newDiaryData[4].diary.text.push(this.data.text)
+        if(newDiaryData.length != 0){
+          newDiaryData[3].diary.text.push(this.data.text)
+          newDiaryData[3].diary.text.push(this.data.text)
+          newDiaryData[4].diary.text.push(this.data.text)
+        }
         this.setData({
           diaryData: newDiaryData,
         })

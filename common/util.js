@@ -215,44 +215,4 @@ function GetImageInfo(src) {
   return promise
 }
 
-//循环队列
-function Queue() {
-  var items = [1,2,3];
-  //入队
-  this.enqueue = function (ele) {
-    if (items.length == 10) {
-      items.shift()
-    }
-    items.push(ele);
-  };
-  //出队
-  this.dequeue = function () {
-    return items.shift();
-  };
-  //出栈
-  this.pop = function () {
-    return items.pop();
-  }
-  //查看队头元素
-  this.front = function () {
-    return items[0];
-  };
-  //判断队列是否为空
-  this.isEmpty = function () {
-    return items.length === 0;
-  };
-  //队列大小
-  this.size = function () {
-    return items.length;
-  };
-  //清空队列
-  this.clear = function () {
-    items = [];
-  };
-  //打印队列
-  this.print = function () {
-    console.log(items.toString());
-  };
-}
-
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, Queue, }
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo,  }

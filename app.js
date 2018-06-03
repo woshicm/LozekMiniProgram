@@ -20,6 +20,7 @@ App({
       parseText: '',
       deleteDiary: '',
       getShareDiary: '',
+      getFilter: ''
     },
     windowWidth: '',
     windowHeight: '',
@@ -43,6 +44,7 @@ App({
     this.globalData.api.getDiary = this.globalData.baseURL + 'diary'
     this.globalData.api.saveDiary = this.globalData.baseURL + 'diary'
     this.globalData.api.deleteDiary = this.globalData.baseURL + 'delete_diary'
+    this.globalData.api.getFilter = this.globalData.baseURL + 'filter'
     this.globalData.api.getShareDiary = this.globalData.getShareDiaryURL + 'image'
     this.globalData.windowWidth = wx.getSystemInfoSync().windowWidth;
     this.globalData.windowHeight = wx.getSystemInfoSync().windowHeight;

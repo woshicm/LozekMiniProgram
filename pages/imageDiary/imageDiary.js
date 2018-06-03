@@ -2,12 +2,19 @@
 
 // 导入方法统一以大写字母开头
 import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo } from "../../common/util.js";
+import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
 
 Page({
   data: {
     test: true,
+    originalImageUrl: '',
+    filteredImageUrl: '',
+    isShowConfirm: false,
+    //全局变量
+    mode: 'shortText',
+    windowHeight: app.globalData.windowHeight,
     /**
      * imageDiary頁
      */
@@ -17,7 +24,6 @@ Page({
       { name: 'Mood', value: '心情滤镜' },
     ],
     zIndex: 0,
-    imgUrl: '',
 
     //富文本節點：用於handedText顯示
     textModule: [],
@@ -106,7 +112,6 @@ Page({
     inputLength: 0,
     inputValue: '',
     inputCursor: 0,
-    inputMaxLength: 25,
     fontSize: "1pt",
     showModalStatus: true,
     showAddButton: true,
@@ -115,7 +120,6 @@ Page({
     isMoveable: true, //是否可移动
     isInputNull: true, //判断输入是否为空
     isShowTools: false,    //显示工具栏
-    isNarrateModel: false, //是否叙事模式
     isInputStatu: true,  //是否输入模式
     showEdit: false, //false显示文案,true显示名言
     showFontSizeSlider: true,   //打开字体选择slider
@@ -143,13 +147,14 @@ Page({
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
     this.setData({
-      imgUrl: options.imgUrl,
+      originalImageUrl: options.imgUrl,
+      filteredImageUrl: options.imgUrl,
       uploadedImageWidth: options.imageWidth,
       uploadedImageHeight: options.imageHeight,
     })
-    // GetImageInfo(imageUrl) 
+    // GetImageInfo(imageUrl)
     // .then((res) => {
-      //res就是要的信息
+    //res就是要的信息
     //   console.log(res)
     //   }).catch((res) => {
     // })
@@ -185,34 +190,34 @@ Page({
   },
   util: function (currentStatu) {
     /* 动画部分 */
-    // 第1步：创建动画实例   
+    // 第1步：创建动画实例
     var animation = wx.createAnimation({
-      duration: 200,  //动画时长  
-      timingFunction: "linear", //线性  
-      delay: 0  //0则不延迟  
+      duration: 200,  //动画时长
+      timingFunction: "linear", //线性
+      delay: 0  //0则不延迟
     });
 
-    // 第2步：这个动画实例赋给当前的动画实例  
+    // 第2步：这个动画实例赋给当前的动画实例
     this.animation = animation;
 
-    // 第3步：执行第一组动画  
+    // 第3步：执行第一组动画
     animation.opacity(0).rotateX(-100).step();
 
-    // 第4步：导出动画对象赋给数据对象储存  
+    // 第4步：导出动画对象赋给数据对象储存
     this.setData({
       animationData: animation.export()
     })
 
-    // 第5步：设置定时器到指定时候后，执行第二组动画  
+    // 第5步：设置定时器到指定时候后，执行第二组动画
     setTimeout(function () {
-      // 执行第二组动画  
+      // 执行第二组动画
       animation.opacity(1).rotateX(0).step();
-      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象  
+      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
       this.setData({
         animationData: animation
       });
 
-      //关闭  
+      //关闭
       if (currentStatu == "close") {
         this.setData(
           {
@@ -222,7 +227,7 @@ Page({
       }
     }.bind(this), 200);
 
-    // 显示  
+    // 显示
     if (currentStatu == "open") {
       this.setData(
         {
@@ -253,6 +258,16 @@ Page({
   },
 
   /**
+   * input監聽事件
+   */
+  titleInputOnFocusEvent(e) {
+  },
+  titleInputOnBlurEvent(e) {
+    this.setData({
+      inputTitle: e.detail.value,
+    })
+  },
+  /**
    * textarea监听事件
    */
   //input编辑
@@ -281,9 +296,9 @@ Page({
     // var keyboardHeight = e.detail.height;
     // //建立動畫：拉起鍵盤，彈窗向上偏移
     // var animation = wx.createAnimation({
-    //   duration: 200,  //动画时长  
-    //   timingFunction: "linear", //线性  
-    //   delay: 0  //0则不延迟  
+    //   duration: 200,  //动画时长
+    //   timingFunction: "linear", //线性
+    //   delay: 0  //0则不延迟
     // });
     // this.animation = animation;
     // animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
@@ -299,15 +314,15 @@ Page({
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     var array = [];
-    if (value.length == 0) {
-      //隨機調用名言模板
+    // if (value.length == 0) {
+    //   //隨機調用名言模板
+    // }
+    // else {
+    for (var i = 0; i < 10; i++) {
+      var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
+      array.push(suitableTextModule);
     }
-    else {
-      for (var i = 0; i < 10; i++) {
-        var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
-        array.push(suitableTextModule);
-      }
-    }
+    // }
     var choseTextModule = this.getTextModule(value, 'black', 1, 0);
     // this.parseInputValue(value);
     switch (e.target.id) {
@@ -318,9 +333,9 @@ Page({
         break;
       case 'content':
         // var animation = wx.createAnimation({
-        //   duration: 200,  //动画时长  
-        //   timingFunction: "linear", //线性  
-        //   delay: 0  //0则不延迟  
+        //   duration: 200,  //动画时长
+        //   timingFunction: "linear", //线性
+        //   delay: 0  //0则不延迟
         // });
         // this.animation = animation;
         // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
@@ -331,14 +346,17 @@ Page({
         // wx.showToast({
         //   title: 'blur',
         // })
+        var isShow = this.data.mode == 'longText';
         this.setData({
           inputValue: value,
-          isInputStatu: !this.data.isInputStatu,
           isMoveable: !this.data.isMoveable,
           textModuleScrollView: array,
           choseTextModule: choseTextModule,
           movableViewWidth: choseTextModule.systemVariable.width,
           movableViewHeight: choseTextModule.systemVariable.height,
+          isShowConfirm: isShow,
+          isShowTools: isShow,
+          isInputStatu: isShow,
         });
         break;
       default:
@@ -349,49 +367,56 @@ Page({
   /**
    * 确认输入内容并跳转
    */
-//   confirm() {
-//     if (this.data.inputValue.length == 0) {
-//       //隨機調用名言模板
-//     }
-//     else {
-//       var array = []
-//       for (var i = 0; i < 10; i++) {
-// <<<<<<< HEAD
-//         var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
-//         array.push(suitableTextModule)
-//       }
-//     }
-//     // var animation = wx.createAnimation({
-//     //   duration: 200,  //动画时长  
-//     //   timingFunction: "linear", //线性  
-//     //   delay: 0  //0则不延迟  
-//     // });
-//     // this.animation = animation;
-//     // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
-//     // this.setData({
-//     //   inputValue: value,
-//     //   animationData: animation.export(),
-//     // });
-//     // wx.showToast({
-//     //   title: 'blur',
-//     // })
-//     var choseTextModule = this.getTextModule(value, 'black', 1, 0);
-//     var scaleMax;
-// =======
-//         var suitableTextModule = this.getTextModule(this.data.inputValue, 'black', 0.3, i);
-//         array.push(suitableTextModule)
-//       }
-//     };
+  //   confirm() {
+  //     if (this.data.inputValue.length == 0) {
+  //       //隨機調用名言模板
+  //     }
+  //     else {
+  //       var array = []
+  //       for (var i = 0; i < 10; i++) {
+  // <<<<<<< HEAD
+  //         var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
+  //         array.push(suitableTextModule)
+  //       }
+  //     }
+  //     // var animation = wx.createAnimation({
+  //     //   duration: 200,  //动画时长
+  //     //   timingFunction: "linear", //线性
+  //     //   delay: 0  //0则不延迟
+  //     // });
+  //     // this.animation = animation;
+  //     // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
+  //     // this.setData({
+  //     //   inputValue: value,
+  //     //   animationData: animation.export(),
+  //     // });
+  //     // wx.showToast({
+  //     //   title: 'blur',
+  //     // })
+  //     var choseTextModule = this.getTextModule(value, 'black', 1, 0);
+  //     var scaleMax;
+  // =======
+  //         var suitableTextModule = this.getTextModule(this.data.inputValue, 'black', 0.3, i);
+  //         array.push(suitableTextModule)
+  //       }
+  //     };
 
   /**
    * movableArea 监听事件
    */
   //移动
-  onMovableAreaChangeEvent(e){
+  onMovableAreaChangeEvent(e) {
     var clientCoordinate = e.detail;
     this.setData({
       clientCoordinat: clientCoordinate,
     })
+    if (this.data.isShowTools && e.detail.source == 'touch') {
+      this.setData({
+        isShowTools: false,
+        isShowConfirm: false,
+        isInputStatu: false,
+      })
+    }
   },
   //縮放
   onMovableAreaScaleEvent(e) {
@@ -399,8 +424,15 @@ Page({
       sliderValue: e.detail.scale * 40,
     })
   },
-
-  //调用api处理输入文字 
+  //
+  onSlideOutlayoutMaskTap() {
+    this.setData({
+      isShowTools: false,
+      isShowConfirm: false,
+      isInputStatu: false,
+    })
+  },
+  //调用api处理输入文字
   parseInputValue(value) {
     ParseText(value)
       .then((res) => {
@@ -561,7 +593,6 @@ Page({
       choseTextModuleId: choseTextModuleId,
       choseTextModule: this.getTextModule(this.data.inputValue, color, this.data.richTextSize, choseTextModuleId)
     })
-    console.log('這：' + choseTextModuleId)
   },
   /**
    * 顏色模板處理函數
@@ -570,49 +601,26 @@ Page({
     var colorModuleId = e.currentTarget.dataset.colorModuleId;
     if (colorModuleId == this.data.choseColorModuleId) {
       this.setData({
-        imageFilter: "",
+        filteredImageUrl: this.data.originalImageUrl,
         choseColorModuleId: -1,
       })
       return;
     }
-    var operation = "";
-    switch (colorModuleId) {
-      case 0:
-        operation = "contrast(150%);";
-        break;
-      case 1:
-        operation = "contrast(50%)";
-        break;
-      case 2:
-        operation = "sepia(50%)";
-        break;
-      case 3:
-        operation = "";
-        break;
-      case 4:
-        operation = "brightness(150%);";
-        break;
-      case 5:
-        operation = "brightness(50%);";
-        break;
-      case 6:
-        operation = "";
-        break;
-      case 7:
-        operation = "";
-        break;
-      case 8:
-        operation = "";
-        break;
-      case 9:
-        operation = "";
-        break;
-    }
-    this.setData({
-      imageFilter: operation,
-      choseColorModuleId: colorModuleId,
-      choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.richTextSize, this.data.choseTextModuleId)
-    })
+    let data = {
+      imageURL: this.data.originalImageUrl,
+      type: colorModuleId + 1,
+    };
+    GetFliter(data)
+    .then((res) => {
+        this.setData({
+          filteredImageUrl: res.imgUrl,
+          choseColorModuleId: colorModuleId,
+          choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.richTextSize, this.data.choseTextModuleId)
+        })
+      })
+      .catch(() => {
+
+      })
   },
 
 
@@ -647,11 +655,11 @@ Page({
   },
 
   //返回文字模板
-  putTextModule(){
+  putTextModule() {
     var beginPoint = {
       'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x - (app.globalData.windowWidth - this.data.uploadedImageWidth) / 2,
       'y': this.data.clientCoordinat.y - (app.globalData.windowHeight * 0.9 * 0.8 - this.data.uploadedImageHeight) / 2
-      }; 
+    };
     var height = this.data.choseTextModule.systemVariable.height;
     var actions = [
       {
@@ -665,7 +673,7 @@ Page({
       {
         'action': 'text',
         'text': this.data.inputValue,
-        'position': [beginPoint.x, beginPoint.y + height * 0.6 +(height * 0.2 - 12) / 2],
+        'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
         'font-style': 'letter-spacing: 2px;',
         'font-color': this.data.choseTextModule.userVariable.color,
         'font-size': 12,
@@ -685,7 +693,7 @@ Page({
   showTools() {
     this.setData({
       isShowTools: !this.data.isShowTools,
-      slideOutLayerTop: app.globalData.windowHeight * 0.8 - (app.globalData.windowHeight * 0.8 - this.data.uploadedImageHeight) / 2,
+      slideOutLayerTop: app.globalData.windowHeight * 0.7 - (app.globalData.windowHeight * 0.7 - this.data.uploadedImageHeight) / 2,
     });
     console.log(this.data.slideOutLayerTop)
   },
@@ -700,26 +708,27 @@ Page({
 
   //选择显示输入框还是富文本
   changeTextReady() {
-    console.log("你点不到我！")
+    var isShow = this.data.mode == 'longText';
     this.setData({
-      isShowTools: !this.data.isShowTools,
+      isFocus: true,
       isMoveable: !this.data.isMoveable,
-      isInputStatu: !this.data.isInputStatu,
+      isInputStatu: true,
+      isShowConfirm: isShow,
     })
   },
 
   /**
-   * saveDiaryText 
+   * saveDiaryText
    */
-  saveDiaryText(){
+  saveDiaryText() {
     var actions = this.putTextModule();
     let diary = {
-      'type':1,
-      'imageURL': this.data.imgUrl,
+      'type': 1,
+      'imageURL': this.data.filteredImageUrl,
       'location': '',
       'actions': actions,
     }
-    console.log(actions)
+    console.log(diary)
     SaveDiary(diary)
       .then((res) => {
         console.log(res)
@@ -731,25 +740,45 @@ Page({
   /**
    * 切换叙事模式
    */
-  changeToNarrate() {
-    let maxLength = this.data.inputMaxLength;
+  switchMode() {
     let value = this.data.inputValue;
     let isOver = this.data.isLengthOver;
-    if (value.length > 25) {
-      value = value.slice(0, 25);
-      isOver = true;
+    var mode = 'longText';
+    if (this.data.mode == 'longText') {
+      mode = 'shortText'
+      if (value.length > 25) {
+        value = value.slice(0, 25);
+        isOver = true;
+      }
     }
-    if (maxLength == 25) {
-      maxLength = 50;
-    } else {
-      maxLength = 25;
-    }
+    var isShow = this.data.mode == 'longText';
     this.setData({
-      isNarrateModel: !this.data.isNarrateModel,
-      isFocus: !this.data.isFocus,
-      inputMaxLength: maxLength,
+      mode: mode,
+      isFocus: true,
       inputValue: value,
       isLengthOver: isOver,
+      isShowConfirm: isShow,
+      isInputStatu: true,
     })
   },
+  //輸入模式
+  onSwitchModeConfirmTap() {
+    this.setData({
+      isInputStatu: false,
+      isShowConfirm: false,
+      isShowTools: false,
+    })
+  },
+
+  /**
+   * 保存區
+   */
+  //分享好友
+  onShareTap() {
+    this.saveDiaryText();
+  },
+  //存至本地
+  onSaveTap() {
+    this.saveDiaryText();
+  }
 })

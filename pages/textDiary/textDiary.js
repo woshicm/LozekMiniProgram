@@ -1,7 +1,7 @@
 // page/textDiary/textDiary.js
 
 // 导入方法统一以大写字母开头
-import { GetCurrentTime, UploadImage, GetImageInfo } from "../../common/util.js";
+import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary } from "../../common/util.js";
 
 let app = getApp()
 Page({
@@ -68,8 +68,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    this.data.textValueGoBackQueue.clear()
-    this.data.textValueGoForwardQueue.clear()
   },
 
   /**
@@ -128,17 +126,16 @@ Page({
    * 功能区 
    */
   onFunctionConfirmTap() {
-    var that = this;
-    setTimeout(
-      function () {
-        var text = that.data.textValue;
-        text = text.replace(/ /g, "&nbsp;")
-        that.setData({
-          state: 'preview',
-          textValue_preview: text,
-        })
-        console.log("functionTap: " + text)
-      }, 50);
+    // 看不懂这个setTimeOut啥作用，解释一下呗
+    setTimeout(() => {
+      var text = this.data.textValue;
+      text = text.replace(/ /g, "&nbsp;")
+      this.setData({
+        state: 'preview',
+        textValue_preview: text,
+      })
+      console.log("functionTap: " + text)
+    }, 50);
     this.save();
   },
 
@@ -251,16 +248,15 @@ Page({
         for (var i = 0; i < tempFilePaths.length; i++) {
           GetImageInfo(tempFilePaths[i])
             .then((res) => {
-              // addedPhoto.push(res);
-              that.data.addedPhoto.push(res)
+              addedPhoto.push(res);
             }).catch((res) => {
             })
         }
         setTimeout(
           function () {
-            // that.setData({
-            //   addedPhoto: addedPhoto,
-            // })
+            that.setData({
+              addedPhoto: addedPhoto,
+            })
           },
         )
       }
@@ -271,22 +267,36 @@ Page({
     var createdTime = GetCurrentTime();
     if (this.data.textDiaryData.length != 0)
       createdTime = this.data.textDiary.system.createdTime;
-    var textDiaryData = {
-      main: {
-        'type': 0,
-        'title': this.data.titleValue,
-        'text': this.data.textValue,
-        'images': this.data.addedPhoto, //通過addedPhoto[i].url 獲取圖片url
-      },
-      extra: {
-        snapshot: this.data.snapshot,
-      },
-      system: {
-        createdTime: createdTime,
-        lastModifiedTime: GetCurrentTime(), //數組元素{ yy, mm, dd, day_en, day_cn, hh, min, ss};
-        weather: "",
-      }
+    // var textDiaryData = {
+    //   main: {
+    //     'type': 0,
+    //     'title': this.data.titleValue,
+    //     'text': this.data.textValue,
+    //     'images': this.data.addedPhoto, //通過addedPhoto[i].url 獲取圖片url
+    //   },
+    //   extra: {
+    //     snapshot: this.data.snapshot,
+    //   },
+    //   system: {
+    //     createdTime: createdTime,
+    //     lastModifiedTime: GetCurrentTime(), //數組元素{ yy, mm, dd, day_en, day_cn, hh, min, ss};
+    //     weather: "",
+    //   }
+    // }
+    let textDiaryData = {
+      'type': 0,
+      'title': this.data.titleValue,
+      'text': this.data.textValue,
+      'images': this.data.addedPhoto,
+      'weather': "",
     }
-  },
 
+    SaveDiary(textDiaryData)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
 })
