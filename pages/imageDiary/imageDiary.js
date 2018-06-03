@@ -2,6 +2,7 @@
 
 // 导入方法统一以大写字母开头
 import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo } from "../../common/util.js";
+import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
 
@@ -151,7 +152,7 @@ Page({
       uploadedImageWidth: options.imageWidth,
       uploadedImageHeight: options.imageHeight,
     })
-    // GetImageInfo(imageUrl) 
+    // GetImageInfo(imageUrl)
     // .then((res) => {
     //res就是要的信息
     //   console.log(res)
@@ -189,34 +190,34 @@ Page({
   },
   util: function (currentStatu) {
     /* 动画部分 */
-    // 第1步：创建动画实例   
+    // 第1步：创建动画实例
     var animation = wx.createAnimation({
-      duration: 200,  //动画时长  
-      timingFunction: "linear", //线性  
-      delay: 0  //0则不延迟  
+      duration: 200,  //动画时长
+      timingFunction: "linear", //线性
+      delay: 0  //0则不延迟
     });
 
-    // 第2步：这个动画实例赋给当前的动画实例  
+    // 第2步：这个动画实例赋给当前的动画实例
     this.animation = animation;
 
-    // 第3步：执行第一组动画  
+    // 第3步：执行第一组动画
     animation.opacity(0).rotateX(-100).step();
 
-    // 第4步：导出动画对象赋给数据对象储存  
+    // 第4步：导出动画对象赋给数据对象储存
     this.setData({
       animationData: animation.export()
     })
 
-    // 第5步：设置定时器到指定时候后，执行第二组动画  
+    // 第5步：设置定时器到指定时候后，执行第二组动画
     setTimeout(function () {
-      // 执行第二组动画  
+      // 执行第二组动画
       animation.opacity(1).rotateX(0).step();
-      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象  
+      // 给数据对象储存的第一组动画，更替为执行完第二组动画的动画对象
       this.setData({
         animationData: animation
       });
 
-      //关闭  
+      //关闭
       if (currentStatu == "close") {
         this.setData(
           {
@@ -226,7 +227,7 @@ Page({
       }
     }.bind(this), 200);
 
-    // 显示  
+    // 显示
     if (currentStatu == "open") {
       this.setData(
         {
@@ -295,9 +296,9 @@ Page({
     // var keyboardHeight = e.detail.height;
     // //建立動畫：拉起鍵盤，彈窗向上偏移
     // var animation = wx.createAnimation({
-    //   duration: 200,  //动画时长  
-    //   timingFunction: "linear", //线性  
-    //   delay: 0  //0则不延迟  
+    //   duration: 200,  //动画时长
+    //   timingFunction: "linear", //线性
+    //   delay: 0  //0则不延迟
     // });
     // this.animation = animation;
     // animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
@@ -332,9 +333,9 @@ Page({
         break;
       case 'content':
         // var animation = wx.createAnimation({
-        //   duration: 200,  //动画时长  
-        //   timingFunction: "linear", //线性  
-        //   delay: 0  //0则不延迟  
+        //   duration: 200,  //动画时长
+        //   timingFunction: "linear", //线性
+        //   delay: 0  //0则不延迟
         // });
         // this.animation = animation;
         // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
@@ -379,9 +380,9 @@ Page({
   //       }
   //     }
   //     // var animation = wx.createAnimation({
-  //     //   duration: 200,  //动画时长  
-  //     //   timingFunction: "linear", //线性  
-  //     //   delay: 0  //0则不延迟  
+  //     //   duration: 200,  //动画时长
+  //     //   timingFunction: "linear", //线性
+  //     //   delay: 0  //0则不延迟
   //     // });
   //     // this.animation = animation;
   //     // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
@@ -431,7 +432,7 @@ Page({
       isInputStatu: false,
     })
   },
-  //调用api处理输入文字 
+  //调用api处理输入文字
   parseInputValue(value) {
     ParseText(value)
       .then((res) => {
@@ -605,12 +606,12 @@ Page({
       })
       return;
     }
-    var data = {
+    let data = {
       imageURL: this.data.originalImageUrl,
       type: colorModuleId + 1,
     };
     GetFliter(data)
-      .then((res) => {
+    .then((res) => {
         this.setData({
           filteredImageUrl: res.imgUrl,
           choseColorModuleId: colorModuleId,
@@ -717,17 +718,17 @@ Page({
   },
 
   /**
-   * saveDiaryText 
+   * saveDiaryText
    */
   saveDiaryText() {
     var actions = this.putTextModule();
     let diary = {
       'type': 1,
-      'imageURL': this.data.imgUrl,
+      'imageURL': this.data.filteredImageUrl,
       'location': '',
       'actions': actions,
     }
-    console.log(actions)
+    console.log(diary)
     SaveDiary(diary)
       .then((res) => {
         console.log(res)

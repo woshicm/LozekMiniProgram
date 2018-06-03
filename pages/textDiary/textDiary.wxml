@@ -34,8 +34,8 @@
     <image src='/images/textDiary/indent.svg' class='functionArea-image' />
     <image src='/images/textDiary/pedia.svg' class='functionArea-image' />
     <image src='/images/textDiary/snap.svg' class='functionArea-image' />
-    <image src='/images/textDiary/goForward.svg' class='functionArea-image' style='height: 50%;' />
-    <image src='/images/textDiary/goBackward.svg' class='functionArea-image' style='height: 50%;' />
+    <image src='/images/textDiary/goForward.svg' class='functionArea-image' style='height: 50%;' bindtap='goForwardTextValue' />
+    <image src='/images/textDiary/goBackward.svg' class='functionArea-image' style='height: 50%;' bindtap='goBackTextValue'/>
     <image src='/images/textDiary/confirm.svg' class='functionArea-image' bindtap='onFunctionConfirmTap' />
   </view>
   <!-- 正文输入 -->
@@ -52,16 +52,16 @@
       </view>
       <!-- 1.一張圖片 -->
       <view wx:elif='{{addedPhoto.length == 1}}' class='showDiary-scrollView-item'>
-        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 300rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 300rpx;" : "height: 250rpx; width: 250rpx;")}}'
+        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 300rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 300rpx;" : "height: 250rpx; width: 250rpx;")}}' data-imageurl='{{addedPhoto[0].url}}' 
           mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
         <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
       </view>
       <!-- 2.二張圖片 -->
       <view wx:elif='{{addedPhoto.length == 2}}' class='showDiary-scrollView-item'>
-        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}' data-imageurl='{{addedPhoto[0].url}}' 
           mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
         <view style='height: 500rpx; width: 1rpx; float: right;'></view>
-        <image src='{{addedPhoto[1].url}}' style='{{addedPhoto[1].height >= addedPhoto[1].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[1].width >= addedPhoto[1].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+        <image src='{{addedPhoto[1].url}}' style='{{addedPhoto[1].height >= addedPhoto[1].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[1].width >= addedPhoto[1].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}' data-imageurl='{{addedPhoto[1].url}}' 
           mode='aspectFill' class='module-image module-image-rightBottom' catchtap='onPreviewPhotoTapEvent' />
         <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
       </view>
@@ -81,7 +81,7 @@
     <view class='modify-divideLine-light addPhoto-divideLine'></view>
     <view class='addPhoto-photos'>
       <block wx:for='{{addedPhoto}}' wx:for-item='photoItem' wx:for-index='photoIndex' wx:key='this'>
-        <image src='{{photoItem.url}}' class='addPhoto-photos-item' mode='aspectFill' style='{{photoIndex == 5 ? "margin-right: 0;" : ";"}}' />
+        <image  src='{{photoItem.url}}' class='addPhoto-photos-item' mode='aspectFill' style='{{photoIndex == 5 ? "margin-right: 0;" : ";"}}'/>
         <image src='/images/textDiary/deletePhoto.svg' class='addPhoto-photos-deletePhotoButton' style='left: {{35 + (photoIndex + 1) * 118 - 37 + photoIndex * 18}}rpx;' bindtap='onDeletePhotoTap' data-delete-index='{{photoIndex}}' />
       </block>
       <image wx:if='{{addedPhoto.length != 5}}' src='/images/textDiary/addPhoto.svg' class='addPhoto-photos-item' catchtap='onAddPhotoTap' />
