@@ -34,8 +34,8 @@
     <image src='/images/textDiary/indent.svg' class='functionArea-image' />
     <image src='/images/textDiary/pedia.svg' class='functionArea-image' />
     <image src='/images/textDiary/snap.svg' class='functionArea-image' />
-    <image src='/images/textDiary/goForward.svg' class='functionArea-image' style='height: 50%;' />
-    <image src='/images/textDiary/goBackward.svg' class='functionArea-image' style='height: 50%;' />
+    <image src='/images/textDiary/goForward.svg' class='functionArea-image' style='height: 50%;' bindtap='goForwardTextValue' />
+    <image src='/images/textDiary/goBackward.svg' class='functionArea-image' style='height: 50%;' bindtap='goBackTextValue'/>
     <image src='/images/textDiary/confirm.svg' class='functionArea-image' bindtap='onFunctionConfirmTap' />
   </view>
   <!-- 正文输入 -->

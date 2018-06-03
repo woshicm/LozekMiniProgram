@@ -1,5 +1,6 @@
 <view class="page-mainPage" animation='{{animationData}}' style='left:{{mainPageLeft}}rpx;' bindtouchstart='onMainPageTouchstart' catchtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend' bindtap='onMainPageTap'>
-
+<!--遮蔽层-->
+               <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view> 
   <view style='height: 149rpx;'>
     <view class="color-main" style='height: 119rpx;'>
       <open-data type="userAvatarUrl" class='image-portrait' catchtap='onPortraitTap'></open-data>
@@ -28,8 +29,6 @@
                 <scroll-view wx:if='{{(displayItem.diary.text.length != 0) && (currentDisplayDiaryType == "textDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' scroll-x='true' class='index-display-text-scrollView' scroll-into-view='{{currentSearchTextDiaryId}}'>
                   <view wx:key="this" wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' wx:for-index='textDiaryIndex' class='index-display-text-item'>
                     <textCard id='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}' head='{{textItem.head}}' lookthrough='{{textItem.lookthrough}}' data-diarydataindex='{{diaryDataIndex}}' data-textdiaryindex='{{textDiaryIndex}}' bindtap='previewTextDiary' bindlongpress='showTextDiaryEditMenu'></textCard>
-                    <!--遮蔽层-->
-              <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--content-->
                     <!--使用animation属性指定需要执行的动画-->
                     <view animation="{{animationData}} " class="drawer_box" sytle='background-color:red;' hidden="{{(textDiaryIndex == currentTextDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
@@ -47,8 +46,6 @@
                 <scroll-view scroll-x='true' class='index-display-image-scrollView' wx:if='{{(displayItem.diary.image.length != 0) && (currentDisplayDiaryType == "imageDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' style='margin-top: 10rpx;' scroll-into-view='{{currentSearchImageDiaryId}}'>
                   <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' wx:for-index='imageDiaryIndex' class='index-display-image-item' style='margin-right: 30rpx;'>
                     <imageCard id='{{"imageCard" +diaryDataIndex+"-"+imageDiaryIndex}}' imageURL='{{imageItem.imageURL}}' data-imagediaryindex='{{imageDiaryIndex}}' data-diarydataindex='{{diaryDataIndex}}' bindtap='previewImageDiary' bindlongpress='showImageDiaryEditMenu'></imageCard>
-                    <!--遮蔽层-->
-              <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--使用animation属性指定需要执行的动画-->
                     <view animation="{{animationData}} " class="drawer_box" style='height: 200rpx;' hidden="{{(imageDiaryIndex == currentImageDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
                       <!--drawer content-->

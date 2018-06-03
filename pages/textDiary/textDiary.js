@@ -11,6 +11,8 @@ Page({
     textDiaryData: [],
     //功能区
     snapshot: [],
+    textValueGoBackQueue: [],//回退队列
+    textValueGoForwardQueue: [], //前进队列
     //标题区
     titleValue: "",
     hideTitle: true,
@@ -25,9 +27,10 @@ Page({
     //上传图片区
     addedPhoto: [],
     choseCount: 0,
+
   },
 
- //-----------------------------生命週期函數-----------------------------------------//
+  //-----------------------------生命週期函數-----------------------------------------//
   /**
      * 生命周期函数--监听页面加载
      */
@@ -65,7 +68,8 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    this.data.textValueGoBackQueue.clear()
+    this.data.textValueGoForwardQueue.clear()
   },
 
   /**
@@ -92,14 +96,14 @@ Page({
   /**
    * 标题区-输入
    */
-      //聚焦
+  //聚焦
   onTitleInputFocusEvent() {
     var inputBottomLineColor = '5rpx solid #3f8ae9';
     this.setData({
       inputBottomLineColor: inputBottomLineColor,
     })
   },
-      //失焦
+  //失焦
   onTitleInputBlurEvent(e) {
     var inputBottomLineColor = '3rpx solid rgba(55,121,205,0.12)';
     var value = e.detail.value;
@@ -114,7 +118,7 @@ Page({
   /**
    * 标题区-展示
    */
-  onTitleTapEvent(){
+  onTitleTapEvent() {
     this.setData({
       hideTitle: true,
     })
@@ -138,10 +142,49 @@ Page({
     this.save();
   },
 
+  //前进
+  goForwardTextValue() {
+    if (this.data.textValueGoBackQueue.length == 10) {
+      this.data.textValueGoBackQueue.shift()
+    }
+    this.data.textValueGoBackQueue.push(this.data.textValue)
+    if (this.data.textValueGoForwardQueue.length > 0) {
+      this.setData({
+        textValue: this.data.textValueGoForwardQueue.pop()
+      })
+    } else {
+      wx.showToast({
+        title: '不能前进了',
+      })
+    }
+  },
+
+  //撤销
+  goBackTextValue() {
+    var that = this
+    if (this.data.textValueGoBackQueue.length > 0) {
+      if (this.data.textValueGoForwardQueue.length == 10) {
+        that.data.textValueForwardQueue.shift()
+      }
+      this.data.textValueGoForwardQueue.push(this.data.textValue)
+      this.setData({
+        textValue: this.data.textValueGoBackQueue.pop()
+      })
+    } else {
+      wx.showToast({
+        title: '回到最初的起点',
+      })
+    }
+  },
+
   /**
   * 正文区-输入
   */
   onDiaryAreaFocusEvent() {
+    if (this.data.textValueGoBackQueue.length == 10) {
+      this.data.textValueGoBackQueue.shift()
+    }
+    this.data.textValueGoBackQueue.push(this.data.textValue)
     this.setData({
       showFunctionArea: false,
       isDiaryTextMaskHidden: false,
@@ -155,7 +198,7 @@ Page({
       isDiaryTextMaskHidden: true,
     })
   },
-      //正文輸入的遮罩，確保拿到text值
+  //正文輸入的遮罩，確保拿到text值
   onDiaryAreaMaskTapEvent() {
     this.setData({
       isDiaryTextFocus: false,
@@ -172,8 +215,8 @@ Page({
       isDiaryTextFocus: true,
     })
   },
-      // 预览相片
-  onPreviewPhotoTapEvent(){
+  // 预览相片
+  onPreviewPhotoTapEvent() {
 
   },
 
@@ -183,11 +226,11 @@ Page({
   onAddPhotoTap() {
     this.doUpload();
   },
-  onDeletePhotoTap(e){
+  onDeletePhotoTap(e) {
     var addedPhoto = this.data.addedPhoto;
     var index = e.currentTarget.dataset.deleteIndex;
-    for (var i = index; i < addedPhoto.length - 1; i++){
-      addedPhoto[i] = addedPhoto[i+1]
+    for (var i = index; i < addedPhoto.length - 1; i++) {
+      addedPhoto[i] = addedPhoto[i + 1]
     }
     addedPhoto.pop();
     this.setData({
@@ -195,7 +238,7 @@ Page({
     })
   },
   //-----------------------------前後交互函數-----------------------------------------//
-      // 获取图片
+  // 获取图片
   doUpload() {
     var that = this;
     wx.chooseImage({
@@ -208,24 +251,25 @@ Page({
         for (var i = 0; i < tempFilePaths.length; i++) {
           GetImageInfo(tempFilePaths[i])
             .then((res) => {
-              addedPhoto.push(res);
+              // addedPhoto.push(res);
+              that.data.addedPhoto.push(res)
             }).catch((res) => {
             })
         }
         setTimeout(
           function () {
-            that.setData({
-              addedPhoto: addedPhoto,
-            })
-          }, 100
+            // that.setData({
+            //   addedPhoto: addedPhoto,
+            // })
+          },
         )
       }
     })
   },
-      //上传后台
+  //上传后台
   save() {
     var createdTime = GetCurrentTime();
-    if(this.data.textDiaryData.length != 0)
+    if (this.data.textDiaryData.length != 0)
       createdTime = this.data.textDiary.system.createdTime;
     var textDiaryData = {
       main: {
@@ -243,5 +287,6 @@ Page({
         weather: "",
       }
     }
-  }
+  },
+
 })
