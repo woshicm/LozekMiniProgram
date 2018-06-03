@@ -373,21 +373,9 @@ Page({
   displayDiary() {
     GetDiary()
       .then((res) => {
-        // this.setData({
-        //   diaryData: res.diary,
-        // })
-        let newDiaryData = res.diary
-        // 这个操作会出问题啊，在我的日记数小于4的时候，会因为出错造成死循环
-        // 而且加入新的测试用例不是应该用 newDiaryData.push(textDiary)么，
-        // 往具体的diary里的text里push是啥操作
-        if(newDiaryData.length == 999){
-          newDiaryData[3].diary.text.push(this.data.text)
-          newDiaryData[3].diary.text.push(this.data.text)
-          newDiaryData[4].diary.text.push(this.data.text)
-        }
         this.setData({
-          diaryData: newDiaryData,
-        })
+          diaryData: res.diary,
+        })     
       })
       .catch(() => {
         app.relogin(() => {
@@ -478,17 +466,17 @@ Page({
 
   /**
    * 5/28/2018 by yjj
-   * 删除图片
+   * 删除日记
    */
-  deleteImage(e) {
+  deleteDiary(e) {
     var that = this;
     this.initCurrentDiaryIndex()
     wx.showModal({
       title: '提示',
-      content: '确定要删除此图片吗？',
+      content: '确定要删除吗？',
       success: function (res) {
         if (res.confirm) {
-          DeleteDiary(e.currentTarget.dataset.imageid)
+          DeleteDiary(e.currentTarget.dataset.diaryid)
         } else if (res.cancel) {
           return false
         }
@@ -537,7 +525,7 @@ Page({
       switch (options.target.id) {
         //根据share-button的id区分是分享图片日记还是文本日记
         case 'btnShareTextDiary':
-          shareObj.path = '/pages/shareDiary/shareDiary?title=' + options.target.dataset.head + '&content=' + options.target.dataset.lookthrough + '&type=textDiary'
+          shareObj.path = '/pages/shareDiary/shareDiary?title=' + options.target.dataset.title + '&text=' + options.target.dataset.text + '&type=textDiary'
           break
         default:
           let imgName = options.target.dataset.imageurl.split('=')
@@ -620,8 +608,8 @@ Page({
     var that = this
     var i = 0, diaryDataLen = 0, j = -1, k = -1, textDiaryLen = 0, imageDiaryLen = 0
     let imageContent = ''
-    let head = ''
-    let lookthrough = ''
+    let title = ''
+    let text = ''
     if (this.data.searchKeywords != e.detail.value) {
       that.setData({
         searchKeywords: e.detail.value,
@@ -649,9 +637,9 @@ Page({
         if (that.data.diaryData[i].diary.text.length != 0) {
           j = -1
           for (k = 0, textDiaryLen = that.data.diaryData[i].diary.text.length; k < textDiaryLen; k++) {
-            head = that.data.diaryData[i].diary.text[k].head  //标题
-            lookthrough = that.data.diaryData[i].diary.text[k].lookthrough//正文
-            if ((head.indexOf(keyword) != -1) || (lookthrough.indexOf(keyword) != -1)) {
+            title = that.data.diaryData[i].diary.text[k].main.title  //标题
+            text = that.data.diaryData[i].diary.text[k].main.text//正文
+            if ((title.indexOf(keyword) != -1) || (text.indexOf(keyword) != -1)) {
               that.data.searchIndexArray.push({ i, j, k })
             }
           }

@@ -1,9 +1,9 @@
 Component({
   properties: {
-    head: {
+    title: {
       type: String,
     },
-    lookthrough: {
+    text: {
       type: String
     },
   },
@@ -34,7 +34,7 @@ Component({
      */
     previewTextDiary() {
       wx.navigateTo({
-        url: '/pages/shareDiary/shareDiary?title=' + this.properties.head + '&content=' + this.properties.lookthrough + '&type=textDiary',
+        url: '/pages/shareDiary/shareDiary?title=' + this.properties.title + '&text=' + this.properties.text + '&type=textDiary',
         success: function (res) { },
         fail: function (res) { },
         complete: function (res) { },
@@ -47,7 +47,7 @@ Component({
      */
     toTextDiary() {
       wx.navigateTo({
-        url: '/pages/textDiary/textDiary?title=' + this.properties.head + '&content=' + this.properties.lookthrough + '&type=reEdit',
+        url: '/pages/textDiary/textDiary?title=' + this.properties.title + '&text=' + this.properties.text + '&type=reEdit',
       })
     }
   }

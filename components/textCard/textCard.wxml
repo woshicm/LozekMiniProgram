@@ -1,8 +1,8 @@
 <view class='backLayer'>
     <image src='/images/image-dialogueBox-{{boxType}}.png' class='image-dialogueBox' style='width: {{width}}rpx;'></image>
     <view class='text'>
-        <text class='text-head'  style='width: {{width - 90}}rpx;'>{{head}}</text>
-        <text class='text-lookThrough' style='width: {{width - 60}}rpx;'>{{lookthrough}}</text>
+        <text class='text-head'  style='width: {{width - 90}}rpx;'>{{title}}</text>
+        <text class='text-lookThrough' style='width: {{width - 60}}rpx;'>{{text}}</text>
     </view>
     <!-- <image src='/images/image-textCard-extra.svg' class='extra-image' bindtap='onTapExtra'></image> -->
     <view wx:if='{{visible}}' class='drawerMenu' animation='{{animationOnExtraMenu}}'>

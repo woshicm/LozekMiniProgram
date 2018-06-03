@@ -43,7 +43,7 @@ Component({
       var dayColor = '';
       var imageURL = '/images/image-Dot.svg';
       var show = false;
-      if(today.yy === date.yy && today.mm === date.mm && today.dd === date.dd){
+      if(today.yy === date[0] && today.mm === date[1] && today.dd === date[2]){
         dateColor = '#fb8c00';
         dayColor = '#f7d2a5';
         imageURL = '/images/image-todayDot.svg'
