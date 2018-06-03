@@ -53,7 +53,7 @@ function ParseText(text) {
   return promise
 }
 
-/*上传图片*/
+/*上传图片日记*/
 function UploadImage(data) {
   let promise = new Promise(function (resolve, reject) {
     wx.uploadFile({
@@ -74,6 +74,40 @@ function UploadImage(data) {
           reject(403)
         }
       }
+    })
+  });
+  return promise
+}
+
+// 上传文字日记里的图片
+function UploadTextImage(data,id) {
+  console.log('UploadTextImage log : get parma of id is :' + id)
+  let promise = new Promise(function (resolve, reject) {
+    Promise.all(data.map((image)=>{
+      wx.uploadFile({
+        url: globalData.api.uploadImage,
+        filePath: image.url,
+        formData: {
+          'id': id
+        },
+        header: {
+          "token": globalData.token
+        },
+        name: 'image',
+        success: (res) => {
+          if (res.statusCode == '200') {
+            resolve(res.data)
+          } else if (res.statusCode == '403') {
+            reject(403)
+          }
+        }
+      })
+    }))
+    .then((res)=>{
+      console.log(' upload all images res :',res)
+      resolve(res)
+    }).catch((err)=>{
+
     })
   });
   return promise
@@ -103,6 +137,11 @@ function GetDiary() {
 }
 
 function UploadTextDiary(data) {
+  if(data['images'].length != 0){
+    data['has_image'] = 1
+  }else{
+    data['has_image'] = 0
+  }
   let promise = new Promise(function (resolve, reject) {
     wx.request({
       url: globalData.api.saveDiary,
@@ -115,7 +154,18 @@ function UploadTextDiary(data) {
       responseType: 'text',
       success: (res) => {
         if (res.statusCode == '200') {
-          resolve(res.data.status)
+          // 开始上传附加图片，如果有的话
+          if (data['images'].length != 0){
+            UploadTextImage(data['images'],res.data.id)
+            .then((res)=>{
+              resolve(res.data)
+            })
+            .catch(()=>{
+
+            })
+          }else{
+            resolve(res.data)
+          }
         } else if (res.statusCode == '403') {
           reject(403)
         }
