@@ -7,9 +7,9 @@ App({
     windowHeight: wx.getSystemInfoSync().windowHeight,
     windowWidth: wx.getSystemInfoSync().windowWidth,
     token: '1',
-    // baseURL: 'http://localhost:8000/',
+    baseURL: 'http://localhost:8000/',
     // baseURL: 'https://111.230.24.245/',
-    baseURL: 'https://www.louzek.xyz/',
+    // baseURL: 'https://www.louzek.xyz/',
     getShareDiaryURL:'https://www.louzek.xyz:443/',
     api: {
       login: '',
@@ -20,6 +20,7 @@ App({
       parseText: '',
       deleteDiary: '',
       getShareDiary: '',
+      getFilter: ''
     },
     windowWidth: '',
     windowHeight: '',
@@ -43,6 +44,7 @@ App({
     this.globalData.api.getDiary = this.globalData.baseURL + 'diary'
     this.globalData.api.saveDiary = this.globalData.baseURL + 'diary'
     this.globalData.api.deleteDiary = this.globalData.baseURL + 'delete_diary'
+    this.globalData.api.getFilter = this.globalData.baseURL + 'filter'
     this.globalData.api.getShareDiary = this.globalData.getShareDiaryURL + 'image'
     this.globalData.windowWidth = wx.getSystemInfoSync().windowWidth;
     this.globalData.windowHeight = wx.getSystemInfoSync().windowHeight;

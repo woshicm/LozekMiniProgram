@@ -377,9 +377,11 @@ Page({
         //   diaryData: res.diary,
         // })
         let newDiaryData = res.diary
-        newDiaryData[3].diary.text.push(this.data.text)
-        newDiaryData[3].diary.text.push(this.data.text)
-        newDiaryData[4].diary.text.push(this.data.text)
+        if(newDiaryData.length != 0){
+          newDiaryData[3].diary.text.push(this.data.text)
+          newDiaryData[3].diary.text.push(this.data.text)
+          newDiaryData[4].diary.text.push(this.data.text)
+        }
         this.setData({
           diaryData: newDiaryData,
         })
