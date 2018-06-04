@@ -36,11 +36,12 @@ Page({
      */
   onLoad: function (options) {
     //从主页传递标题和内容
-    // if (options.type == 'reEdit') {
-    //   this.setData({
-    //     titleValue: options.title,
-    //   })
-    // }
+    if (options.type == 'reEdit') {
+      this.setData({
+        titleValue: options.title,
+        textValue: options.text,
+      })
+    }
   },
 
   /**

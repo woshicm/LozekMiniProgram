@@ -1,0 +1,4 @@
+<!--pages/testPage/testPage.wxml-->
+<text>pages/testPage/testPage.wxml</text>
+<button bindtap='getLocation'> 点击获取位置信息</button>
+<text>{{location}}</text>

@@ -6,7 +6,7 @@ Page({
    */
   data: {
     textDiaryTitle: '',    //文本日记标题
-    textDiaryContent: '',  //文本日记内容
+    textDiaryText: '',  //文本日记内容
     imageDiaryImgUrl: '',   //图片日记Url
   },
 
@@ -17,11 +17,11 @@ Page({
     if (options.type == 'textDiary') {
       this.setData({
         textDiaryTitle: options.title,
-        textDiaryContent: options.content,
+        textDiaryText: options.text,
       })
     } else {
       this.setData({
-        imageDiaryImgUrl: app.globalData.api.getShareDiary + '?name=' + options.name + '&' + options.secondData
+        imageDiaryImgUrl: app.globalData.api.getShareDiary + '?name=' + options.name + '&' + options.secondData + '&type=origin'
       })
     }
   },

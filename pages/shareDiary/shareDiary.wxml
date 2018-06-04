@@ -1,8 +1,8 @@
 <!--分享页面  -->
 <!--文本日记  -->
-<view wx:if='{{(textDiaryTitle != "") || (textDiaryContent != "")}}'>
+<view wx:if='{{(textDiaryTitle != "") || (textDiaryText != "")}}'>
   <text>标题：{{textDiaryTitle}}</text>
-  <text>内容：{{textDiaryContent}}</text>
+  <text>内容：{{textDiaryText}}</text>
 </view>
 
 

@@ -4,7 +4,6 @@
     "pages/imageDiary/imageDiary",
     "pages/textDiary/textDiary",
     "pages/shareDiary/shareDiary"
-    
   ],
   "window": {
     "backgroundTextStyle": "dark",
