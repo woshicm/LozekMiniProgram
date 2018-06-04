@@ -9,6 +9,7 @@ Page({
     //全局变量
     state: 'edit',
     textDiaryData: [],
+    textDiaryId: '',
     //功能区
     snapshot: [],
     textValueGoBackQueue: [],//回退队列
@@ -36,10 +37,25 @@ Page({
      */
   onLoad: function (options) {
     //从主页传递标题和内容
+    var that = this
     if (options.type == 'reEdit') {
-      this.setData({
-        titleValue: options.title,
-        textValue: options.text,
+      wx.getStorage({
+        key: 'textDiaryData',
+        success: function (res) {
+          that.setData({
+            textDiaryId: res.data[0].id,
+            titleValue: res.data[0].title,
+            textValue: res.data[0].text,
+            addedPhoto: res.data[0].imageUrl,
+            choseCount: res.data[0].imageUrl.length,
+          })
+        },
+        complete: function () {
+          wx.removeStorage({
+            key: 'textDiaryData',
+            success: function (res) { },
+          })
+        }
       })
     }
   },
@@ -296,7 +312,9 @@ Page({
       'images': this.data.addedPhoto,
       'weather': "",
     }
-
+    if (this.data.textDiaryId != '')
+      textDiaryData.id = this.data.textDiaryId
+    console.log("id: " + textDiaryData.id)
     SaveDiary(textDiaryData)
       .then((res) => {
         console.log(res)

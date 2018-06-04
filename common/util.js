@@ -80,10 +80,10 @@ function UploadImage(data) {
 }
 
 // 上传文字日记里的图片
-function UploadTextImage(data,id) {
+function UploadTextImage(data, id) {
   console.log('UploadTextImage log : get parma of id is :' + id)
   let promise = new Promise(function (resolve, reject) {
-    Promise.all(data.map((image)=>{
+    Promise.all(data.map((image) => {
       wx.uploadFile({
         url: globalData.api.uploadImage,
         filePath: image.url,
@@ -96,6 +96,17 @@ function UploadTextImage(data,id) {
         name: 'image',
         success: (res) => {
           if (res.statusCode == '200') {
+            GetDiary()
+              .then((res) => {
+                wx.setStorage({
+                  key: 'diaryData',
+                  data: res.diary,
+                })
+              })
+              .catch(() => {
+                console.log("until.js的UploadTextImage的GetDiary异常")
+                UploadTextImage(data, id)
+              })
             resolve(res.data)
           } else if (res.statusCode == '403') {
             reject(403)
@@ -103,12 +114,12 @@ function UploadTextImage(data,id) {
         }
       })
     }))
-    .then((res)=>{
-      console.log(' upload all images res :',res)
-      resolve(res)
-    }).catch((err)=>{
+      .then((res) => {
+        console.log(' upload all images res :', res)
+        resolve(res)
+      }).catch((err) => {
 
-    })
+      })
   });
   return promise
 }
@@ -137,9 +148,9 @@ function GetDiary() {
 }
 
 function UploadTextDiary(data) {
-  if(data['images'].length != 0){
+  if (data['images'].length != 0) {
     data['has_image'] = 1
-  }else{
+  } else {
     data['has_image'] = 0
   }
   let promise = new Promise(function (resolve, reject) {
@@ -155,17 +166,28 @@ function UploadTextDiary(data) {
       success: (res) => {
         if (res.statusCode == '200') {
           // 开始上传附加图片，如果有的话
-          if (data['images'].length != 0){
-            UploadTextImage(data['images'],res.data.id)
-            .then((res)=>{
-              resolve(res.data)
-            })
-            .catch(()=>{
+          if (data['images'].length != 0) {
+            UploadTextImage(data['images'], res.data.id)
+              .then((res) => {
+                resolve(res.data)
+              })
+              .catch(() => {
 
-            })
-          }else{
+              })
+          } else {
             resolve(res.data)
           }
+          GetDiary()
+            .then((res) => {
+              wx.setStorage({
+                key: 'diaryData',
+                data: res.diary,
+              })
+            })
+            .catch(() => {
+              console.log("until.js的UploadTextDiary的GetDiary异常")
+              UploadTextDiary(data)
+            })
         } else if (res.statusCode == '403') {
           reject(403)
         }
@@ -235,6 +257,17 @@ function DeleteDiary(deleteDiaryId) {
       method: 'GET',
       success: (res) => {
         if (res.statusCode == '200') {
+          GetDiary()
+            .then((res) => {
+              wx.setStorage({
+                key: 'diaryData',
+                data: res.diary,
+              })
+            })
+            .catch(() => {
+              console.log("until.js的DeleteDiary的GetDiary异常")
+              DeleteDiary(deleteDiaryId)
+            })
           resolve(res.data.status)
         } else if (res.statusCode == '403') {
           reject(403)
@@ -265,4 +298,4 @@ function GetImageInfo(src) {
   return promise
 }
 
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo,  }
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, }

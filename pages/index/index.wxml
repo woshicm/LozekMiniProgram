@@ -28,7 +28,8 @@
                 <!-- 對每天的文本日記遍歷 -->
                 <scroll-view wx:if='{{(displayItem.diary.text.length != 0) && (currentDisplayDiaryType == "textDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' scroll-x='true' class='index-display-text-scrollView' scroll-into-view='{{currentSearchTextDiaryId}}'>
                   <view wx:key="this" wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' wx:for-index='textDiaryIndex' class='index-display-text-item'>
-                    <textCard id='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}' title='{{textItem.main.title}}' text='{{textItem.main.text}}' data-diarydataindex='{{diaryDataIndex}}' data-textdiaryindex='{{textDiaryIndex}}' bindtap='previewTextDiary' bindlongpress='showTextDiaryEditMenu'></textCard>
+                    <textCard id='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}' textDiaryId='{{textItem.main.id}}' title='{{textItem.main.title}}' text='{{textItem.main.text}}' iamgeUrl='{{textItem.main.images.length == 0? []:textItem.main.images}}' data-diarydataindex='{{diaryDataIndex}}'
+                      data-textdiaryindex='{{textDiaryIndex}}' bindtap='previewTextDiary' bindlongpress='showTextDiaryEditMenu'></textCard>
                     <!--遮蔽层-->
                     <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--content-->
