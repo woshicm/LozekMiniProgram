@@ -199,15 +199,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.index-display-noContent-text {
-  font-size: 20pt;
-  position: relative;
-  top: 200rpx;
+  height: 700rpx;
 }
 
 .index-display-noContent-image {
+  height: 500rpx;
 }
 
 .index-display-aDay-scrollView {

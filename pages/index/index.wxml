@@ -1,6 +1,6 @@
 <view class="page-mainPage" animation='{{animationData}}' style='left:{{mainPageLeft}}rpx;' bindtouchstart='onMainPageTouchstart' catchtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend' bindtap='onMainPageTap'>
-<!--遮蔽层-->
-               <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view> 
+  <!--遮蔽层-->
+  <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
   <view style='height: 149rpx;'>
     <view class="color-main" style='height: 119rpx;'>
       <open-data type="userAvatarUrl" class='image-portrait' catchtap='onPortraitTap'></open-data>
@@ -60,7 +60,7 @@
             </view>
           </view>
           <view wx:else class='index-display-noContent'>
-            <text class='index-display-noContent-text'>empty</text>
+            <image src='/images/empty.svg' class='index-display-noContent-image'></image>
           </view>
         </scroll-view>
       </swiper-item>
@@ -73,8 +73,7 @@
       <button class='index-display-button' style='width: 80rpx; margin-left: 0rpx; margin-right: 0rpx; padding: 0rpx;'>
         <image src='/images/icon/ic_search.svg' class="image-index-displaySearchButton"></image>
       </button>
-      <input type="text" class='index-display-input' maxlength='10' placeholder='请输入关键字' placeholder-style='font-size: 15px; opacity: 0.3;'  confirm-type='search' bindblur='searchKeywordsInThisPage' bindinput='changeSearchKeywords'
-        bindfocus='inputOnFocus'></input>
+      <input type="text" class='index-display-input' maxlength='10' placeholder='请输入关键字' placeholder-style='font-size: 15px; opacity: 0.3;' confirm-type='search' bindblur='searchKeywordsInThisPage' bindinput='changeSearchKeywords' bindfocus='inputOnFocus'></input>
       <view class='modify-divideLine-light' style='width: 3rpx'></view>
       <button class='index-display-button' style='width: 75rpx; margin-left: 0rpx;' catchtap='changeDiaryDisplayType'>
         <image src='/images/icon/ic_visibility.svg' class="image-index-displayButton"></image>

@@ -41,6 +41,7 @@ Page({
     //     titleValue: options.title,
     //   })
     // }
+    this.onTitleInputFocusEvent();
   },
 
   /**
@@ -99,20 +100,27 @@ Page({
     var inputBottomLineColor = '5rpx solid #3f8ae9';
     this.setData({
       inputBottomLineColor: inputBottomLineColor,
+      state: "text",
     })
+    console.log(this.data.state)
   },
   //失焦
   onTitleInputBlurEvent(e) {
     var inputBottomLineColor = '3rpx solid rgba(55,121,205,0.12)';
     var value = e.detail.value;
+    value = value.replace(/ /g, "");
     this.setData({
       inputBottomLineColor: inputBottomLineColor,
       titleValue: value,
-      isDiaryTextMaskHidden: false,
       hideTitle: false,
-    })
+      state: "edit"
+    });
+    console.log(this.data.state)
   },
+  //
+  onDiaryAreaNoticeTapEvent(){
 
+  },
   /**
    * 标题区-展示
    */
@@ -126,9 +134,16 @@ Page({
    * 功能区 
    */
   onFunctionConfirmTap() {
-    // 看不懂这个setTimeOut啥作用，解释一下呗
+    var text = this.data.textValue;
+    if(text.length == 0){
+      wx.showToast({
+        title: '阁下还什么都没写噢~',
+        duration: 1000,
+        icon: 'none',
+      });
+      return 0;
+    }
     setTimeout(() => {
-      var text = this.data.textValue;
       text = text.replace(/ /g, "&nbsp;")
       this.setData({
         state: 'preview',
