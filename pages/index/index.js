@@ -12,11 +12,6 @@ Page({
     currentSearchDiaryDataId: 'diaryDate0', //竖向定位到到哪一天，该值是子元素id
     currentSerarchTextDiaryId: 'textCard0-0',//横向定位到哪个文本日记
     currentSerarchImageDiaryId: 'imageCard0-0',//横向定位到哪个图片日记
-    //文本日记测试
-    text: {
-      head: '这是一个测试',
-      lookthrough: '我不知道干嘛'
-    },
     currentDisplayDiaryType: 'allTypes',      //显示哪种日记
     //日记区
     currentDiaryDataIndex: -1,  //标记是由哪组日记触发长按动作
@@ -49,7 +44,7 @@ Page({
   },
 
   onLoad(options) {
-
+    
   },
   onShow() {
     this.displayDiary()
