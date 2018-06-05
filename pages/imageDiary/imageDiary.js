@@ -421,7 +421,7 @@ Page({
   onMovableAreaChangeEvent(e) {
     var clientCoordinate = e.detail;
     this.setData({
-      clientCoordinat: clientCoordinate,
+      clientCoordinate: clientCoordinate,
     })
     if (this.data.isShowTools && e.detail.source == 'touch') {
       this.setData({
@@ -624,7 +624,7 @@ Page({
       type: colorModuleId + 1,
     };
     GetFliter(data)
-    .then((res) => {
+      .then((res) => {
         this.setData({
           filteredImageUrl: res.imgUrl,
           choseColorModuleId: colorModuleId,
@@ -669,38 +669,60 @@ Page({
 
   //返回文字模板
   putTextModule() {
-    var beginPoint = {
-      'x': this.data.choseTextModule.systemVariable.marginLeft + this.data.clientCoordinat.x - (app.globalData.windowWidth - this.data.uploadedImageWidth) / 2,
-      'y': this.data.clientCoordinat.y - (app.globalData.windowHeight * 0.9 * 0.8 - this.data.uploadedImageHeight) / 2
-    };
-    var height = this.data.choseTextModule.systemVariable.height;
-    var actions = [
-      {
-        'action': 'text',
-        'text': this.data.choseTextModule.systemVariable.time,
-        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
-        'font-style': '',
-        'font-color': '',
-        'font-size': 39,
-      },
-      {
-        'action': 'text',
-        'text': this.data.inputValue,
-        'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
-        'font-style': 'letter-spacing: 2px;',
-        'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': 12,
-      },
-      {
-        'action': 'text',
-        'text': 'Let time stop at this moment',
-        'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
-        'font-style': 'letter-spacing: 2px;',
-        'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': '8px',
-      },
-    ]
-    return actions
+    let textPosition = [];
+    let imagePosition = [];
+
+    wx.createSelectorQuery().select('#id-movable').boundingClientRect(function (rect) {
+      var item = {
+        top: rect.top,
+        left: rect.left,
+      }
+      textPosition = item;
+    }).exec();
+    wx.createSelectorQuery().select('#id-uploadedImage').boundingClientRect(function (rect) {
+      var item = {
+        top: rect.top,
+        left: rect.left,
+      }
+      imagePosition = item;
+    }).exec();
+    var that = this;
+    setTimeout(
+      function () {
+        var beginPoint = {
+          'x': that.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left,
+          'y': textPosition.top - imagePosition.top,
+        };
+        var height = that.data.choseTextModule.systemVariable.height;
+        var actions = [
+          {
+            'action': 'text',
+            'text': that.data.choseTextModule.systemVariable.time,
+            'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
+            'font-style': '',
+            'font-color': '',
+            'font-size': 39,
+          },
+          {
+            'action': 'text',
+            'text': that.data.inputValue,
+            'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
+            'font-style': 'letter-spacing: 2px;',
+            'font-color': that.data.choseTextModule.userVariable.color,
+            'font-size': 12,
+          },
+          {
+            'action': 'text',
+            'text': 'Let time stop at this moment',
+            'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
+            'font-style': 'letter-spacing: 2px;',
+            'font-color': that.data.choseTextModule.userVariable.color,
+            'font-size': '8px',
+          },
+        ]
+        return actions
+      }, 50
+    )
   },
   //显示文本工具栏
   showTools() {

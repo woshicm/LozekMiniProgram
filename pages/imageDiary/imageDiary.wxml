@@ -5,7 +5,7 @@
 
   <!--图片区  -->
   <view class='view-layoutFirst'>
-    <image src='{{filteredImageUrl}}' mode='aspectFit' class='img-uploaded' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;'></image>
+    <image src='{{filteredImageUrl}}' mode='aspectFit' class='img-uploaded' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;' id ='id-uploadedImage'></image>
     <movable-area class='movableArea-userInput' disabled="{{isMoveable}}" scale-area='true' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;'>
       <!-- 叙事模式输入 -->
       <block wx:if="{{mode == 'longText' && isInputStatu}}">
@@ -18,9 +18,8 @@
       <textarea wx:elif="{{isInputStatu}}" class="input-text" wx:key="this" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='美好的一天说点什么吧' maxlength='25' placeholder-style='font-size: 13pt;'
         show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{uploadedImageHeight / 2}}px; left: 188rpx;'></textarea>
 
-      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px'
-        bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent'>
-        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools'></rich-text>
+      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px' bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent' id='id-movable'>
+        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools'  style='background-color: yellow;' id='id-richText'></rich-text>
       </movable-view>
     </movable-area>
     <!-- 滑出菜单层 -->
