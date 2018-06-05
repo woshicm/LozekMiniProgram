@@ -7,7 +7,8 @@ function GetFliter(data) {
       url: globalData.api.getFilter,
       filePath: data['imageURL'],
       formData: {
-        'type': data['type'] || 1
+        'type': data['type'] || 1,
+        'all': data['all'] || 0
       },
       header: {
         "token": globalData.token

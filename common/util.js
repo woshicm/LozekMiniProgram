@@ -213,11 +213,13 @@ function UploadFilteredImage(data) {
 
 function UploadImageDiary(data) {
 
-  if (data.imageURL.startsWith('http://tmp/')) {
+
+  if (data.imageURL.startsWith('http://tmp/') || data.imageURL.startsWith('wxfile://tmp')){
     // 无滤镜效果保存
     return UploadImage(data)
   } else {
     // 有滤镜效果保存
+    console.log(data)
     data['remote'] = 1
     return UploadFilteredImage(data)
   }
@@ -318,7 +320,7 @@ function GetImageInfo(src) {
   return promise
 }
 
-//刷新数据成功后重新更新本地缓存
+//刷新数据成功后更新本地缓存
 // function FreshDiaryDataStorage() {
 //   GetDiary()
 //     .then((res) => {
@@ -333,4 +335,29 @@ function GetImageInfo(src) {
 //     })
 // }
 
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, }
+function getWeather(location){
+  console.log(globalData.api.getWeather)
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.getWeather,
+      header: {
+        "token": globalData.token
+      },
+      data: {
+        'location': location,
+      },
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.data)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather }

@@ -1,7 +1,7 @@
 // page/textDiary/textDiary.js
 
 // 导入方法统一以大写字母开头
-import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary } from "../../common/util.js";
+import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather } from "../../common/util.js";
 
 let app = getApp()
 Page({
