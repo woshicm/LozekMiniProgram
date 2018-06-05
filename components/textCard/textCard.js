@@ -1,11 +1,17 @@
 Component({
   properties: {
-    head: {
-      type: String,
-    },
-    lookthrough: {
+    textDiaryId: {
       type: String
     },
+    title: {
+      type: String,
+    },
+    text: {
+      type: String
+    },
+    iamgeUrl: {
+      type: []
+    }
   },
 
   data: {
@@ -34,7 +40,7 @@ Component({
      */
     previewTextDiary() {
       wx.navigateTo({
-        url: '/pages/shareDiary/shareDiary?title=' + this.properties.head + '&content=' + this.properties.lookthrough + '&type=textDiary',
+        url: '/pages/shareDiary/shareDiary?title=' + this.properties.title + '&text=' + this.properties.text + '&type=textDiary',
         success: function (res) { },
         fail: function (res) { },
         complete: function (res) { },
@@ -46,8 +52,20 @@ Component({
      * 跳转到textDiary
      */
     toTextDiary() {
+      var that = this
+      let data = [{
+        id: this.properties.textDiaryId,
+        title: this.properties.title,
+        text: this.properties.text,
+        imageUrl: this.properties.iamgeUrl
+      }]
+      wx.setStorage({
+        key: 'textDiaryData',
+        data: data,
+      })
       wx.navigateTo({
-        url: '/pages/textDiary/textDiary?title=' + this.properties.head + '&content=' + this.properties.lookthrough + '&type=reEdit',
+        // url: '/pages/textDiary/textDiary?title=' + this.properties.title + '&text=' + this.properties.text + '&type=reEdit',
+        url: '/pages/textDiary/textDiary?type=reEdit',
       })
     }
   }

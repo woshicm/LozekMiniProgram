@@ -12,11 +12,6 @@ Page({
     currentSearchDiaryDataId: 'diaryDate0', //竖向定位到到哪一天，该值是子元素id
     currentSerarchTextDiaryId: 'textCard0-0',//横向定位到哪个文本日记
     currentSerarchImageDiaryId: 'imageCard0-0',//横向定位到哪个图片日记
-    //文本日记测试
-    text: {
-      head: '这是一个测试',
-      lookthrough: '我不知道干嘛'
-    },
     currentDisplayDiaryType: 'allTypes',      //显示哪种日记
     //日记区
     currentDiaryDataIndex: -1,  //标记是由哪组日记触发长按动作
@@ -49,8 +44,9 @@ Page({
   },
 
   onLoad(options) {
-
+    // this.displayDiary()
   },
+
   onShow() {
     this.displayDiary()
   },
@@ -244,34 +240,34 @@ Page({
 
   // 上傳圖片
   chooseImageTap(e) {
-      this.initCurrentDiaryIndex()
-      this.setData({
-        waveEffectsOnImageButton: "waves-effect-animation",
-      })
-      var that = this;
-      setTimeout(
-        function () {
-          wx.showActionSheet({
-            itemList: ['本地上传', '拍照上传'],
-            success: (res) => {
-              if (!res.cancel) {
-                if (res.tapIndex == 0) {
-                  that.doUpload('album')
-                } else if (res.tapIndex == 1) {
-                  that.doUpload('camera')
-                }
+    this.initCurrentDiaryIndex()
+    this.setData({
+      waveEffectsOnImageButton: "waves-effect-animation",
+    })
+    var that = this;
+    setTimeout(
+      function () {
+        wx.showActionSheet({
+          itemList: ['本地上传', '拍照上传'],
+          success: (res) => {
+            if (!res.cancel) {
+              if (res.tapIndex == 0) {
+                that.doUpload('album')
+              } else if (res.tapIndex == 1) {
+                that.doUpload('camera')
               }
             }
-          })
-        },200
-      )
-      setTimeout(
-        function () {
-          that.setData({
-            waveEffectsOnImageButton: "",
-          })
-        }, 1000
-      )
+          }
+        })
+      }, 200
+    )
+    setTimeout(
+      function () {
+        that.setData({
+          waveEffectsOnImageButton: "",
+        })
+      }, 1000
+    )
   },
 
   // 上传图片接口
@@ -299,10 +295,10 @@ Page({
             imgUrl = tempFilePaths[0];
             if (res.height > res.width) {
               var width = res.width * (0.9 * 0.7 * app.globalData.windowHeight) / res.height;
-              if (width > app.globalData.windowWidth){
+              if (width > app.globalData.windowWidth) {
                 uploadedImageWidth = app.globalData.windowWidth;
                 uploadedImageHeight = res.height * app.globalData.windowWidth / res.width;
-              } else{
+              } else {
                 uploadedImageWidth = width;
                 uploadedImageHeight = 0.9 * 0.7 * app.globalData.windowHeight;
               }
@@ -371,46 +367,52 @@ Page({
 
   //显示日记的数据
   displayDiary() {
-    GetDiary()
-      .then((res) => {
-        // this.setData({
-        //   diaryData: res.diary,
-        // })
-        let newDiaryData = res.diary
-        // 这个操作会出问题啊，在我的日记数小于4的时候，会因为出错造成死循环
-        // 而且加入新的测试用例不是应该用 newDiaryData.push(textDiary)么，
-        // 往具体的diary里的text里push是啥操作
-        if(newDiaryData.length == 999){
-          newDiaryData[3].diary.text.push(this.data.text)
-          newDiaryData[3].diary.text.push(this.data.text)
-          newDiaryData[4].diary.text.push(this.data.text)
-        }
-        this.setData({
-          diaryData: newDiaryData,
+    var that = this
+    //检测是否第一次登录
+    wx.getStorage({
+      key: 'diaryData',
+      //不是第一次登录
+      success: function (res) {
+        that.setData({
+          diaryData: res.data
         })
-      })
-      .catch(() => {
-        app.relogin(() => {
-          this.displayDiary()
-        })
-      })
+      },
+      //是第一次登录
+      fail: function (res) {
+        GetDiary()
+          .then((res) => {
+            that.setData({
+              diaryData: res.diary,
+            })
+            wx.setStorage({
+              key: 'diaryData',
+              data: res.diary,
+            })
+          })
+          .catch(() => {
+            app.relogin(() => {
+              that.displayDiary()
+            })
+          })
+      }
+    })
   },
 
-//文本日记跳转监听事件
-  onToTextDiaryPageTap(e){
+  //文本日记跳转监听事件
+  onToTextDiaryPageTap(e) {
     this.initCurrentDiaryIndex()
     this.setData({
       waveEffectsOnTextButton: "waves-effect-animation",
     })
     var that = this;
     setTimeout(
-      function(){
+      function () {
         wx.navigateTo({
-        url: '../textDiary/textDiary',
-      })
+          url: '../textDiary/textDiary',
+        })
       }, 200);
     setTimeout(
-      function(){
+      function () {
         that.setData({
           waveEffectsOnTextButton: "",
         })
@@ -448,7 +450,7 @@ Page({
   },
 
   /**
-   * 6/1/2018 by yjj
+   * 6/4/2018 by yjj
    * 点击编辑按钮跳转到textDiary
    */
   toTextDiary(e) {
@@ -478,17 +480,17 @@ Page({
 
   /**
    * 5/28/2018 by yjj
-   * 删除图片
+   * 删除日记
    */
-  deleteImage(e) {
+  deleteDiary(e) {
     var that = this;
     this.initCurrentDiaryIndex()
     wx.showModal({
       title: '提示',
-      content: '确定要删除此图片吗？',
+      content: '确定要删除吗？',
       success: function (res) {
         if (res.confirm) {
-          DeleteDiary(e.currentTarget.dataset.imageid)
+          DeleteDiary(e.currentTarget.dataset.diaryid)
         } else if (res.cancel) {
           return false
         }
@@ -537,7 +539,7 @@ Page({
       switch (options.target.id) {
         //根据share-button的id区分是分享图片日记还是文本日记
         case 'btnShareTextDiary':
-          shareObj.path = '/pages/shareDiary/shareDiary?title=' + options.target.dataset.head + '&content=' + options.target.dataset.lookthrough + '&type=textDiary'
+          shareObj.path = '/pages/shareDiary/shareDiary?title=' + options.target.dataset.title + '&text=' + options.target.dataset.text + '&type=textDiary'
           break
         default:
           let imgName = options.target.dataset.imageurl.split('=')
@@ -619,9 +621,9 @@ Page({
   searchKeywordsInThisPage(e) {
     var that = this
     var i = 0, diaryDataLen = 0, j = -1, k = -1, textDiaryLen = 0, imageDiaryLen = 0
-    let imageContent = ''
-    let head = ''
-    let lookthrough = ''
+    let imageText = ''
+    let title = ''
+    let text = ''
     if (this.data.searchKeywords != e.detail.value) {
       that.setData({
         searchKeywords: e.detail.value,
@@ -638,20 +640,22 @@ Page({
     //关键字改变执行if语句，重新遍历
     if (this.data.isChangeSearchKeywords) {
       for (i = 0, diaryDataLen = that.data.diaryData.length; i < diaryDataLen; i++) {
-        //imageDiary不为空时继续遍历
-        // if (diaryData[i].diary.image.length != 0) {
-        //   for (var j = 0, imageDiaryLen = diaryData[i].diary.image.length; j < imageDiaryLen; j++) {
-        //     if (diaryData[i].diary.image[j])
-        //   }
-        // }
         //textDiary不为空时继续遍历
-       
         if (that.data.diaryData[i].diary.text.length != 0) {
+          for (j = 0, textDiaryLen = that.data.diaryData[i].diary.text.length; j < textDiaryLen; j++) {
+            title = that.data.diaryData[i].diary.text[j].main.title  //标题
+            text = that.data.diaryData[i].diary.text[j].main.text//正文
+            if ((title.indexOf(keyword) != -1) || (text.indexOf(keyword) != -1)) {
+              that.data.searchIndexArray.push({ i, j, k })
+            }
+          }
+        }
+        //imageDiary不为空时继续遍历
+        if ((that.data.diaryData[i].diary.image.length) != 0) {
           j = -1
-          for (k = 0, textDiaryLen = that.data.diaryData[i].diary.text.length; k < textDiaryLen; k++) {
-            head = that.data.diaryData[i].diary.text[k].head  //标题
-            lookthrough = that.data.diaryData[i].diary.text[k].lookthrough//正文
-            if ((head.indexOf(keyword) != -1) || (lookthrough.indexOf(keyword) != -1)) {
+          for (k = 0, imageDiaryLen = that.data.diaryData[i].diary.image.length; k < imageDiaryLen; k++) {
+            imageText = that.data.diaryData[i].diary.image[k].text
+            if (imageText.indexOf(keyword) != -1) {
               that.data.searchIndexArray.push({ i, j, k })
             }
           }
@@ -665,21 +669,21 @@ Page({
       })
     }
     //捕捉没找到的异常
-    try{
-      if ((that.data.searchIndexArray[that.data.keywordsArraryIndex].j) == -1) {
-        //本来想通过scroll-into-view进行定位的,但是失效，暂时没找到原因
-        // that.setData({
-        //   currentSearchDiaryDataId: "diaryDate" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i,
-        //   currentSerarchTextDiaryId: "textCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + that.data.searchIndexArray[that.data.keywordsArraryIndex].k,
-        //   currentSerarchImageDiaryId: "imageCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + 0,
-        //   keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
-        // })
-        this.setData({
-          scrollHeight: that.data.searchIndexArray[that.data.keywordsArraryIndex].i * 150,
-          keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
-        })
-      }
-    }catch(e){
+    try {
+      // if ((that.data.searchIndexArray[that.data.keywordsArraryIndex].j) == -1) {
+      //本来想通过scroll-into-view进行定位的,但是失效，暂时没找到原因
+      // that.setData({
+      //   currentSearchDiaryDataId: "diaryDate" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i,
+      //   currentSerarchTextDiaryId: "textCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + that.data.searchIndexArray[that.data.keywordsArraryIndex].k,
+      //   currentSerarchImageDiaryId: "imageCard" + that.data.searchIndexArray[that.data.keywordsArraryIndex].i + "-" + 0,
+      //   keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
+      // })
+      this.setData({
+        scrollHeight: that.data.searchIndexArray[that.data.keywordsArraryIndex].i * 150,
+        keywordsArraryIndex: that.data.keywordsArraryIndex + 1,
+      })
+      // }
+    } catch (e) {
       wx.showToast({
         title: '对不起,没有搜索到该关键字的相关日记！',
         icon: 'none'
