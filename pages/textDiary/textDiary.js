@@ -1,7 +1,7 @@
 // page/textDiary/textDiary.js
 
 // 导入方法统一以大写字母开头
-import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary } from "../../common/util.js";
+import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather } from "../../common/util.js";
 
 let app = getApp()
 Page({
@@ -326,7 +326,7 @@ Page({
       'images': this.data.addedPhoto,
       'weather': "",
     }
-    if (this.data.textDiaryId != '')
+    if (this.data.textDiaryId != null)
       textDiaryData.id = this.data.textDiaryId
     console.log("id: " + textDiaryData.id)
     SaveDiary(textDiaryData)
