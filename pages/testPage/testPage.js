@@ -64,30 +64,40 @@ Page({
 
   },
 
+  bindgetuserinfo(e) {
+    console.log(e.detail.userInfo.city)
+  },
   getLocation() {
     var that = this
     wx.getSetting({
       success: (res) => {
         if (!res.authSetting['scope.userLocation']) {
-          wx.openSetting({
+          wx.authorize({
+            scope: 'scope.userLocation',
             success: (res) => {
-              if (res.authSetting['scope.userLocation']) {
-                wx.authorize({
-                  scope: 'userLocation',
-                  success: (res) => {
-                    wx.getLocation({
-                      success: (res) => {
-                        that.setData({
-                          location: res.accuracy
-                        })
-                      }
-                    })
-                  }
-                })
-              }
+              wx.chooseLocation({
+                success: function (res) {
+                  that.setData({
+                    location: res.address
+                  })
+                },
+              })
+            },
+            fail: (res) =>{
+             wx.showToast({
+               title: '没有定位权限，请再次点击重新授权',
+             })
             }
           })
-        }
+        }else(
+          wx.chooseLocation({
+            success: function (res) {
+              that.setData({
+                location: res.address
+              })
+            },
+          })
+        )
       }
     })
   },

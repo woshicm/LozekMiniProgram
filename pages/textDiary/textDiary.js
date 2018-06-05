@@ -326,7 +326,7 @@ Page({
       'images': this.data.addedPhoto,
       'weather': "",
     }
-    if (this.data.textDiaryId != '')
+    if (this.data.textDiaryId != null)
       textDiaryData.id = this.data.textDiaryId
     console.log("id: " + textDiaryData.id)
     SaveDiary(textDiaryData)

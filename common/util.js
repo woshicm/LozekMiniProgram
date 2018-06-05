@@ -69,23 +69,13 @@ function UploadImage(data) {
       name: 'image',
       success: (res) => {
         if (res.statusCode == '200') {
-          //刷新数据成功后重新更新本地缓存
-          GetDiary()
-            .then((res) => {
-              console.log("diaryData: "+ res.diary)
-              wx.setStorage({
-                key: 'diaryData',
-                data: res.diary,
-              })
-            })
-            .catch(() => {
-              console.log("until.js的UploadImage的GetDiary异常")
-              GetDiary()
-            })
           resolve(JSON.parse(res.data))
         } else if (res.statusCode == '403') {
           reject(403)
         }
+      },
+      complete: (res) => {
+        // FreshDiaryDataStorage()
       },
     })
   });
@@ -109,21 +99,12 @@ function UploadTextImage(data, id) {
         name: 'image',
         success: (res) => {
           if (res.statusCode == '200') {
-            GetDiary()
-              .then((res) => {
-                wx.setStorage({
-                  key: 'diaryData',
-                  data: res.diary,
-                })
-              })
-              .catch(() => {
-                console.log("until.js的UploadTextImage的GetDiary异常")
-                UploadTextImage(data, id)
-              })
             resolve(res.data)
           } else if (res.statusCode == '403') {
             reject(403)
           }
+        },
+        complete: (res) => {
         }
       })
     }))
@@ -182,80 +163,22 @@ function UploadTextDiary(data) {
           if (data['images'].length != 0) {
             UploadTextImage(data['images'], res.data.id)
               .then((res) => {
-                //刷新数据成功后重新更新本地缓存
-                GetDiary()
-                  .then((res) => {
-                    wx.setStorage({
-                      key: 'diaryData',
-                      data: res.diary,
-                    })
-                  })
-                  .catch(() => {
-                    console.log("until.js的UploadTextDiary的GetDiary异常")
-                    GetDiary()
-                  })
                 resolve(res.data)
               })
               .catch(() => {
 
               })
           } else {
-            //刷新数据成功后重新更新本地缓存
-            GetDiary()
-              .then((res) => {
-                wx.setStorage({
-                  key: 'diaryData',
-                  data: res.diary,
-                })
-              })
-              .catch(() => {
-                console.log("until.js的UploadTextImage的GetDiary异常")
-                GetDiary()
-              })
             resolve(res.data)
           }
-          GetDiary()
-            .then((res) => {
-              wx.setStorage({
-                key: 'diaryData',
-                data: res.diary,
-              })
-            })
-            .catch(() => {
-              console.log("until.js的UploadTextDiary的GetDiary异常")
-              UploadTextDiary(data)
-            })
         } else if (res.statusCode == '403') {
           reject(403)
         }
       },
       fail: function (res) { reject(res) },
-      complete: function (res) { },
-    })
-  });
-  return promise
-}
-
-function UploadFilteredImage(data){
-  let promise = new Promise(function (resolve, reject) {
-    wx.request({
-      url: globalData.api.saveFilteredDiary,
-      data: data,
-      header: {
-        "token": globalData.token
+      complete: function (res) {
+        // FreshDiaryDataStorage()
       },
-      method: 'POST',
-      dataType: 'json',
-      responseType: 'text',
-      success: (res) => {
-        if (res.statusCode == '200') {
-          resolve(res.data.text)
-        } else if (res.statusCode == '403') {
-          reject(403)
-        }
-      },
-      fail: function (res) { reject(res) },
-      complete: function (res) { },
     })
   });
   return promise
@@ -274,25 +197,15 @@ function UploadFilteredImage(data) {
       responseType: 'text',
       success: (res) => {
         if (res.statusCode == '200') {
-          //刷新数据成功后重新更新本地缓存
-          GetDiary()
-            .then((res) => {
-              wx.setStorage({
-                key: 'diaryData',
-                data: res.diary,
-              })
-            })
-            .catch(() => {
-              console.log("until.js的UploadFiltedImage的GetDiary异常")
-              GetDiary()
-            })
           resolve(res.data.text)
         } else if (res.statusCode == '403') {
           reject(403)
         }
       },
       fail: function (res) { reject(res) },
-      complete: function (res) { },
+      complete: function (res) {
+        // FreshDiaryDataStorage()
+      },
     })
   });
   return promise
@@ -300,10 +213,10 @@ function UploadFilteredImage(data) {
 
 function UploadImageDiary(data) {
 
-  if (data.imageURL.startsWith('http://tmp/')){
+  if (data.imageURL.startsWith('http://tmp/')) {
     // 无滤镜效果保存
     return UploadImage(data)
-  }else{
+  } else {
     // 有滤镜效果保存
     data['remote'] = 1
     return UploadFilteredImage(data)
@@ -404,5 +317,20 @@ function GetImageInfo(src) {
   })
   return promise
 }
+
+//刷新数据成功后重新更新本地缓存
+// function FreshDiaryDataStorage() {
+//   GetDiary()
+//     .then((res) => {
+//       wx.setStorage({
+//         key: 'diaryData',
+//         data: res.diary,
+//       })
+//     })
+//     .catch(() => {
+//       console.log("util.js.FreshDiaryDataStorage:获取后台最新数据失败")
+//       GetDiary()
+//     })
+// }
 
 export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, }

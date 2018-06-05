@@ -32,6 +32,7 @@ Page({
     lastTranlateX: 0,  //上次动画效果的平移距离，用于校准left值
     startTime: 0,
     endTime: 0,
+    btnSettingOpenType: '', //设置按钮的open-type
     //按钮涟漪
     waveEffectsOnImageButton: "",
     waveEffectsOnTextButton: "",
@@ -369,33 +370,37 @@ Page({
   displayDiary() {
     var that = this
     //检测是否第一次登录
-    wx.getStorage({
-      key: 'diaryData',
-      //不是第一次登录
-      success: function (res) {
+    // wx.getStorage({
+    //   key: 'diaryData',
+    //不是第一次登录
+    // success: function (res) {
+    //   that.setData({
+    //     btnSettingOpenType: 'openSetting',
+    //     diaryData: res.data
+    //   })
+    // },
+    //是第一次登录
+    // fail: function () {
+    that.getUserAuthorize('scope.userInfo')
+    that.getUserAuthorize('scope.userLocation')
+    GetDiary()
+      .then((res) => {
         that.setData({
-          diaryData: res.data
+          btnSettingOpenType: 'getUserInfo',
+          diaryData: res.diary,
         })
-      },
-      //是第一次登录
-      fail: function () {
-        GetDiary()
-          .then((res) => {
-            that.setData({
-              diaryData: res.diary,
-            })
-            wx.setStorage({
-              key: 'diaryData',
-              data: res.diary,
-            })
-          })
-          .catch(() => {
-            app.relogin(() => {
-              that.displayDiary()
-            })
-          })
-      }
-    })
+        // wx.setStorage({
+        //   key: 'diaryData',
+        //   data: res.diary,
+        // })
+      })
+      .catch(() => {
+        app.relogin(() => {
+          that.displayDiary()
+        })
+      })
+    //   }
+    // })
   },
 
   //文本日记跳转监听事件
@@ -490,7 +495,9 @@ Page({
       content: '确定要删除吗？',
       success: function (res) {
         if (res.confirm) {
-          DeleteDiary(e.currentTarget.dataset.diaryid)
+          DeleteDiary(e.currentTarget.dataset.diaryid).then((res) => {
+            that.displayDiary()
+          }).catch((res) => { })
         } else if (res.cancel) {
           return false
         }
@@ -698,4 +705,59 @@ Page({
   //handle event "scroll"
   scroll() { },
 
+  //获取用户权限
+  //scope.userLocation,scope.userInfo
+  getUserAuthorize(scope) {
+    var that = this
+    wx.getSetting({
+      success: (res) => {
+        if (!res.authSetting[scope]) {
+          wx.authorize({
+            scope: scope,
+            success: (res) => {
+              // wx.chooseLocation({
+              //   success: function (res) {
+              //     that.setData({
+              //       location: res.address
+              //     })
+              //   },
+              // })
+            },
+            fail: (res) => {
+              wx.showToast({
+                title: '没有定位权限，请在设置重新授权',
+              })
+            }
+          })
+          // } else {
+          //   switch (scope) {
+          //     case 'scope.userInfo': wx.getUserInfo({
+          //       success: (e) => {
+          //         console.log(e.detail.userInfo)
+          //       }
+          //     })
+          //       break
+          //     case 'scope.userLocation': wx.chooseLocation({
+          //       success: (res) => {
+          //         that.setData({
+          //           location: res.address
+          //         })
+
+          //       },
+          //     })
+          //       break
+          //     default: break
+          //   }
+        }
+      }
+    })
+  },
+
+  //获取用户信息
+  getuserinfo(e) {
+    this.setData({
+      btnSettingOpenType: 'openSetting',
+    })
+    console.log(e.detail.userInfo)
+  },
 })
