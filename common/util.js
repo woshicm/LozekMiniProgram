@@ -405,4 +405,29 @@ function GetImageInfo(src) {
   return promise
 }
 
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, }
+function getWeather(location){
+  console.log(globalData.api.getWeather)
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.getWeather,
+      header: {
+        "token": globalData.token
+      },
+      data: {
+        'location': location,
+      },
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.data)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather }

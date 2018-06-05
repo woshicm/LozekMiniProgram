@@ -170,6 +170,7 @@ Page({
     .catch(()=>{
       console.log("不用管这个被取消的请求，他没错误")
     })
+    
   },
 
   onReady: function () {
