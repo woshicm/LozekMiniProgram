@@ -22,7 +22,9 @@ App({
       getShareDiary: '',
       getFilter: '',
       saveFilteredDiary: '',
-      getWeather: ''
+      getWeather: '',
+      getWord: '',
+      getLocationInfo: ''
     },
     windowWidth: '',
     windowHeight: '',
@@ -52,6 +54,8 @@ App({
     this.globalData.api.getShareDiary = this.globalData.getShareDiaryURL + 'image'
     this.globalData.api.saveFilteredDiary = this.globalData.baseURL + 'upload_with_filter'
     this.globalData.api.getWeather = this.globalData.baseURL + 'get_weather'
+    this.globalData.api.getWord = this.globalData.baseURL + 'get_word'
+    this.globalData.api.getLocationInfo = this.globalData.baseURL + 'get_location_info'
     this.globalData.windowWidth = wx.getSystemInfoSync().windowWidth;
     this.globalData.windowHeight = wx.getSystemInfoSync().windowHeight;
   },

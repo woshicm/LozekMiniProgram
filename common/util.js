@@ -334,7 +334,10 @@ function GetImageInfo(src) {
 //     })
 // }
 
-function getWeather(location) {
+/**
+ * 获取天气接口
+ */
+function getWeather(location){
   console.log(globalData.api.getWeather)
   let promise = new Promise(function (resolve, reject) {
     wx.request({
@@ -345,6 +348,59 @@ function getWeather(location) {
       data: {
         'location': location,
       },
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.data)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+/**
+ * 查词接口
+ */
+function getWord(word) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.getWord,
+      header: {
+        "token": globalData.token
+      },
+      data: {
+        'word': word,
+      },
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.data)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+
+/**
+ * 获取坐标信息
+ */
+function getLocationInfo(location) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.getLocationInfo,
+      header: {
+        "token": globalData.token
+      },
+      data: location,
       method: 'GET',
       success: (res) => {
         if (res.statusCode == '200') {
@@ -423,5 +479,4 @@ function GetUserAuthorize(scope) {
     }
   })
 }
-
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, GetUserAuthorize }
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo }
