@@ -390,6 +390,32 @@ function getWord(word) {
   return promise
 }
 
+/**
+ * 获取坐标信息
+ */
+function getLocationInfo(location) {
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.getLocationInfo,
+      header: {
+        "token": globalData.token
+      },
+      data: location,
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.data)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+
 //获取用户权限
 //scope.userLocation,scope.userInfo
 function GetUserAuthorize(scope) {
@@ -453,4 +479,4 @@ function GetUserAuthorize(scope) {
     }
   })
 }
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord,GetUserAuthorize }
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo }
