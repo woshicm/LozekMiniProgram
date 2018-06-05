@@ -1,7 +1,7 @@
-import { ParseText, UploadImage, GetDiary, DeleteDiary } from "../../common/util.js";
+import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize } from "../../common/util.js";
 
 const app = getApp()
-
+const globalData = getApp().globalData
 Page({
   data: {
     // windowHeight: app.globalData.windowHeight,
@@ -42,10 +42,12 @@ Page({
    * 生命週期函數
    */
   onReady() {
+    
+
   },
 
   onLoad(options) {
-    // this.displayDiary()
+    GetUserAuthorize('scope.userLocation')
   },
 
   onShow() {
@@ -369,38 +371,18 @@ Page({
   //显示日记的数据
   displayDiary() {
     var that = this
-    //检测是否第一次登录
-    // wx.getStorage({
-    //   key: 'diaryData',
-    //不是第一次登录
-    // success: function (res) {
-    //   that.setData({
-    //     btnSettingOpenType: 'openSetting',
-    //     diaryData: res.data
-    //   })
-    // },
-    //是第一次登录
-    // fail: function () {
-    that.getUserAuthorize('scope.userInfo')
-    that.getUserAuthorize('scope.userLocation')
     GetDiary()
       .then((res) => {
         that.setData({
           btnSettingOpenType: 'getUserInfo',
           diaryData: res.diary,
         })
-        // wx.setStorage({
-        //   key: 'diaryData',
-        //   data: res.diary,
-        // })
       })
       .catch(() => {
         app.relogin(() => {
           that.displayDiary()
         })
       })
-    //   }
-    // })
   },
 
   //文本日记跳转监听事件
@@ -704,54 +686,6 @@ Page({
   lower() { },
   //handle event "scroll"
   scroll() { },
-
-  //获取用户权限
-  //scope.userLocation,scope.userInfo
-  getUserAuthorize(scope) {
-    var that = this
-    wx.getSetting({
-      success: (res) => {
-        if (!res.authSetting[scope]) {
-          wx.authorize({
-            scope: scope,
-            success: (res) => {
-              // wx.chooseLocation({
-              //   success: function (res) {
-              //     that.setData({
-              //       location: res.address
-              //     })
-              //   },
-              // })
-            },
-            fail: (res) => {
-              wx.showToast({
-                title: '没有定位权限，请在设置重新授权',
-              })
-            }
-          })
-          // } else {
-          //   switch (scope) {
-          //     case 'scope.userInfo': wx.getUserInfo({
-          //       success: (e) => {
-          //         console.log(e.detail.userInfo)
-          //       }
-          //     })
-          //       break
-          //     case 'scope.userLocation': wx.chooseLocation({
-          //       success: (res) => {
-          //         that.setData({
-          //           location: res.address
-          //         })
-
-          //       },
-          //     })
-          //       break
-          //     default: break
-          //   }
-        }
-      }
-    })
-  },
 
   //获取用户信息
   getuserinfo(e) {

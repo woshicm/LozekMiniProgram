@@ -43,7 +43,7 @@
   <view hidden='{{state == "preview"}}' class='diaryArea'>
     <view class='diaryArea-mask' hidden='{{isDiaryTextMaskHidden}}' bindtap='onDiaryAreaMaskTapEvent'></view>
     <view class='{{textValue == 0 ? "diaryArea-notice" : "diary-diaryInputTextArea"}}' hidden='{{state != "text"}}' bindtap='onDiaryAreaNoticeTapEvent'>{{textValue.length == 0 ? "说说今天发生的有趣的事hh" : textValue}}</view>
-    <textarea hidden='{{state != "edit"}}' class='diary-diaryInputTextArea' placeholder='说说今天发生的有趣的事' placeholder-style='font-size: 10pt;' bindfocus='onDiaryAreaFocusEvent' bindblur='onDiaryAreaBlurEvent' value='{{textValue}}' maxlength='-1' show-confirm-bar='false'
+    <textarea hidden='{{state != "edit"}}' class='diary-diaryInputTextArea' placeholder='说说今天发生的有趣的事' placeholder-style='font-size: 10pt;' bindfocus='onDiaryAreaFocusEvent' bindblur='onDiaryAreaBlurEvent' value='{{textValue}}' maxlength='-1' show-confirm-bar='false' bindinput='onDiaryAreaInputEvent'
       focus='{{isDiaryTextFocus}}'></textarea>
   </view>
   <!-- 正文显示 -->

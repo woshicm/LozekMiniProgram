@@ -166,7 +166,6 @@ function UploadTextDiary(data) {
                 resolve(res.data)
               })
               .catch(() => {
-
               })
           } else {
             resolve(res.data)
@@ -214,7 +213,7 @@ function UploadFilteredImage(data) {
 function UploadImageDiary(data) {
 
 
-  if (data.imageURL.startsWith('http://tmp/') || data.imageURL.startsWith('wxfile://tmp')){
+  if (data.imageURL.startsWith('http://tmp/') || data.imageURL.startsWith('wxfile://tmp')) {
     // 无滤镜效果保存
     return UploadImage(data)
   } else {
@@ -335,7 +334,7 @@ function GetImageInfo(src) {
 //     })
 // }
 
-function getWeather(location){
+function getWeather(location) {
   console.log(globalData.api.getWeather)
   let promise = new Promise(function (resolve, reject) {
     wx.request({
@@ -360,4 +359,69 @@ function getWeather(location){
   });
   return promise
 }
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather }
+
+//获取用户权限
+//scope.userLocation,scope.userInfo
+function GetUserAuthorize(scope) {
+  var that = this
+  wx.getSetting({
+    success: (res) => {
+      if (!res.authSetting[scope]) {
+        wx.authorize({
+          scope: scope,
+          success: (res) => {
+            switch (scope) {
+              // case 'scope.userInfo': wx.getUserInfo({
+              //   success: (e) => {
+              //     globalData.userInfoCity = e.detail.userInfo
+              //     console.log(globalData.userInfoCity.city)
+              //   }
+              // })
+              // break
+              case 'scope.userLocation': wx.getLocation({
+                success: (res) => {
+                  // that.setData({
+                  //   location: res.address
+                  // })
+                  globalData.userCurrentCityLatitude = res.latitude
+                  globalData.userCurrentCityLongitude = res.longitude
+                },
+              })
+                break
+              default: break
+            }
+          },
+          fail: (res) => {
+            wx.showToast({
+              title: '没有定位权限，请在设置重新授权',
+            })
+          }
+        })
+      } else {
+        switch (scope) {
+          // case 'scope.userInfo': wx.getUserInfo({
+          //   success: (e) => {
+          //     globalData.userInfoCity = e.detail.userInfo.city
+          //     // console.log(globalData.userInfo.City)
+          //     console.log('asdsa:' + e.detail.userInfo)
+          //   }
+          // })
+          //   break
+          case 'scope.userLocation': wx.getLocation({
+            success: (res) => {
+              // that.setData({
+              //   location: res.address
+              // })
+              globalData.userCurrentCityLatitude = res.latitude
+              globalData.userCurrentCityLongitude = res.longitude
+            },
+          })
+            break
+          default: break
+        }
+      }
+    }
+  })
+}
+
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, GetUserAuthorize }

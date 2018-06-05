@@ -25,6 +25,7 @@ Page({
     textValue: "",
     isDiaryTextMaskHidden: true,
     isDiaryTextFocus: false,
+    lastInputTime: 0,
     //上传图片区
     addedPhoto: [],
     choseCount: 0,
@@ -134,7 +135,7 @@ Page({
     console.log(this.data.state)
   },
   //
-  onDiaryAreaNoticeTapEvent(){
+  onDiaryAreaNoticeTapEvent() {
 
   },
   /**
@@ -151,7 +152,7 @@ Page({
    */
   onFunctionConfirmTap() {
     var text = this.data.textValue;
-    if(text.length == 0){
+    if (text.length == 0) {
       wx.showToast({
         title: '阁下还什么都没写噢~',
         duration: 1000,
@@ -191,7 +192,7 @@ Page({
   goBackTextValue() {
     var that = this
     if (this.data.textValueGoBackQueue.length > 0) {
-      if (this.data.textValueGoForwardQueue.length == 10) {
+      if (this.data.textValueGoForwardQueue.length == 100) {
         that.data.textValueForwardQueue.shift()
       }
       this.data.textValueGoForwardQueue.push(this.data.textValue)
@@ -209,14 +210,24 @@ Page({
   * 正文区-输入
   */
   onDiaryAreaFocusEvent() {
-    if (this.data.textValueGoBackQueue.length == 10) {
-      this.data.textValueGoBackQueue.shift()
-    }
-    this.data.textValueGoBackQueue.push(this.data.textValue)
     this.setData({
       showFunctionArea: false,
       isDiaryTextMaskHidden: false,
     })
+  },
+
+  onDiaryAreaInputEvent(e) {
+    var that = this
+    console.log( " inputValue: " + e.detail.value + '\n')
+    let nowInputTime = Date.parse(new Date())
+    if ((nowInputTime - this.data.lastInputTime) >= 2500){
+      if (this.data.textValueGoBackQueue.length == 100) {
+        this.data.textValueGoBackQueue.shift()
+      }
+      that.data.lastInputTime = nowInputTime
+      that.data.textValueGoBackQueue.push(e.detail.value)
+      console.log("保存: " + that.data.textValueGoBackQueue )
+    }
   },
 
   onDiaryAreaBlurEvent(e) {
