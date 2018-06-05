@@ -19,8 +19,9 @@ Page({
     hideTitle: true,
     inputBottomLineColor: '5rpx solid #3f8ae9',
     currentTime: GetCurrentTime(),
-    currentWeather: 'sunny',
+    currentWeather: '100',
     currentLocation: '深圳',
+    titleSplit: 0,
     //正文区
     textValue: "",
     isDiaryTextMaskHidden: true,
@@ -125,13 +126,17 @@ Page({
     var inputBottomLineColor = '3rpx solid rgba(55,121,205,0.12)';
     var value = e.detail.value;
     value = value.replace(/ /g, "");
+    var titleSplit = this.data.titleSplit;
+    if(value.length >= 8){
+      titleSplit = Math.floor(value.length * 2 / 5);
+    }
     this.setData({
       inputBottomLineColor: inputBottomLineColor,
       titleValue: value,
       hideTitle: false,
-      state: "edit"
+      state: "edit",
+      titleSplit: titleSplit,
     });
-    console.log(this.data.state)
   },
   //
   onDiaryAreaNoticeTapEvent(){
