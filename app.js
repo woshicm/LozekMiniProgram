@@ -27,6 +27,8 @@ App({
     },
     windowWidth: '',
     windowHeight: '',
+    userCurrentCityLatitude: '',
+    userCurrentCityLongitude: '',
   },
 
   onLaunch: function () {
