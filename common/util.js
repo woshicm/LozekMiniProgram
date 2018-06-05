@@ -109,6 +109,17 @@ function UploadTextImage(data, id) {
         name: 'image',
         success: (res) => {
           if (res.statusCode == '200') {
+            GetDiary()
+              .then((res) => {
+                wx.setStorage({
+                  key: 'diaryData',
+                  data: res.diary,
+                })
+              })
+              .catch(() => {
+                console.log("until.js的UploadTextImage的GetDiary异常")
+                UploadTextImage(data, id)
+              })
             resolve(res.data)
           } else if (res.statusCode == '403') {
             reject(403)
@@ -203,6 +214,42 @@ function UploadTextDiary(data) {
               })
             resolve(res.data)
           }
+          GetDiary()
+            .then((res) => {
+              wx.setStorage({
+                key: 'diaryData',
+                data: res.diary,
+              })
+            })
+            .catch(() => {
+              console.log("until.js的UploadTextDiary的GetDiary异常")
+              UploadTextDiary(data)
+            })
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+
+function UploadFilteredImage(data){
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.saveFilteredDiary,
+      data: data,
+      header: {
+        "token": globalData.token
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.text)
         } else if (res.statusCode == '403') {
           reject(403)
         }
@@ -252,10 +299,11 @@ function UploadFilteredImage(data) {
 }
 
 function UploadImageDiary(data) {
-  if (data.imageURL.startsWith('http://tmp/')) {
+
+  if (data.imageURL.startsWith('http://tmp/')){
     // 无滤镜效果保存
     return UploadImage(data)
-  } else {
+  }else{
     // 有滤镜效果保存
     data['remote'] = 1
     return UploadFilteredImage(data)

@@ -73,29 +73,29 @@
         <!-- 1 -->
         <image src='{{addedPhoto[0].url}}' style='height: 250rpx; width: 250rpx;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
         <!-- 2 -->
-        <view style='height: 300rpx; width: 1rpx; float: left; background-color: red;'></view>
+        <view style='height: 300rpx; width: 1rpx; float: left;'></view>
         <image src='{{addedPhoto[1].url}}' style='height: 250rpx; width: 250rpx;' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
         <!-- 3 -->
-        <view style='height: 300rpx; width: 1rpx; float: left; background-color: red;'></view>
+        <view style='height: 300rpx; width: 1rpx; float: left;'></view>
         <image src='{{addedPhoto[2].url}}' style='height: 250rpx; width: 200rpx;}}' data-imageurl='{{addedPhoto[2].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
         <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
       </view>
       <!-- 4.四張圖片 -->
       <view wx:elif='{{addedPhoto.length == 4}}' class='showDiary-scrollView-item'>
         <!-- 1 -->
-        <view style='height: 200rpx; width: 1rpx; float: right; background-color: red;'></view>
+        <view style='height: 200rpx; width: 1rpx; float: right;'></view>
         <image src='{{addedPhoto[1].url}}' style='{{addedPhoto[1].height <= addedPhoto[1].width * 1.2 ? "width: 50%; height: 200rpx;" : "height: 250rpx; width: 250rpx;"}}' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' class='module-image module-image-rightBottom'
           catchtap='onPreviewPhotoTapEvent' />
         <!-- 2 -->
-        <view style='height: 250rpx; width: 1rpx; float: right; background-color: red;'></view>
+        <view style='height: 250rpx; width: 1rpx; float: right;'></view>
         <image src='{{addedPhoto[0].url}}' style='height: 250rpx; width: 250rpx;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' class='module-image module-image-rightBottom'
         />
         <!-- 3 -->
-        <view style='height: 500rpx; width: 1rpx; float: left; background-color: red;'></view>
+        <view style='height: 500rpx; width: 1rpx; float: left;'></view>
         <image src='{{addedPhoto[2].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
           data-imageurl='{{addedPhoto[2].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
         <!-- 4 -->
-        <view style='height: 250rpx; width: 1rpx; float: left; background-color: red;'></view>
+        <view style='height: 250rpx; width: 1rpx; float: left;'></view>
         <image src='{{addedPhoto[3].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
           data-imageurl='{{addedPhoto[3].url}}' mode='aspectFill' catchtap='onPreviewPhotoTapEvent' class='module-image module-image-leftTop' />
         <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
@@ -106,7 +106,7 @@
           <image src='{{addedPhoto[1].url}}' style='height: 200rpx; width: 50%;' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' catchtap='onPreviewPhotoTapEvent' />
           <image src='{{addedPhoto[1].url}}' style='height: 200rpx; width: 50%;' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' catchtap='onPreviewPhotoTapEvent' />
         </view>
-        <view style='height: 400rpx; width: 1rpx; float: left; background-color: red; clear: left;'></view>
+        <view style='height: 400rpx; width: 1rpx; float: left;clear: left;'></view>
         <image src='{{addedPhoto[0].url}}' style='height: 205rpx; width: 205rpx; float: left; margin-right: 10rpx; clear: left;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image' catchtap='onPreviewPhotoTapEvent' />
         <image src='{{addedPhoto[0].url}}' style='height: 205rpx; width: 205rpx; float: left; margin-right: 10rpx;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image' catchtap='onPreviewPhotoTapEvent' />
         <image src='{{addedPhoto[0].url}}' style='height: 205rpx; width: 205rpx; float: left;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image' catchtap='onPreviewPhotoTapEvent' />

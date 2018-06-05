@@ -378,7 +378,7 @@ Page({
         })
       },
       //是第一次登录
-      fail: function (res) {
+      fail: function () {
         GetDiary()
           .then((res) => {
             that.setData({
