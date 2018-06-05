@@ -158,10 +158,22 @@ Page({
     //   console.log(res)
     //   }).catch((res) => {
     // })
+    // console.log(options.imgUrl)
+    let data = {
+      'imageURL': options.imgUrl,
+      'all': 1
+    }
+    GetFliter(data)
+    .then(()=>{
+      console.log("precreate all filter ")
+    })
+    .catch(()=>{
+      console.log("不用管这个被取消的请求，他没错误")
+    })
   },
 
   onReady: function () {
-
+    
   },
   onShow: function () {
 
