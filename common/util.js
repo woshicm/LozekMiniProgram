@@ -300,11 +300,12 @@ function UploadFilteredImage(data) {
 
 function UploadImageDiary(data) {
 
-  if (data.imageURL.startsWith('http://tmp/')){
+  if (data.imageURL.startsWith('http://tmp/') || data.imageURL.startsWith('wxfile://tmp')){
     // 无滤镜效果保存
     return UploadImage(data)
   }else{
     // 有滤镜效果保存
+    console.log(data)
     data['remote'] = 1
     return UploadFilteredImage(data)
   }
