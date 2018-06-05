@@ -14,6 +14,7 @@ Page({
     snapshot: [],
     textValueGoBackQueue: [],//回退队列
     textValueGoForwardQueue: [], //前进队列
+    textDiaryDataSnapArray: [],
     //标题区
     titleValue: "",
     hideTitle: true,
@@ -59,6 +60,16 @@ Page({
         }
       })
     }
+    wx.getStorage({
+      key: 'textDiaryDataSnapArray',
+      success: (res) => { that.data.textDiaryDataSnapArray = res.data },
+      fail: (res) => {
+        wx.setStorage({
+          key: 'textDiaryDataSnapArray',
+          data: [],
+        })
+      },
+    })
   },
 
   /**
@@ -171,6 +182,74 @@ Page({
     this.save();
   },
 
+  bindSnap() {
+    var that = this
+    var textDiarySnapItemList = []
+    wx.getStorage({
+      key: 'textDiaryDataSnapArray',
+      success: (res) => { that.data.textDiaryDataSnapArray = res.data },
+      fail: (res) => { },
+    })
+    var textDiaryDataSnapArray = that.data.textDiaryDataSnapArray
+    console.log('textDiaryDataSnapArray: ' + textDiaryDataSnapArray.length)
+    switch (textDiaryDataSnapArray.length) {
+      case 0: textDiarySnapItemList = ['创建新快照']
+        break
+      case 1:
+        textDiarySnapItemList = ['创建新快照', '最近第一次的快照']
+        break
+      case 2: textDiarySnapItemList = ['创建新快照', '最近第一次的快照', '最近第二次的快照']
+        break
+      case 3: textDiarySnapItemList = ['创建新快照', '最近第一次的快照', '最近第二次的快照', '最近第三次的快照']
+        break
+      case 4: textDiarySnapItemList = ['创建新快照', '最近第一次的快照', '最近第二次的快照', '最近第三次的快照', '最近第四次的快照']
+        break
+      default: textDiarySnapItemList = ['创建新快照', '最近第一次的快照', '最近第二次的快照', '最近第三次的快照', '最近第四次的快照', '最近第五次的快照']
+        break
+    }
+    wx.showActionSheet({
+      itemList: textDiarySnapItemList,
+      success: (res) => {
+        if (!res.cancel) {
+          switch (res.tapIndex) {
+            case 0: {
+              let snapData = {
+                title: that.data.titleValue,
+                text: that.data.textValue,
+                addedPhoto: that.data.addedPhoto,
+              }
+              if (textDiaryDataSnapArray.length == 5) {
+                that.data.textDiaryDataSnapArray.shift()
+              }
+              that.data.textDiaryDataSnapArray.push(snapData)
+              wx.setStorage({
+                key: 'textDiaryDataSnapArray',
+                data: that.data.textDiaryDataSnapArray,
+              })
+            }
+              break
+            default: that.getTextDiaryDataFromSnapArray(res.tapIndex - 1)
+              break
+          }
+        }
+      }
+    })
+  },
+
+  getTextDiaryDataFromSnapArray(index) {
+    let textDiaryDataSnapArray = this.data.textDiaryDataSnapArray
+    this.setData({
+      titleValue: textDiaryDataSnapArray[index].title,
+      textValue: textDiaryDataSnapArray[index].text,
+      addedPhoto: textDiaryDataSnapArray[index].addedPhoto
+    })
+    textDiaryDataSnapArray.splice(index, 1)
+    wx.setStorage({
+      key: 'textDiaryDataSnapArray',
+      data: textDiaryDataSnapArray,
+    })
+  },
+
   //前进
   goForwardTextValue() {
     if (this.data.textValueGoBackQueue.length == 10) {
@@ -218,20 +297,29 @@ Page({
 
   onDiaryAreaInputEvent(e) {
     var that = this
-    console.log( " inputValue: " + e.detail.value + '\n')
+    console.log(" inputValue: " + e.detail.value + '\n')
     let nowInputTime = Date.parse(new Date())
-    if ((nowInputTime - this.data.lastInputTime) >= 2500){
+    if ((nowInputTime - this.data.lastInputTime) >= 2500) {
       if (this.data.textValueGoBackQueue.length == 100) {
         this.data.textValueGoBackQueue.shift()
       }
       that.data.lastInputTime = nowInputTime
       that.data.textValueGoBackQueue.push(e.detail.value)
-      console.log("保存: " + that.data.textValueGoBackQueue )
+      console.log("保存: " + that.data.textValueGoBackQueue)
     }
   },
 
   onDiaryAreaBlurEvent(e) {
     var value = e.detail.value;
+    var that = this
+    var textValueGoBackQueue = this.data.textValueGoBackQueue
+    if (textValueGoBackQueue.length == 100) {
+      textValueGoBackQueue.shift()
+    }
+    if (textValueGoBackQueue[textValueGoBackQueue.length - 1] != value) {
+      that.data.textValueGoBackQueue.push(value)
+    }
+    console.log("保存: " + that.data.textValueGoBackQueue)
     this.setData({
       textValue: value,
       isDiaryTextMaskHidden: true,
@@ -343,6 +431,10 @@ Page({
     SaveDiary(textDiaryData)
       .then((res) => {
         console.log(res)
+        wx.removeStorage({
+          key: 'textDiaryDataSnapArray',
+          success: function (res) { },
+        })
       })
       .catch((e) => {
         console.log(e)

@@ -64,7 +64,6 @@ Component({
         data: data,
       })
       wx.navigateTo({
-        // url: '/pages/textDiary/textDiary?title=' + this.properties.title + '&text=' + this.properties.text + '&type=reEdit',
         url: '/pages/textDiary/textDiary?type=reEdit',
       })
     }
