@@ -46,11 +46,11 @@ Page({
         key: 'textDiaryData',
         success: function (res) {
           that.setData({
-            textDiaryId: res.data[0].id,
-            titleValue: res.data[0].title,
-            textValue: res.data[0].text,
-            addedPhoto: res.data[0].imageUrl,
-            choseCount: res.data[0].imageUrl.length,
+            textDiaryId: res.data[0].main.d,
+            titleValue: res.data[0].main.title,
+            textValue: res.data[0].main.text,
+            addedPhoto: res.data[0].main.imageUrl,
+            choseCount: res.data[0].main.imageUrl.length,
           })
         },
         complete: function () {

@@ -11,6 +11,9 @@ Component({
     },
     iamgeUrl: {
       type: []
+    },
+    textDiaryAllData:{
+      type: []
     }
   },
 
@@ -53,15 +56,9 @@ Component({
      */
     toTextDiary() {
       var that = this
-      let data = [{
-        id: this.properties.textDiaryId,
-        title: this.properties.title,
-        text: this.properties.text,
-        imageUrl: this.properties.iamgeUrl
-      }]
       wx.setStorage({
         key: 'textDiaryData',
-        data: data,
+        data: that.properties.textDiaryAllData,
       })
       wx.navigateTo({
         url: '/pages/textDiary/textDiary?type=reEdit',
