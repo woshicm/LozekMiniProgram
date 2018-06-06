@@ -49,8 +49,8 @@ Page({
             textDiaryId: res.data.main.id,
             titleValue: res.data.main.title,
             textValue: res.data.main.text,
-            addedPhoto: res.data.main.imageUrl,
-            choseCount: res.data.main.imageUrl.length,
+            addedPhoto: res.data.main.images,
+            choseCount: res.data.main.images.length,
           })
         },
         complete: function () {
