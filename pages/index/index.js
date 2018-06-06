@@ -1,4 +1,4 @@
-import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize } from "../../common/util.js";
+import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather } from "../../common/util.js";
 
 const app = getApp()
 const globalData = getApp().globalData
@@ -42,12 +42,15 @@ Page({
    * 生命週期函數
    */
   onReady() {
-    
-
   },
 
   onLoad(options) {
     GetUserAuthorize('scope.userLocation')
+    setTimeout(
+      function(){
+        getWeather(app.globalData.userCurrentCityLongitude + "," + app.globalData.userCurrentCityLatitude)
+      }, 1000
+    )
   },
 
   onShow() {

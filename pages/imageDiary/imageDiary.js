@@ -15,6 +15,7 @@ Page({
     //全局变量
     mode: 'shortText',
     windowHeight: app.globalData.windowHeight,
+    actions: "",
     /**
      * imageDiary頁
      */
@@ -164,17 +165,17 @@ Page({
       'all': 1
     }
     GetFliter(data)
-    .then(()=>{
-      console.log("precreate all filter ")
-    })
-    .catch(()=>{
-      console.log("不用管这个被取消的请求，他没错误")
-    })
-    
+      .then(() => {
+        console.log("precreate all filter ")
+      })
+      .catch(() => {
+        console.log("不用管这个被取消的请求，他没错误")
+      })
+
   },
 
   onReady: function () {
-    
+
   },
   onShow: function () {
 
@@ -658,6 +659,8 @@ Page({
         hasLocation: false,
         marginLeft: 8,
         marginTop: 6,
+        maxLength: 8,
+        keyWords: [],
       },
       userVariable: {
         color: color,
@@ -668,61 +671,39 @@ Page({
   },
 
   //返回文字模板
-  putTextModule() {
-    let textPosition = [];
-    let imagePosition = [];
-
-    wx.createSelectorQuery().select('#id-movable').boundingClientRect(function (rect) {
-      var item = {
-        top: rect.top,
-        left: rect.left,
-      }
-      textPosition = item;
-    }).exec();
-    wx.createSelectorQuery().select('#id-uploadedImage').boundingClientRect(function (rect) {
-      var item = {
-        top: rect.top,
-        left: rect.left,
-      }
-      imagePosition = item;
-    }).exec();
-    var that = this;
-    setTimeout(
-      function () {
-        var beginPoint = {
-          'x': that.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left,
-          'y': textPosition.top - imagePosition.top,
-        };
-        var height = that.data.choseTextModule.systemVariable.height;
-        var actions = [
-          {
-            'action': 'text',
-            'text': that.data.choseTextModule.systemVariable.time,
-            'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
-            'font-style': '',
-            'font-color': '',
-            'font-size': 39,
-          },
-          {
-            'action': 'text',
-            'text': that.data.inputValue,
-            'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
-            'font-style': 'letter-spacing: 2px;',
-            'font-color': that.data.choseTextModule.userVariable.color,
-            'font-size': 12,
-          },
-          {
-            'action': 'text',
-            'text': 'Let time stop at this moment',
-            'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
-            'font-style': 'letter-spacing: 2px;',
-            'font-color': that.data.choseTextModule.userVariable.color,
-            'font-size': '8px',
-          },
-        ]
-        return actions
-      }, 50
-    )
+  putTextModule(textPosition, imagePosition) {
+    var beginPoint = {
+      'x': this.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left,
+      'y': textPosition.top - imagePosition.top,
+    };
+    var height = this.data.choseTextModule.systemVariable.height;
+    var actions = [
+      {
+        'action': 'text',
+        'text': this.data.choseTextModule.systemVariable.time,
+        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
+        'font-style': '',
+        'font-color': '',
+        'font-size': 39,
+      },
+      {
+        'action': 'text',
+        'text': this.data.inputValue,
+        'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
+        'font-style': 'letter-spacing: 2px;',
+        'font-color': this.data.choseTextModule.userVariable.color,
+        'font-size': 12,
+      },
+      {
+        'action': 'text',
+        'text': 'Let time stop at this moment',
+        'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
+        'font-style': 'letter-spacing: 2px;',
+        'font-color': this.data.choseTextModule.userVariable.color,
+        'font-size': '8px',
+      },
+    ]
+    return actions;
   },
   //显示文本工具栏
   showTools() {
@@ -730,7 +711,6 @@ Page({
       isShowTools: !this.data.isShowTools,
       slideOutLayerTop: app.globalData.windowHeight * 0.7 - (app.globalData.windowHeight * 0.7 - this.data.uploadedImageHeight) / 2,
     });
-    console.log(this.data.slideOutLayerTop)
   },
 
   //改变富文本大小
@@ -755,8 +735,9 @@ Page({
   /**
    * saveDiaryText
    */
-  saveDiaryText() {
-    var actions = this.putTextModule();
+  saveDiaryText(textPosition, imagePosition) {
+    var actions = this.putTextModule(textPosition, imagePosition);
+    console.log(actions)
     let diary = {
       'type': 1,
       'imageURL': this.data.filteredImageUrl,
@@ -766,7 +747,10 @@ Page({
     console.log(diary)
     SaveDiary(diary)
       .then((res) => {
-        console.log(res)
+        wx.hideLoading();
+        wx.redirectTo({
+          url: 'finished/finished',
+        })
       })
       .catch((e) => {
         console.log(e)
@@ -814,6 +798,32 @@ Page({
   },
   //存至本地
   onSaveTap() {
-    this.saveDiaryText();
+    wx.showLoading({
+      title: '正在保存...',
+    })
+
+    let textPosition = [];
+    let imagePosition = [];
+
+    wx.createSelectorQuery().select('#id-movable').boundingClientRect(function (rect) {
+      var item = {
+        top: rect.top,
+        left: rect.left,
+      }
+      textPosition = item;
+    }).exec();
+    wx.createSelectorQuery().select('#id-uploadedImage').boundingClientRect(function (rect) {
+      var item = {
+        top: rect.top,
+        left: rect.left,
+      }
+      imagePosition = item;
+    }).exec();
+    var that = this;
+    setTimeout(
+      function () {
+        that.saveDiaryText(textPosition, imagePosition);
+      }, 50
+    );
   }
 })

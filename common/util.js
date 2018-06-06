@@ -338,8 +338,8 @@ function GetImageInfo(src) {
  * 获取天气接口
  */
 function getWeather(location){
-  console.log(globalData.api.getWeather)
-  let promise = new Promise(function (resolve, reject) {
+  // console.log(globalData.api.getWeather)
+  // let promise = new Promise(function (resolve, reject) {
     wx.request({
       url: globalData.api.getWeather,
       header: {
@@ -351,7 +351,8 @@ function getWeather(location){
       method: 'GET',
       success: (res) => {
         if (res.statusCode == '200') {
-          resolve(res.data.data)
+          // resolve(res.data.data)
+          globalData.weather = res.data.data
         } else if (res.statusCode == '403') {
           reject(403)
         }
@@ -359,8 +360,8 @@ function getWeather(location){
       fail: function (res) { reject(res) },
       complete: function (res) { },
     })
-  });
-  return promise
+  // });
+  // return promise
 }
 /**
  * 查词接口

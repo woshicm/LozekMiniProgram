@@ -86,11 +86,11 @@
   </view>
   <!-- 底部功能入口 -->
   <view class='index-bottom modify-shadow-main-up'>
-    <button class="index-bottom-item" bindtap='chooseImageTap' hover-class='waves-hover' hover-stay-time='200'>
+    <button class="index-bottom-item" bindtap='chooseImageTap'>
       <view class='waves {{waveEffectsOnImageButton}}'></view>
       <image src='/images/icon/imageDiaryLogo.png' class="image-diaryLogo" mode="widthFix"></image>
     </button>
-    <view class='modify-divideLine-dark' style="width: 3rpx; height: 122rpx;" hover-class='waves-hover' hover-stay-time='200'></view>
+    <view class='modify-divideLine-dark' style="width: 3rpx; height: 122rpx;"></view>
     <button class="index-bottom-item" bindtap='onToTextDiaryPageTap'>
       <view class='waves {{waveEffectsOnTextButton}}'></view>
       <image src="/images/icon/writingDiaryLogo.png" class="image-diaryLogo" mode="widthFix"></image>

@@ -8,7 +8,7 @@ Page({
   data: {
     //全局变量
     state: 'edit',
-    textDiaryData: [],
+    isReEdit: false,
     textDiaryId: '',
     //功能区
     snapshot: [],
@@ -19,7 +19,7 @@ Page({
     hideTitle: true,
     inputBottomLineColor: '5rpx solid #3f8ae9',
     currentTime: GetCurrentTime(),
-    currentWeather: '100',
+    currentWeather: ['100','晴'],
     currentLocation: '深圳',
     titleSplit: 0,
     //正文区
@@ -45,11 +45,13 @@ Page({
         key: 'textDiaryData',
         success: function (res) {
           that.setData({
+            isReEdit: true,
             textDiaryId: res.data[0].id,
             titleValue: res.data[0].title,
             textValue: res.data[0].text,
             addedPhoto: res.data[0].imageUrl,
             choseCount: res.data[0].imageUrl.length,
+            weather: res.data[0].weather,
           })
         },
         complete: function () {
@@ -60,6 +62,10 @@ Page({
         }
       })
     }
+    var weather = [app.globalData.weather.cond_code, app.globalData.weather.cond_txt]
+    this.setData({
+      currentWeather: weather,
+    })
   },
 
   /**
@@ -319,28 +325,21 @@ Page({
     var createdTime = GetCurrentTime();
     if (this.data.textDiaryData.length != 0)
       createdTime = this.data.textDiary.system.createdTime;
-    // var textDiaryData = {
-    //   main: {
-    //     'type': 0,
-    //     'title': this.data.titleValue,
-    //     'text': this.data.textValue,
-    //     'images': this.data.addedPhoto, //通過addedPhoto[i].url 獲取圖片url
-    //   },
-    //   extra: {
-    //     snapshot: this.data.snapshot,
-    //   },
-    //   system: {
-    //     createdTime: createdTime,
-    //     lastModifiedTime: GetCurrentTime(), //數組元素{ yy, mm, dd, day_en, day_cn, hh, min, ss};
-    //     weather: "",
-    //   }
-    // }
-    let textDiaryData = {
-      'type': 0,
-      'title': this.data.titleValue,
-      'text': this.data.textValue,
-      'images': this.data.addedPhoto,
-      'weather': "",
+    var textDiaryData = {
+      main: {
+        'type': 0,
+        'title': this.data.titleValue,
+        'text': this.data.textValue,
+        'images': this.data.addedPhoto, //通過addedPhoto[i].url 獲取圖片url
+      },
+      extra: {
+      },
+      system: {
+        id: "textDiary" + createdTime.yy + + createdTime.mm + + createdTime.dd + + createdTime.hh + + createdTime.min + + createdTime.ss,
+        createdTime: createdTime,
+        lastModifiedTime: GetCurrentTime(), //數組元素{ yy, mm, dd, day_en, day_cn, hh, min, ss};
+        weather: this.data.weather,
+      }
     }
     if (this.data.textDiaryId != null)
       textDiaryData.id = this.data.textDiaryId

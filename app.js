@@ -28,8 +28,12 @@ App({
     },
     windowWidth: '',
     windowHeight: '',
+    /**
+     * 用戶參數
+     */
     userCurrentCityLatitude: '',
     userCurrentCityLongitude: '',
+    weather: {},
   },
 
   onLaunch: function () {
