@@ -12,7 +12,7 @@ Component({
     iamgeUrl: {
       type: []
     },
-    textDiaryAllData:{
+    currentTextDiaryData:{
       type: []
     }
   },
@@ -58,7 +58,7 @@ Component({
       var that = this
       wx.setStorage({
         key: 'textDiaryData',
-        data: that.properties.textDiaryAllData,
+        data: that.properties.currentTextDiaryData,
       })
       wx.navigateTo({
         url: '/pages/textDiary/textDiary?type=reEdit',
