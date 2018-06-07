@@ -118,10 +118,13 @@ function UploadTextImage(data, id) {
   return promise
 }
 
-function GetDiary() {
+function GetDiary(id) {
   let promise = new Promise(function (resolve, reject) {
     wx.request({
       url: globalData.api.getDiary,
+      data: {
+        'id': id || 0
+      },
       header: {
         "token": globalData.token
       },
