@@ -26,8 +26,6 @@ Page({
     ],
     zIndex: 0,
 
-    // 文字模板
-    templates: [],
     //富文本節點：用於handedText顯示
     textModule: [],
     //照片濾鏡
@@ -173,12 +171,13 @@ Page({
       .catch(() => {
         console.log("不用管这个被取消的请求，他没错误")
       })
-    GetTemplates()
-    .then((data)=>{
-      this.setData({
-        templates: data
-      })
-    })
+    // 加载模版内容
+    if (app.globalData.templates.length == 0){
+      GetTemplates()
+        .then((data) => {
+          app.globalData.templates = data
+        })
+    }
   },
 
   onReady: function () {
@@ -648,12 +647,15 @@ Page({
   //-----------------------------前後交互函數-----------------------------------------//
   //請求文字模板
   getTextModule(sourceText, color, fontSize, id) {
+    // 获取本地保存的模版
+    let template = app.globalData.templates[0]
+
     var currentTime = GetCurrentTime();
     var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
-    
     sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
-    let template = this.data.templates[0]
+    // 进行模版内容替换
     template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
+
     var textModule = {
       nodes: template,
       systemVariable: {
