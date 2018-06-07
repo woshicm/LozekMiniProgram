@@ -28,19 +28,20 @@
                 <!-- 對每天的文本日記遍歷 -->
                 <scroll-view wx:if='{{(displayItem.diary.text.length != 0) && (currentDisplayDiaryType == "textDiary" || currentDisplayDiaryType == "allTypes") ? true : false}}' scroll-x='true' class='index-display-text-scrollView' scroll-into-view='{{currentSearchTextDiaryId}}'>
                   <view wx:key="this" wx:for='{{displayItem.diary.text}}' wx:for-item='textItem' wx:for-index='textDiaryIndex' class='index-display-text-item'>
-                    <textCard id='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}' textDiaryId='{{textItem.main.id}}' title='{{textItem.main.title}}' text='{{textItem.main.text}}' iamgeUrl='{{(textItem.main.images.length) == 0? []: textItem.main.images}}' currentTextDiaryData='{{textItem}}' data-diarydataindex='{{diaryDataIndex}}' data-textdiaryindex='{{textDiaryIndex}}' bindtap='previewTextDiary' bindlongpress='showTextDiaryEditMenu'></textCard>
+                    <textCard id='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}' textDiaryId='{{textItem.main.id}}' title='{{textItem.main.title}}' text='{{textItem.main.text}}' iamgeUrl='{{(textItem.main.images.length) == 0? []: textItem.main.images}}' currentTextDiaryData='{{textItem}}'
+                      data-diarydataindex='{{diaryDataIndex}}' data-textdiaryindex='{{textDiaryIndex}}' bindtap='previewTextDiary' bindlongpress='showTextDiaryEditMenu'></textCard>
                     <!--遮蔽层-->
-   <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view> 
+                    <view class="drawer-screen"  hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--content-->
                     <!--使用animation属性指定需要执行的动画-->
-                    <view animation="{{animationData}} " class="drawer_box" sytle='background-color:red;' hidden="{{(textDiaryIndex == currentTextDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
-                      <!--drawer content-->
-                      <view class="drawer-content ">
-                        <button bindtap='toTextDiary' data-textdiaryid='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}'>编辑</button>
-                        <button bindtap='deleteDiary' data-diaryid='{{textItem.id}}'>删除</button>
-                        <button id='btnShareTextDiary' open-type='share' data-head='{{textItem.head}}' data-lookthrough='{{textItem.lookthrough}}'>分享</button>
-                      </view>
+                    <!-- <view animation="{{animationData}} " class="drawer_box" sytle='background-color:red;' hidden="{{(textDiaryIndex == currentTextDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">  -->
+                    <!--drawer content-->
+                    <view class="drawer-content " style='top:{{currentChoseDiaryTop+"rpx"}}'hidden="{{(textDiaryIndex == currentTextDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
+                      <button class='diary-editmenu-button' bindtap='toTextDiary' data-textdiaryid='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}'>编辑</button>
+                      <button class='diary-editmenu-button' bindtap='deleteDiary' data-diaryid='{{textItem.id}}'>删除</button>
+                      <button class='diary-editmenu-button' id='btnShareTextDiary' open-type='share' data-textDiaryId='{{textItem.main.id}}' >分享</button>
                     </view>
+                    <!-- </view>   -->
                   </view>
                 </scroll-view>
 
@@ -49,15 +50,15 @@
                   <view wx:key='this' wx:for='{{displayItem.diary.image}}' wx:for-item='imageItem' wx:for-index='imageDiaryIndex' class='index-display-image-item' style='margin-right: 30rpx;'>
                     <imageCard id='{{"imageCard" +diaryDataIndex+"-"+imageDiaryIndex}}' imageURL='{{imageItem.imageURL}}' data-imagediaryindex='{{imageDiaryIndex}}' data-diarydataindex='{{diaryDataIndex}}' bindtap='previewImageDiary' bindlongpress='showImageDiaryEditMenu'></imageCard>
                     <!--遮蔽层-->
-   <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view> 
+                    <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--使用animation属性指定需要执行的动画-->
-                    <view animation="{{animationData}} " class="drawer_box" style='height: 200rpx;' hidden="{{(imageDiaryIndex == currentImageDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
-                      <!--drawer content-->
-                      <view class="drawer-content" style='height: 200rpx;'>
-                        <button bindtap='deleteDiary' data-diaryid='{{imageItem.id}}'>删除</button>
-                        <button id='btnShareImageDiary' open-type='share' data-imageurl='{{imageItem.imageURL}}'>分享</button>
-                      </view>
+                    <!-- <view animation="{{animationData}} " class="drawer_box" style='height: 200rpx;' hidden="{{(imageDiaryIndex == currentImageDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}"> -->
+                    <!--drawer content-->
+                    <view class="drawer-content" style='height: 160rpx;top: {{currentChoseDiaryTop+"rpx"}}' hidden="{{(imageDiaryIndex == currentImageDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">
+                      <button class='diary-editmenu-button' bindtap='deleteDiary' data-diaryid='{{imageItem.id}}'>删除</button>
+                      <button class='diary-editmenu-button' id='btnShareImageDiary' open-type='share' data-imageurl='{{imageItem.imageURL}}'>分享</button>
                     </view>
+                    <!-- </view>  -->
                   </view>
                 </scroll-view>
               </view>

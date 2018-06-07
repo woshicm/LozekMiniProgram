@@ -1,15 +1,15 @@
 <view class='backLayer'>
-    <image src='/images/image-dialogueBox-{{boxType}}.png' class='image-dialogueBox' style='width: {{width}}rpx;'></image>
-    <view class='text'>
-        <text class='text-head'  style='width: {{width - 90}}rpx;'>{{title}}</text>
-        <text class='text-lookThrough' style='width: {{width - 60}}rpx;'>{{text}}</text>
-    </view>
-    <!-- <image src='/images/image-textCard-extra.svg' class='extra-image' bindtap='onTapExtra'></image> -->
-    <view wx:if='{{visible}}' class='drawerMenu' animation='{{animationOnExtraMenu}}'>
+  <image src='/images/image-dialogueBox-{{boxType}}.png' class='image-dialogueBox' style='width: {{width}}rpx;'></image>
+  <view class='text'>
+    <text class='text-head' style='width: {{width - 90}}rpx;'>{{title}}</text>
+    <text class='text-lookThrough' style='width: {{width - 60}}rpx;'>{{text}}</text>
+  </view>
+  <!-- <image src='/images/image-textCard-extra.svg' class='extra-image' bindtap='onTapExtra'></image> -->
+  <!-- <view wx:if='{{visible}}' class='drawerMenu' animation='{{animationOnExtraMenu}}'>
         <view  class='drawerMenu-text'>
         <text class='drawerMenu-text-item'>修改</text>
         <text class='drawerMenu-text-item'>分享</text>
         <text class='drawerMenu-text-item'>刪除</text>
         </view>
-    </view>
+    </view> -->
 </view>

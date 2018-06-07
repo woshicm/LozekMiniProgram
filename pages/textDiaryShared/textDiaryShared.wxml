@@ -1,0 +1,97 @@
+<view class='layout-main'>
+  <!-- 下拉页面 -->
+  <!-- <view class='dropDownArea'>
+    <view></view>
+  <!-- 標題顯示 -->
+  <view class='titleArea titleArea-display' bindtap='onTitleTapEvent'>
+    <view class='titleArea-display-text'>
+      <view class='titleArea-display-text-monthAndDay'>
+        <view style='fonr-size: 12pt; color: white;'>{{currentTime.mm}}</view>
+        <view style='font-size: 5pt; color: white;'>{{currentTime.day_cn}}</view>
+      </view>
+      <view class='titleArea-display-text-dd'>{{currentTime.dd}}</view>
+      <image class='titleArea-display-text-weather' src='/images/weather/{{currentWeather}}.svg' />
+      <view class='titleArea-display-text-title'>
+        <image src='/images/image-textDiary-title-forwardQuotation.png' class='titleArea-display-image-forwardQuotation' />
+        <view class='titleArea-display-text-title-text' wx:if='{{titleValue.length <= 8}}'>{{titleValue.length == 0 ? "[无标题]" : titleValue}}</view>
+        <view class='titleArea-display-text-title-text' wx:else>
+          <block wx:for='{{titleValue}}' wx:key='this'>
+            <text wx:if='{{index < titleSplit - 1}}' style='font-size: 10pt; position: relative; top: 5rpx;'>{{titleValue[index]}}</text>
+            <text wx:elif='{{index == titleSplit - 1}}' style='font-size: 10pt;  position: relative; top: 5rpx;' space='true' decode='true'>{{titleValue[index] + "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}}</text>
+            <text wx:else style='font-size: 14pt;  position: relative; bottom: 5rpx;'>{{titleValue[index]}}</text>
+          </block>
+        </view>
+        <image src='/images/image-textDiary-title-backwardQuotation.png' class='titleArea-display-image-backwardQuotation' />
+      </view>
+    </view>
+    <image src='/images/image-textDiary-titleBackground.svg' class='titleArea-display-background' />
+  </view>
+  <!-- 正文显示 -->
+  <view class='showDiary' >
+    <scroll-view scroll-y class='showDiary-scrollView' bindtap='onShowDiaryTapEvent'>
+      <!-- 0.無圖片 -->
+      <view wx:if='{{addedPhoto.length == 0}}' class='showDiary-scrollView-item'>
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 1.一張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 1}}' class='showDiary-scrollView-item'>
+        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 300rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 300rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 2.二張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 2}}' class='showDiary-scrollView-item'>
+        <image src='{{addedPhoto[0].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
+        <view style='height: 500rpx; width: 1rpx; float: right;'></view>
+        <image src='{{addedPhoto[1].url}}' style='{{addedPhoto[1].height >= addedPhoto[1].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[1].width >= addedPhoto[1].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' class='module-image module-image-rightBottom' catchtap='onPreviewPhotoTapEvent' />
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 3.三張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 3}}' class='showDiary-scrollView-item'>
+        <!-- 1 -->
+        <image src='{{addedPhoto[0].url}}' style='height: 250rpx; width: 250rpx;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
+        <!-- 2 -->
+        <view style='height: 300rpx; width: 1rpx; float: left;'></view>
+        <image src='{{addedPhoto[1].url}}' style='height: 250rpx; width: 250rpx;' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
+        <!-- 3 -->
+        <view style='height: 300rpx; width: 1rpx; float: left;'></view>
+        <image src='{{addedPhoto[2].url}}' style='height: 250rpx; width: 200rpx;}}' data-imageurl='{{addedPhoto[2].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 4.四張圖片 -->
+      <view wx:elif='{{addedPhoto.length == 4}}' class='showDiary-scrollView-item'>
+        <!-- 1 -->
+        <view style='height: 200rpx; width: 1rpx; float: right;'></view>
+        <image src='{{addedPhoto[1].url}}' style='{{addedPhoto[1].height <= addedPhoto[1].width * 1.2 ? "width: 50%; height: 200rpx;" : "height: 250rpx; width: 250rpx;"}}' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' class='module-image module-image-rightBottom'
+          catchtap='onPreviewPhotoTapEvent' />
+        <!-- 2 -->
+        <view style='height: 250rpx; width: 1rpx; float: right;'></view>
+        <image src='{{addedPhoto[0].url}}' style='height: 250rpx; width: 250rpx;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' class='module-image module-image-rightBottom'
+        />
+        <!-- 3 -->
+        <view style='height: 500rpx; width: 1rpx; float: left;'></view>
+        <image src='{{addedPhoto[2].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          data-imageurl='{{addedPhoto[2].url}}' mode='aspectFill' class='module-image module-image-leftTop' catchtap='onPreviewPhotoTapEvent' />
+        <!-- 4 -->
+        <view style='height: 250rpx; width: 1rpx; float: left;'></view>
+        <image src='{{addedPhoto[3].url}}' style='{{addedPhoto[0].height >= addedPhoto[0].width * 1.2 ? "width: 200rpx; height: 250rpx;" : ( addedPhoto[0].width >= addedPhoto[0].height * 1.2 ? "height: 200rpx; width: 250rpx;" : "height: 250rpx; width: 250rpx;")}}'
+          data-imageurl='{{addedPhoto[3].url}}' mode='aspectFill' catchtap='onPreviewPhotoTapEvent' class='module-image module-image-leftTop' />
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+      <!-- 5.五張圖片 -->
+      <view wx:else class='showDiary-scrollView-item'>
+        <view style='display: flex;'>
+          <image src='{{addedPhoto[1].url}}' style='height: 200rpx; width: 50%;' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' catchtap='onPreviewPhotoTapEvent' />
+          <image src='{{addedPhoto[1].url}}' style='height: 200rpx; width: 50%;' data-imageurl='{{addedPhoto[1].url}}' mode='aspectFill' catchtap='onPreviewPhotoTapEvent' />
+        </view>
+        <view style='height: 400rpx; width: 1rpx; float: left;clear: left;'></view>
+        <image src='{{addedPhoto[0].url}}' style='height: 205rpx; width: 205rpx; float: left; margin-right: 10rpx; clear: left;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image' catchtap='onPreviewPhotoTapEvent' />
+        <image src='{{addedPhoto[0].url}}' style='height: 205rpx; width: 205rpx; float: left; margin-right: 10rpx;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image' catchtap='onPreviewPhotoTapEvent' />
+        <image src='{{addedPhoto[0].url}}' style='height: 205rpx; width: 205rpx; float: left;' data-imageurl='{{addedPhoto[0].url}}' mode='aspectFill' class='module-image' catchtap='onPreviewPhotoTapEvent' />
+        <text class='showDiary-scrollView-font' selectable='true' space='nbsp' decode='true'>{{textValue_preview}}</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>

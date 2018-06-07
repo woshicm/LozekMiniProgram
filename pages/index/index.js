@@ -21,6 +21,7 @@ Page({
     searchIndexArray: [], //保存匹配的字符串的下标
     isChangeSearchKeywords: false, //关键字是否改变
     keywordsArraryIndex: 0, //搜索到匹配关键字的数组的下标
+    currentChoseDiaryTop: 0,
     //導航抽屜
     userInfo: {},
     check: false,   //是否触发滑动操作
@@ -42,7 +43,7 @@ Page({
    * 生命週期函數
    */
   onReady() {
-    
+
 
   },
 
@@ -430,10 +431,16 @@ Page({
    * 显示textDiary编辑菜单
    */
   showTextDiaryEditMenu(e) {
-    this.setData({
-      currentDiaryDataIndex: e.currentTarget.dataset.diarydataindex,
-      currentTextDiaryIndex: e.currentTarget.dataset.textdiaryindex,
-    })
+    var that = this
+    var query = wx.createSelectorQuery().in(this)
+    query.select('#' + e.currentTarget.id).boundingClientRect(function (res) {
+      that.setData({
+        currentChoseDiaryTop: res.top,// 这个组件内节点的上边界坐标
+        currentDiaryDataIndex: e.currentTarget.dataset.diarydataindex,
+        currentTextDiaryIndex: e.currentTarget.dataset.textdiaryindex,
+      })
+      console.log("currentEditMenuTop: " + that.data.currentChoseDiaryTop)
+    }).exec()
   },
 
   /**
@@ -451,10 +458,16 @@ Page({
    * 显示imageDiary编辑菜单
    */
   showImageDiaryEditMenu(e) {
-    this.setData({
-      currentDiaryDataIndex: e.currentTarget.dataset.diarydataindex,
-      currentImageDiaryIndex: e.currentTarget.dataset.imagediaryindex,
-    })
+    var that = this
+    var query = wx.createSelectorQuery().in(this)
+    query.select('#' + e.currentTarget.id).boundingClientRect(function (res) {
+      that.setData({
+        currentChoseDiaryTop: res.height + res.top, // 这个组件内 #the-id 节点的上边界和高度坐标
+        currentDiaryDataIndex: e.currentTarget.dataset.diarydataindex,
+        currentImageDiaryIndex: e.currentTarget.dataset.imagediaryindex,
+      })
+      console.log("currentEditMenuTop: " + that.data.currentChoseDiaryTop)
+    }).exec()
   },
 
   /**
@@ -533,7 +546,7 @@ Page({
         default:
           let imgName = options.target.dataset.imageurl.split('=')
           let imgId = imgName[1].split('&')
-          shareObj.path = '/pages/shareDiary/shareDiary?name=' + imgId[0] + '&secondData=' + imgId[1] + "&type=imageDiary"
+          shareObj.path = '/pages/textDiaryShared/textDiaryShared?='
           break
       }
     }

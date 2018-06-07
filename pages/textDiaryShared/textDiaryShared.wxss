@@ -1,0 +1,231 @@
+.layout-main {
+  height: 1150rpx;
+  width: 750rpx;
+}
+
+.titleArea {
+  height: 14%;
+  margin-top: 20rpx;
+}
+
+.titleArea-display {
+  height: 12%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  width: 750rpx;
+}
+
+.titleArea-title {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.titleArea-display-background {
+  width: 95%;
+  height: 10%;
+  position: fixed;
+  top: 15rpx;
+  /* bottom: 160rpx; */
+}
+
+.titleArea-display-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 712rpx;
+  z-index: 20;
+  position: relative;
+  left: 18rpx;
+  height: 78%;
+}
+
+.titleArea-display-text-monthAndDay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  left: 10rpx;
+  bottom: 20rpx;
+  line-height: 80%;
+  width: 7%;
+  top: 8%;
+}
+
+.titleArea-display-text-dd {
+  font-size: 27pt;
+  position: relative;
+  left: 15rpx;
+  color: white;
+  width: 12%;
+}
+
+.titleArea-display-text-weather {
+  width: 60rpx;
+  height: 60rpx;
+  position: relative;
+  right: 0rpx;
+  bottom: 10rpx;
+}
+
+.titleArea-display-text-title {
+  font-size: 15pt;
+  color: white;
+  width: 60%;
+  position: relative;
+  left: 50rpx;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleArea-display-image-forwardQuotation {
+  width: 28rpx;
+  height: 24rpx;
+  position: relative;
+  bottom: 30rpx;
+  right: 20rpx;
+}
+
+.titleArea-display-text-title-text {
+  color: white;
+  font-size: 15pt;
+}
+
+.titleArea-display-image-backwardQuotation {
+  width: 28rpx;
+  height: 24rpx;
+  position: relative;
+  top: 30rpx;
+  left: 20rpx;
+}
+
+.titleArea-dateDisplay {
+  font-size: 12pt;
+  height: 30%;
+  margin-bottom: 20rpx;
+}
+
+.title-inputTitle {
+  height: 60%;
+  width: 60%;
+  font-size: 17pt;
+  position: retative;
+  top: 30rpx;
+}
+
+.titleArea-dateDisplay {
+  margin-left: 25rpx;
+}
+
+.functionArea {
+  height: 5%;
+  border-bottom: 2rpx solid rgba(55, 121, 205, 0.12);
+  display: flex;
+  flex-direction: row;
+}
+
+.functionArea-image {
+  height: 60%;
+  position: relative;
+  top: 10rpx;
+}
+
+.diaryArea {
+  height: 80%;
+  width: 700rpx;
+  margin-left: 25rpx;
+  margin-right: 25rpx;
+  margin-top: 20rpx;
+}
+
+.diaryArea-mask {
+  width: 750rpx;
+  height: 19%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 40;
+}
+
+.diaryArea-notice{
+  color: grey;
+  font-size: 10pt;
+  width: 100%;
+  height: 80%;
+  margin-top: 10rpx;
+  margin-left: 10rpx;
+}
+
+.showDiary {
+  height: 88%;
+  width: 750rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.showDiary-scrollView {
+  width: 700rpx;
+  height: 100%;
+}
+
+.showDiary-scrollView-item {
+  position: relative;
+  top: 20rpx;
+  width: 700rpx;
+}
+
+.showDiary-scrollView-font {
+  font-size: 13pt;
+  line-height: 120%;
+  color: #212121;
+  font-weight: 300;
+}
+
+/* 對插入圖片的樣式調整 */
+.module-image{
+  border-radius: 10rpx;
+  box-shadow: 0rpx 0rpx 6rpx 0rpx rgba(0, 0, 0, 0.38);
+  margin: 15rpx;
+  z-index: 10;
+}
+
+.module-image-leftTop {
+  margin-top: 15rpx;
+  margin-right: 35rpx;
+  float: left;
+  clear: left;
+}
+
+.module-image-rightBottom{
+  float: right;
+  clear: right;
+  margin-left: 25rpx;
+  margin-top: 15rpx;
+}
+/*修饰*/
+
+.modify-divideLine-light {
+  background-color: rgba(55, 121, 205, 0.12);
+}
+
+.modify-divideLine-dark {
+  background-color: rgba(55, 121, 205, 0.38);
+}
+
+.modify-shadow-main-down {
+  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(0, 0, 0, 0.38);
+}
+
+.modify-shadow-main-up {
+  box-shadow: 0rpx -2rpx 4rpx 0rpx rgba(0, 0, 0, 0.38);
+}
+
+.modify-shadow-button {
+  box-shadow: 2rpx 2rpx 2rpx 0rpx rgba(0, 0, 0, 0.38);
+}
