@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates } from "../../common/util.js";
 import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
@@ -26,6 +26,8 @@ Page({
     ],
     zIndex: 0,
 
+    // 文字模板
+    templates: [],
     //富文本節點：用於handedText顯示
     textModule: [],
     //照片濾鏡
@@ -171,7 +173,12 @@ Page({
       .catch(() => {
         console.log("不用管这个被取消的请求，他没错误")
       })
-
+    GetTemplates()
+    .then((data)=>{
+      this.setData({
+        templates: data
+      })
+    })
   },
 
   onReady: function () {
@@ -642,13 +649,13 @@ Page({
   //請求文字模板
   getTextModule(sourceText, color, fontSize, id) {
     var currentTime = GetCurrentTime();
-    var temp = "";
+    var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+    
+    sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
+    let template = this.data.templates[0]
+    template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
     var textModule = {
-      nodes: "<div style=' align-items: center; color: " + color + "; transform: scale(" + fontSize + "," + fontSize + ");width: 126px; height: 84px; padding: 0px; text-align: center;'>"
-      + "<div style='font-size: 39px; letter-spacing: 3px; height: 60%;'>" + (temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min) + "</div>"
-      + "<div style='letter-spacing: 2px; height: 20%; font-size: 12px; margin:0px;'>" + (sourceText == '' ? '让时间停在这一刻' : sourceText) + "</div>"
-      + "<div style='font-size: 8px; margin:0px;padding: 0px;height: 20%'>Let time stop at this moment</div>"
-      + "</div>",
+      nodes: template,
       systemVariable: {
         defaultValue: '让时间停在这一刻',
         id: id,
