@@ -1,0 +1,52 @@
+.layout-main{
+  width: 750rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-backToIndex {
+  width: 302rpx;
+  height: 60rpx;
+}
+
+.image-finished {
+  width: 40%;
+  position: relative;
+  bottom: 65rpx;
+}
+
+.backToIndex{
+  height: 86rpx;
+  width: 476rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15rpx;
+  border-radius: 50rpx;
+  background-color: #73aeef;
+}
+
+/*按钮涟漪效果*/
+.waves {
+  border-radius: 100%;
+  background-color: black;
+  transform: scale(0);
+  width: 150rpx;
+  height: 150rpx;
+  position: absolute;
+}
+.waves-effect-animation {
+  animation: animation-definition 1s ease-out;
+}
+@keyframes animation-definition {
+  from {
+    transform: scale(0.1);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(5); /*因为涟漪的大小为标签的最长边，为了保证点击标签边缘时，涟漪也能覆盖整个标签，scale值最小应为2*/
+    opacity: 0;
+  }
+}

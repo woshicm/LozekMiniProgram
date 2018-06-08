@@ -1,0 +1,7 @@
+<view class='layout-main' style='{{windowHeight}}'>
+  <image src='/images/imageDiary/finished.svg' class='image-finished' />
+  <button class='backToIndex' bindtap='onBackToIndexTap'>
+    <view class='waves {{waveEffectsOnTextButton}}'></view>
+    <image src='/images/imageDiary/backToIndex.png' class='image-backToIndex' />
+  </button>
+</view>

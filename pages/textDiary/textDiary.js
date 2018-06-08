@@ -1,14 +1,14 @@
 // page/textDiary/textDiary.js
 
 // 导入方法统一以大写字母开头
-import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather, getWord, getLocationInfo } from "../../common/util.js";
+import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather, getWord, getLocationInfo, HideShareMenu } from "../../common/util.js";
 
 let app = getApp()
 Page({
   data: {
     //全局变量
     state: 'edit',
-    textDiaryData: [],
+    isReEdit: false,
     textDiaryId: '',
     //功能区
     snapshot: [],
@@ -20,7 +20,7 @@ Page({
     hideTitle: true,
     inputBottomLineColor: '5rpx solid #3f8ae9',
     currentTime: GetCurrentTime(),
-    currentWeather: '100',
+    currentWeather: ['100','晴'],
     currentLocation: '深圳',
     titleSplit: 0,
     //正文区
@@ -39,6 +39,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
   onLoad: function (options) {
+    HideShareMenu()
     //从主页传递标题和内容
     var that = this
     if (options.type == 'reEdit') {
@@ -46,11 +47,13 @@ Page({
         key: 'textDiaryData',
         success: function (res) {
           that.setData({
-            textDiaryId: res.data.main.id,
-            titleValue: res.data.main.title,
-            textValue: res.data.main.text,
-            addedPhoto: res.data.main.images,
-            choseCount: res.data.main.images.length,
+            isReEdit: true,
+            textDiaryId: res.data[0].id,
+            titleValue: res.data[0].title,
+            textValue: res.data[0].text,
+            addedPhoto: res.data[0].imageUrl,
+            choseCount: res.data[0].imageUrl.length,
+            weather: res.data[0].weather,
           })
         },
         complete: function () {
@@ -61,6 +64,7 @@ Page({
         }
       })
     }
+
     wx.getStorage({
       key: 'textDiaryDataSnapArray',
       success: (res) => { that.data.textDiaryDataSnapArray = res.data },
@@ -71,6 +75,10 @@ Page({
         })
       },
     })
+    var weather = [app.globalData.weather.cond_code, app.globalData.weather.cond_txt];
+    this.setData({
+      currentWeather: weather,
+    });
   },
 
   /**
@@ -404,38 +412,18 @@ Page({
   },
   //上传后台
   save() {
-    var createdTime = GetCurrentTime();
-    if (this.data.textDiaryData.length != 0)
-      createdTime = this.data.textDiary.system.createdTime;
-    // var textDiaryData = {
-    //   main: {
-    //     'type': 0,
-    //     'title': this.data.titleValue,
-    //     'text': this.data.textValue,
-    //     'images': this.data.addedPhoto, //通過addedPhoto[i].url 獲取圖片url
-    //   },
-    //   extra: {
-    //     snapshot: this.data.snapshot,
-    //   },
-    //   system: {
-    //     createdTime: createdTime,
-    //     lastModifiedTime: GetCurrentTime(), //數組元素{ yy, mm, dd, day_en, day_cn, hh, min, ss};
-    //     weather: "",
-    //   }
-    // }
     let textDiaryData = {
       'type': 0,
       'title': this.data.titleValue,
       'text': this.data.textValue,
       'images': this.data.addedPhoto,
-      'weather': "",
+      'weather': this.data.weather,
     }
     if (this.data.textDiaryId != null)
       textDiaryData.id = this.data.textDiaryId
-    console.log("id: " + textDiaryData.id)
+    
     SaveDiary(textDiaryData)
       .then((res) => {
-        console.log(res)
         wx.removeStorage({
           key: 'textDiaryDataSnapArray',
           success: function (res) { },

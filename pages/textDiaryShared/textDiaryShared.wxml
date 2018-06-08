@@ -6,10 +6,10 @@
   <view class='titleArea titleArea-display' bindtap='onTitleTapEvent'>
     <view class='titleArea-display-text'>
       <view class='titleArea-display-text-monthAndDay'>
-        <view style='fonr-size: 12pt; color: white;'>{{currentTime.mm}}</view>
-        <view style='font-size: 5pt; color: white;'>{{currentTime.day_cn}}</view>
+        <view style='fonr-size: 12pt; color: white;'>{{currentTime[1]}}</view>
+        <view style='font-size: 5pt; color: white;'>{{currentTime[6]}}</view>
       </view>
-      <view class='titleArea-display-text-dd'>{{currentTime.dd}}</view>
+      <view class='titleArea-display-text-dd'>{{currentTime[2]}}</view>
       <image class='titleArea-display-text-weather' src='/images/weather/{{currentWeather}}.svg' />
       <view class='titleArea-display-text-title'>
         <image src='/images/image-textDiary-title-forwardQuotation.png' class='titleArea-display-image-forwardQuotation' />

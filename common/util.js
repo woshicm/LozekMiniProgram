@@ -118,10 +118,13 @@ function UploadTextImage(data, id) {
   return promise
 }
 
-function GetDiary() {
+function GetDiary(id) {
   let promise = new Promise(function (resolve, reject) {
     wx.request({
       url: globalData.api.getDiary,
+      data: {
+        'id': id || 0
+      },
       header: {
         "token": globalData.token
       },
@@ -337,30 +340,31 @@ function GetImageInfo(src) {
 /**
  * 获取天气接口
  */
-function getWeather(location){
-  console.log(globalData.api.getWeather)
-  let promise = new Promise(function (resolve, reject) {
-    wx.request({
-      url: globalData.api.getWeather,
-      header: {
-        "token": globalData.token
-      },
-      data: {
-        'location': location,
-      },
-      method: 'GET',
-      success: (res) => {
-        if (res.statusCode == '200') {
-          resolve(res.data.data)
-        } else if (res.statusCode == '403') {
-          reject(403)
-        }
-      },
-      fail: function (res) { reject(res) },
-      complete: function (res) { },
-    })
-  });
-  return promise
+function getWeather(location) {
+  // console.log(globalData.api.getWeather)
+  // let promise = new Promise(function (resolve, reject) {
+  wx.request({
+    url: globalData.api.getWeather,
+    header: {
+      "token": globalData.token
+    },
+    data: {
+      'location': location,
+    },
+    method: 'GET',
+    success: (res) => {
+      if (res.statusCode == '200') {
+        // resolve(res.data.data)
+        globalData.weather = res.data.data
+      } else if (res.statusCode == '403') {
+        reject(403)
+      }
+    },
+    fail: function (res) { reject(res) },
+    complete: function (res) { },
+  })
+  // });
+  // return promise
 }
 /**
  * 查词接口
@@ -479,4 +483,43 @@ function GetUserAuthorize(scope) {
     }
   })
 }
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo }
+
+/**
+ * 获取文字模版
+ */
+function GetTemplates() {
+  let templates = [
+    "<div style=' align-items: center; color: {color}; transform: scale({fontSize},{fontSize});width: 126px; height: 84px; padding: 0px; text-align: center;'><div style='font-size: 39px; letter-spacing: 3px; height: 60%;'>{temp}</div><div style='letter-spacing: 2px; height: 20%; font-size: 12px; margin:0px;'>{sourceText}</div><div style='font-size: 8px; margin:0px;padding: 0px;height: 20%'>Let time stop at this moment</div></div>"
+  ]
+  let promise = new Promise(function (resolve, reject) {
+    wx.request({
+      url: globalData.api.getTemplate,
+      header: {
+        "token": globalData.token
+      },
+      data: location,
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode == '200') {
+          resolve(res.data.data)
+        } else if (res.statusCode == '403') {
+          reject(403)
+        }
+      },
+      fail: function (res) { reject(res) },
+      complete: function (res) { },
+    })
+  });
+  return promise
+}
+
+//隐藏右上角分享
+function HideShareMenu() {
+  wx.hideShareMenu({
+    success: function (res) { },
+    fail: function (res) { },
+    complete: function (res) { },
+  })
+}
+
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo, GetTemplates, HideShareMenu }

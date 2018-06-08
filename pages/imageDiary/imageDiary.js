@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu } from "../../common/util.js";
 import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
@@ -15,6 +15,7 @@ Page({
     //全局变量
     mode: 'shortText',
     windowHeight: app.globalData.windowHeight,
+    actions: "",
     /**
      * imageDiary頁
      */
@@ -146,6 +147,7 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
+    HideShareMenu()
     this.setData({
       originalImageUrl: options.imgUrl,
       filteredImageUrl: options.imgUrl,
@@ -164,17 +166,23 @@ Page({
       'all': 1
     }
     GetFliter(data)
-    .then(()=>{
-      console.log("precreate all filter ")
-    })
-    .catch(()=>{
-      console.log("不用管这个被取消的请求，他没错误")
-    })
-    
+      .then(() => {
+        console.log("precreate all filter ")
+      })
+      .catch(() => {
+        console.log("不用管这个被取消的请求，他没错误")
+      })
+    // 加载模版内容
+    if (app.globalData.templates.length == 0) {
+      GetTemplates()
+        .then((data) => {
+          app.globalData.templates = data
+        })
+    }
   },
 
   onReady: function () {
-    
+
   },
   onShow: function () {
 
@@ -640,89 +648,105 @@ Page({
   //-----------------------------前後交互函數-----------------------------------------//
   //請求文字模板
   getTextModule(sourceText, color, fontSize, id) {
-    var currentTime = GetCurrentTime();
-    var temp = "";
-    var textModule = {
-      nodes: "<div style=' align-items: center; color: " + color + "; transform: scale(" + fontSize + "," + fontSize + ");width: 126px; height: 84px; padding: 0px; text-align: center;'>"
-      + "<div style='font-size: 39px; letter-spacing: 3px; height: 60%;'>" + (temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min) + "</div>"
-      + "<div style='letter-spacing: 2px; height: 20%; font-size: 12px; margin:0px;'>" + (sourceText == '' ? '让时间停在这一刻' : sourceText) + "</div>"
-      + "<div style='font-size: 8px; margin:0px;padding: 0px;height: 20%'>Let time stop at this moment</div>"
-      + "</div>",
-      systemVariable: {
-        defaultValue: '让时间停在这一刻',
-        id: id,
-        height: 84,
-        width: 126,
-        hasTime: true,
-        time: temp,
-        hasLocation: false,
-        marginLeft: 8,
-        marginTop: 6,
-      },
-      userVariable: {
-        color: color,
-        fontSize: fontSize,
+    var textModule = {}
+    // 获取本地保存的模版
+    let template = app.globalData.templates[0]
+    switch (id) {
+      case 0://只显示用户输入的内容
+      case 1: {
+        var currentTime = GetCurrentTime();
+        var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+        sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
+        // 进行模版内容替换
+        template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
+
+        textModule = {
+          nodes: template,
+          systemVariable: {
+            defaultValue: '让时间停在这一刻',
+            id: id,
+            height: 84,
+            width: 126,
+            hasTime: true,
+            time: temp,
+            hasLocation: false,
+            marginLeft: 8,
+            marginTop: 6,
+            maxLength: 8,
+            keyWords: [],
+          },
+          userVariable: {
+            color: color,
+            fontSize: fontSize,
+          }
+        }
+        return textModule;
+      }
+      case 2: {
+        var currentTime = GetCurrentTime();
+        var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+        sourceText = sourceText == '' ? '让时间不停在这一刻' : sourceText
+        // 进行模版内容替换
+        template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
+        textModule = {
+          nodes: template,
+          systemVariable: {
+            defaultValue: '让时间不停在这一刻',
+            id: id,
+            height: 84,
+            width: 126,
+            hasTime: true,
+            time: temp,
+            hasLocation: false,
+            marginLeft: 8,
+            marginTop: 6,
+            maxLength: 8,
+            keyWords: [],
+          },
+          userVariable: {
+            color: color,
+            fontSize: fontSize,
+          }
+        }
+        return textModule;
       }
     }
-    return textModule;
   },
 
   //返回文字模板
-  putTextModule() {
-    let textPosition = [];
-    let imagePosition = [];
-
-    wx.createSelectorQuery().select('#id-movable').boundingClientRect(function (rect) {
-      var item = {
-        top: rect.top,
-        left: rect.left,
-      }
-      textPosition = item;
-    }).exec();
-    wx.createSelectorQuery().select('#id-uploadedImage').boundingClientRect(function (rect) {
-      var item = {
-        top: rect.top,
-        left: rect.left,
-      }
-      imagePosition = item;
-    }).exec();
-    var that = this;
-    setTimeout(
-      function () {
-        var beginPoint = {
-          'x': that.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left,
-          'y': textPosition.top - imagePosition.top,
-        };
-        var height = that.data.choseTextModule.systemVariable.height;
-        var actions = [
-          {
-            'action': 'text',
-            'text': that.data.choseTextModule.systemVariable.time,
-            'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
-            'font-style': '',
-            'font-color': '',
-            'font-size': 39,
-          },
-          {
-            'action': 'text',
-            'text': that.data.inputValue,
-            'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
-            'font-style': 'letter-spacing: 2px;',
-            'font-color': that.data.choseTextModule.userVariable.color,
-            'font-size': 12,
-          },
-          {
-            'action': 'text',
-            'text': 'Let time stop at this moment',
-            'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
-            'font-style': 'letter-spacing: 2px;',
-            'font-color': that.data.choseTextModule.userVariable.color,
-            'font-size': '8px',
-          },
-        ]
-        return actions
-      }, 50
-    )
+  putTextModule(textPosition, imagePosition) {
+    var beginPoint = {
+      'x': this.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left,
+      'y': textPosition.top - imagePosition.top,
+    };
+    var height = this.data.choseTextModule.systemVariable.height;
+    var actions = [
+      {
+        'action': 'text',
+        'text': this.data.choseTextModule.systemVariable.time,
+        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
+        'font-style': '',
+        'font-color': '',
+        'font-size': 39,
+      },
+      {
+        'action': 'text',
+        'text': this.data.inputValue,
+        'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
+        'font-style': 'letter-spacing: 2px;',
+        'font-color': this.data.choseTextModule.userVariable.color,
+        'font-size': 12,
+      },
+      {
+        'action': 'text',
+        'text': 'Let time stop at this moment',
+        'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
+        'font-style': 'letter-spacing: 2px;',
+        'font-color': this.data.choseTextModule.userVariable.color,
+        'font-size': '8px',
+      },
+    ]
+    return actions;
   },
   //显示文本工具栏
   showTools() {
@@ -730,7 +754,6 @@ Page({
       isShowTools: !this.data.isShowTools,
       slideOutLayerTop: app.globalData.windowHeight * 0.7 - (app.globalData.windowHeight * 0.7 - this.data.uploadedImageHeight) / 2,
     });
-    console.log(this.data.slideOutLayerTop)
   },
 
   //改变富文本大小
@@ -755,8 +778,9 @@ Page({
   /**
    * saveDiaryText
    */
-  saveDiaryText() {
-    var actions = this.putTextModule();
+  saveDiaryText(textPosition, imagePosition) {
+    var actions = this.putTextModule(textPosition, imagePosition);
+    console.log(actions)
     let diary = {
       'type': 1,
       'imageURL': this.data.filteredImageUrl,
@@ -766,7 +790,10 @@ Page({
     console.log(diary)
     SaveDiary(diary)
       .then((res) => {
-        console.log(res)
+        wx.hideLoading();
+        wx.redirectTo({
+          url: 'finished/finished',
+        })
       })
       .catch((e) => {
         console.log(e)
@@ -814,6 +841,32 @@ Page({
   },
   //存至本地
   onSaveTap() {
-    this.saveDiaryText();
+    wx.showLoading({
+      title: '正在保存...',
+    })
+
+    let textPosition = [];
+    let imagePosition = [];
+
+    wx.createSelectorQuery().select('#id-movable').boundingClientRect(function (rect) {
+      var item = {
+        top: rect.top,
+        left: rect.left,
+      }
+      textPosition = item;
+    }).exec();
+    wx.createSelectorQuery().select('#id-uploadedImage').boundingClientRect(function (rect) {
+      var item = {
+        top: rect.top,
+        left: rect.left,
+      }
+      imagePosition = item;
+    }).exec();
+    var that = this;
+    setTimeout(
+      function () {
+        that.saveDiaryText(textPosition, imagePosition);
+      }, 50
+    );
   }
 })

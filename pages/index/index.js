@@ -1,4 +1,4 @@
-import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize } from "../../common/util.js";
+import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather, HideShareMenu } from "../../common/util.js";
 
 const app = getApp()
 const globalData = getApp().globalData
@@ -43,12 +43,16 @@ Page({
    * 生命週期函數
    */
   onReady() {
-
-
+    HideShareMenu()
   },
 
   onLoad(options) {
     GetUserAuthorize('scope.userLocation')
+    setTimeout(
+      function () {
+        getWeather(app.globalData.userCurrentCityLongitude + "," + app.globalData.userCurrentCityLatitude)
+      }, 1000
+    )
   },
 
   onShow() {
@@ -541,12 +545,12 @@ Page({
       switch (options.target.id) {
         //根据share-button的id区分是分享图片日记还是文本日记
         case 'btnShareTextDiary':
-          shareObj.path = '/pages/shareDiary/shareDiary?title=' + options.target.dataset.title + '&text=' + options.target.dataset.text + '&type=textDiary'
+          shareObj.path = '/pages/textDiaryShared/textDiaryShared?id=' + options.target.dataset.textdiaryid
           break
         default:
           let imgName = options.target.dataset.imageurl.split('=')
           let imgId = imgName[1].split('&')
-          shareObj.path = '/pages/textDiaryShared/textDiaryShared?='
+          shareObj.path = '/pages/shareDiary/shareDiary?name=' + imgId[0] + '&secondData=' + imgId[1] + "&type=imageDiary"
           break
       }
     }
@@ -707,4 +711,5 @@ Page({
     })
     console.log(e.detail.userInfo)
   },
+
 })
