@@ -632,31 +632,18 @@ Page({
   },
   //上传后台
   save() {
-    var createdTime = GetCurrentTime();
-    if (this.data.textDiaryData.length != 0)
-      createdTime = this.data.textDiary.system.createdTime;
-    var textDiaryData = {
-      main: {
-        'type': 0,
-        'title': this.data.titleValue,
-        'text': this.data.textValue,
-        'images': this.data.addedPhoto, //通過addedPhoto[i].url 獲取圖片url
-      },
-      extra: {
-      },
-      system: {
-        id: "textDiary" + createdTime.yy + + createdTime.mm + + createdTime.dd + + createdTime.hh + + createdTime.min + + createdTime.ss,
-        createdTime: createdTime,
-        lastModifiedTime: GetCurrentTime(), //數組元素{ yy, mm, dd, day_en, day_cn, hh, min, ss};
-        weather: this.data.weather,
-      }
+    let textDiaryData = {
+      'type': 0,
+      'title': this.data.titleValue,
+      'text': this.data.textValue,
+      'images': this.data.addedPhoto,
+      'weather': this.data.weather,
     }
     if (this.data.textDiaryId != null)
       textDiaryData.id = this.data.textDiaryId
-    console.log("id: " + textDiaryData.id)
+    
     SaveDiary(textDiaryData)
       .then((res) => {
-        console.log(res)
         wx.removeStorage({
           key: 'textDiaryDataSnapArray',
           success: function (res) { },

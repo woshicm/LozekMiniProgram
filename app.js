@@ -7,9 +7,9 @@ App({
     windowHeight: wx.getSystemInfoSync().windowHeight,
     windowWidth: wx.getSystemInfoSync().windowWidth,
     token: '1',
-    // baseURL: 'http://localhost:8000/',
+    baseURL: 'http://localhost:8000/',
     // baseURL: 'https://111.230.24.245/',
-    baseURL: 'https://www.louzek.xyz/',
+    // baseURL: 'https://www.louzek.xyz/',
     getShareDiaryURL:'https://www.louzek.xyz:443/',
     api: {
       login: '',
@@ -24,7 +24,8 @@ App({
       saveFilteredDiary: '',
       getWeather: '',
       getWord: '',
-      getLocationInfo: ''
+      getLocationInfo: '',
+      getTemplate: ''
     },
     windowWidth: '',
     windowHeight: '',
@@ -34,6 +35,8 @@ App({
     userCurrentCityLatitude: '',
     userCurrentCityLongitude: '',
     weather: {},
+    // 文字模板
+    templates: [],
   },
 
   onLaunch: function () {
@@ -59,6 +62,7 @@ App({
     this.globalData.api.saveFilteredDiary = this.globalData.baseURL + 'upload_with_filter'
     this.globalData.api.getWeather = this.globalData.baseURL + 'get_weather'
     this.globalData.api.getWord = this.globalData.baseURL + 'get_word'
+    this.globalData.api.getTemplate = this.globalData.baseURL + 'template'
     this.globalData.api.getLocationInfo = this.globalData.baseURL + 'get_location_info'
     this.globalData.windowWidth = wx.getSystemInfoSync().windowWidth;
     this.globalData.windowHeight = wx.getSystemInfoSync().windowHeight;
