@@ -1,6 +1,17 @@
-w.layout-main {
+.layout-main {
   height: 1150rpx;
   width: 750rpx;
+  background-color: #fefefe;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  opacity: 0.5;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .titleArea {
@@ -124,16 +135,133 @@ w.layout-main {
 }
 
 .functionArea {
-  height: 5%;
-  border-bottom: 2rpx solid rgba(55, 121, 205, 0.12);
   display: flex;
   flex-direction: row;
+  width: 750rpx;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.functionArea-item{
+  width: 16.6%;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  border-bottom: 2rpx solid rgba(55, 121, 205, 0.12);
 }
 
 .functionArea-image {
-  height: 60%;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.functionArea-dictionary {
+  width: 30%;
+  height: 50rpx;
+  background-color: white;
+  box-shadow: 0rpx 0rpx 6rpx 1rpx rgba(0, 0, 0, 0.38);
+  position: fixed;
+  padding-left: 20rpx;
+  justify-content: center;
+  align-content: center;
+  border-radius: 5rpx;
+  display: flex;
+  left: 7%;
+  z-index: 41;
+}
+
+.functionArea-dictionary-input {
+  width: 80%;
+  height: 100%;
+  font-size: 12pt;
+}
+
+.functionArea-dictionary-button {
+  width: 25%;
+  height: 100%;
+  background-color: #3f8ae9;
+  color: white;
+  font-size: 10pt;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 0;
+}
+
+.functionArea-dictionary-button_hover {
+  filter: brightness(60%);
+}
+
+button::after {
+  border-radius: 0;
+}
+
+.functionArea-dictionary-button-searchIcon {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.functionArea-dictionary-showResult {
+  width: 49%;
+  height: 200rpx;
+  background-color: white;
+  box-shadow: 0rpx 0rpx 10rpx 2rpx rgba(0, 0, 0, 0.38);
+  position: fixed;
+  left: 45%;
+  z-index: 41;
+  padding: 1%;
+}
+
+.functionArea-dictionary-showResult-head {
+  padding: 10rpx;
+  display: flex;
+  align-items: flex-end;
+  height: 20%;
+  width: 100%;
+}
+
+.functionArea-dictionary-showResult-head-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  letter-spacing: 10rpx;
+  font-size: 13pt;
+    font-weight: bold;
+}
+
+.functionArea-dictionary-showResult-head-pinyin {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  font-size: 10pt;
+  width: 45%;
+  color: #2c2c2c;
+}
+
+.functionArea-dictionary-showResult-divideLine {
+  height: 2rpx;
+  background-color: #3f8ae9;
   position: relative;
-  top: 10rpx;
+  bottom: 5rpx;
+}
+
+.functionArea-dictionary-showResult-scrollView {
+  height: 70%;
+  width: 100%;
+}
+
+.functionArea-dictionary-showResult-scrollview-attribute {
+  font-size: 10pt;
+  color: #3f8ae9;
+}
+
+.functionArea-dictionary-showResult-scrollview-text {
+  font-size: 10pt;
 }
 
 .diaryArea {
@@ -153,7 +281,7 @@ w.layout-main {
   z-index: 40;
 }
 
-.diaryArea-notice{
+.diaryArea-notice {
   color: grey;
   font-size: 10pt;
   width: 100%;
@@ -213,7 +341,7 @@ w.layout-main {
   align-items: center;
 }
 
-.addPhoto-photos-deletePhotoButton{
+.addPhoto-photos-deletePhotoButton {
   position: absolute;
   top: 18%;
   width: 40rpx;
@@ -232,7 +360,8 @@ w.layout-main {
 }
 
 /* 對插入圖片的樣式調整 */
-.module-image{
+
+.module-image {
   border-radius: 10rpx;
   box-shadow: 0rpx 0rpx 6rpx 0rpx rgba(0, 0, 0, 0.38);
   margin: 15rpx;
@@ -246,12 +375,13 @@ w.layout-main {
   clear: left;
 }
 
-.module-image-rightBottom{
+.module-image-rightBottom {
   float: right;
   clear: right;
   margin-left: 25rpx;
   margin-top: 15rpx;
 }
+
 /*修饰*/
 
 .modify-divideLine-light {

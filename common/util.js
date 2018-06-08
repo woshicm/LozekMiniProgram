@@ -371,6 +371,10 @@ function getWeather(location) {
  */
 function getWord(word) {
   let promise = new Promise(function (resolve, reject) {
+    wx.showLoading({
+      title: '正在搜索中',
+      icon: 'none',
+    })
     wx.request({
       url: globalData.api.getWord,
       header: {
@@ -381,13 +385,25 @@ function getWord(word) {
       },
       method: 'GET',
       success: (res) => {
+        wx.hideLoading()
         if (res.statusCode == '200') {
           resolve(res.data.data)
         } else if (res.statusCode == '403') {
+          wx.showToast({
+            title: '搜索失败',
+            icon: 'none',
+          })
           reject(403)
         }
       },
-      fail: function (res) { reject(res) },
+      fail: function (res) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '搜索失败',
+          icon: 'none',
+        })
+        reject(res)
+      },
       complete: function (res) { },
     })
   });

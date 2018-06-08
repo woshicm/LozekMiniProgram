@@ -1,8 +1,6 @@
 <view class='layout-main'>
-  <!-- 下拉页面 -->
-  <!-- <view class='dropDownArea'>
-    <view></view>
-  </view> -->
+  <!-- 全局遮罩 -->
+  <view class='mask' capture-bind:tap='onMaskTap' wx:if='{{isShowMask}}'></view>
   <!-- 標題輸入 -->
   <view wx:if='{{hideTitle}}' class='titleArea'>
     <view class='titleArea-dateDisplay'>
@@ -26,7 +24,7 @@
         <image src='/images/image-textDiary-title-forwardQuotation.png' class='titleArea-display-image-forwardQuotation' />
         <view class='titleArea-display-text-title-text' wx:if='{{titleValue.length <= 8}}'>{{titleValue.length == 0 ? "[无标题]" : titleValue}}</view>
         <view class='titleArea-display-text-title-text' wx:else>
-          <block wx:for='{{titleValue}}' wx:for-key='this'>
+          <block wx:for='{{titleValue}}' wx:key='this'>
             <text wx:if='{{index < titleSplit - 1}}' style='font-size: 10pt; position: relative; top: 5rpx;'>{{titleValue[index]}}</text>
             <text wx:elif='{{index == titleSplit - 1}}' style='font-size: 10pt;  position: relative; top: 5rpx;' space='true' decode='true'>{{titleValue[index] + "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}}</text>
             <text wx:else style='font-size: 14pt;  position: relative; bottom: 5rpx;'>{{titleValue[index]}}</text>
@@ -39,19 +37,56 @@
   </view>
   <!-- 功能區 -->
   <view hidden='{{state == "preview"}}' class='functionArea'>
-    <image src='/images/textDiary/indent.svg' class='functionArea-image' style='height: 70%; top: 8rpx;' />
-    <image src='/images/textDiary/pedia.svg' class='functionArea-image' />
-    <image src='/images/textDiary/snap.svg' class='functionArea-image'  bindtap='bindSnap'/>
-    <image src='/images/textDiary/goBackward.svg' class='functionArea-image' style='height: 50%;' bindtap='goBackTextValue' />
-    <image src='/images/textDiary/goForward.svg' class='functionArea-image' style='height: 50%;' bindtap='goForwardTextValue' />
-    <image src='/images/textDiary/confirm.svg' class='functionArea-image' bindtap='onFunctionConfirmTap' />
+    <view wx:for='{{functionAreaData}}' wx:key='this' class='functionArea-item' style='{{selectedFunction[index] ? "border-bottom: 4rpx solid #3f8ae9;" : ""}}' data-selected-function-index='{{index}}' bindtap='onFunctionTap'>
+      <image src='/images/textDiary/{{item}}.svg' class='functionArea-image' id='{{index == 1 ? "id-dictionary" : ""}}' />
+    </view>
+  </view>
+  <!-- 字典 -->
+  <view style='position: relative; top: 10rpx;'>
+    <view class='functionArea-dictionary' wx:if='{{selectedFunction[1]}}'>
+      <input class='functionArea-dictionary-input' placeholder='搜字/词' placeholder-style='font-size: 10pt; opacity: 0.3;' bindblur='onFunctionDictionaryInputBlur' value='{{searchValue}}'></input>
+      <button class='functionArea-dictionary-button' hover-class='functionArea-dictionary-button_hover' hover-stay-time='200' bindtap='onFunctionDictionarySearchTap'>
+        <image src='/images/icon/ic_search_white.svg' class="functionArea-dictionary-button-searchIcon" />
+      </button>
+    </view>
+    <view class='functionArea-dictionary-showResult' wx:if='{{isShowDictionarySearchResult}}'>
+      <view class='functionArea-dictionary-showResult-head'>
+        <text class='functionArea-dictionary-showResult-head-name' style='width: {{dictionaryResult.name.length <= 4 ? 12.5 * dictionaryResult.name.length : 50}}%; '>{{dictionaryResult.name}}</text>
+        <text class='functionArea-dictionary-showResult-head-pinyin'>{{dictionaryResult.pinyin}}</text>
+      </view>
+      <view class='modify-divideLine-light functionArea-dictionary-showResult-divideLine'></view>
+      <scroll-view class='functionArea-dictionary-showResult-scrollView' scroll-y>
+        <view wx:if='{{dictionaryResult.comefrom != ""}}'>
+          <view class='functionArea-dictionary-showResult-scrollview-attribute'>[典故]</view>
+          <view class='functionArea-dictionary-showResult-scrollview-text'>{{dictionaryResult.comefrom}}</view>
+        </view>
+        <view style='font-size: 10pt;'>
+          <view class='functionArea-dictionary-showResult-scrollview-attribute'>[释义]</view>
+            <rich-text nodes='{{dictionaryResult.content}}'></rich-text>
+        </view>
+        <view style=''>
+          <view class='functionArea-dictionary-showResult-scrollview-attribute'>[用例]</view>
+          <rich-text nodes='{{dictionaryResult.example}}'></rich-text>
+        </view>
+        <view wx:if='{{dictionaryResult.fan != ""}}'  style=''>
+          <view class='functionArea-dictionary-showResult-scrollview-attribute'>[反义词]</view>
+          <view class='functionArea-dictionary-showResult-scrollview-text'>{{dictionaryResult.fan}}</view>
+        </view>
+        <view wx:if='{{dictionaryResult.jin != ""}}'  style=''>
+          <view class='functionArea-dictionary-showResult-scrollview-attribute'>[近义词]</view>
+          <view class='functionArea-dictionary-showResult-scrollview-text'>{{dictionaryResult.jin}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+  <view wx:if='{{selectedFunction[1]}}' style='width: 750rpx; height: 50rpx;'>
   </view>
   <!-- 正文输入 -->
   <view hidden='{{state == "preview"}}' class='diaryArea'>
     <view class='diaryArea-mask' hidden='{{isDiaryTextMaskHidden}}' bindtap='onDiaryAreaMaskTapEvent'></view>
     <view class='{{textValue == 0 ? "diaryArea-notice" : "diary-diaryInputTextArea"}}' hidden='{{state != "text"}}' bindtap='onDiaryAreaNoticeTapEvent'>{{textValue.length == 0 ? "说说今天发生的有趣的事hh" : textValue}}</view>
-    <textarea hidden='{{state != "edit"}}' class='diary-diaryInputTextArea' placeholder='说说今天发生的有趣的事' placeholder-style='font-size: 10pt;' bindfocus='onDiaryAreaFocusEvent' bindblur='onDiaryAreaBlurEvent' value='{{textValue}}' maxlength='-1' show-confirm-bar='false' bindinput='onDiaryAreaInputEvent'
-      focus='{{isDiaryTextFocus}}'></textarea>
+    <textarea hidden='{{state != "edit"}}' class='diary-diaryInputTextArea' placeholder='说说今天发生的有趣的事' placeholder-style='font-size: 10pt;' bindfocus='onDiaryAreaFocusEvent' bindblur='onDiaryAreaBlurEvent' value='{{textValue}}' maxlength='-1' show-confirm-bar='false'
+      bindinput='onDiaryAreaInputEvent' focus='{{isDiaryTextFocus}}' bindlinechange='onDiaryAreaLineChangeEvent'></textarea>
   </view>
   <!-- 正文显示 -->
   <view class='showDiary' hidden='{{state != "preview"}}'>
