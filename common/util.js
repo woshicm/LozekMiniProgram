@@ -337,29 +337,29 @@ function GetImageInfo(src) {
 /**
  * 获取天气接口
  */
-function getWeather(location){
+function getWeather(location) {
   // console.log(globalData.api.getWeather)
   // let promise = new Promise(function (resolve, reject) {
-    wx.request({
-      url: globalData.api.getWeather,
-      header: {
-        "token": globalData.token
-      },
-      data: {
-        'location': location,
-      },
-      method: 'GET',
-      success: (res) => {
-        if (res.statusCode == '200') {
-          // resolve(res.data.data)
-          globalData.weather = res.data.data
-        } else if (res.statusCode == '403') {
-          reject(403)
-        }
-      },
-      fail: function (res) { reject(res) },
-      complete: function (res) { },
-    })
+  wx.request({
+    url: globalData.api.getWeather,
+    header: {
+      "token": globalData.token
+    },
+    data: {
+      'location': location,
+    },
+    method: 'GET',
+    success: (res) => {
+      if (res.statusCode == '200') {
+        // resolve(res.data.data)
+        globalData.weather = res.data.data
+      } else if (res.statusCode == '403') {
+        reject(403)
+      }
+    },
+    fail: function (res) { reject(res) },
+    complete: function (res) { },
+  })
   // });
   // return promise
 }
@@ -368,6 +368,10 @@ function getWeather(location){
  */
 function getWord(word) {
   let promise = new Promise(function (resolve, reject) {
+    wx.showLoading({
+      title: '正在搜索中',
+      icon: 'none',
+    })
     wx.request({
       url: globalData.api.getWord,
       header: {
@@ -378,13 +382,25 @@ function getWord(word) {
       },
       method: 'GET',
       success: (res) => {
+        wx.hideLoading()
         if (res.statusCode == '200') {
           resolve(res.data.data)
         } else if (res.statusCode == '403') {
+          wx.showToast({
+            title: '搜索失败',
+            icon: 'none',
+          })
           reject(403)
         }
       },
-      fail: function (res) { reject(res) },
+      fail: function (res) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '搜索失败',
+          icon: 'none',
+        })
+        reject(res)
+      },
       complete: function (res) { },
     })
   });
