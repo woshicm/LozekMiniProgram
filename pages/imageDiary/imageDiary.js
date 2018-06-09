@@ -316,11 +316,15 @@ Page({
     var array = [];
     console.log(app.globalData.templates)
     for (var i = 0; i < app.globalData.templates.length; i++) {
-      var suitableTextModule = GetTextModule(value, 'black', 0.5, i);
+      var suitableTextModule = GetTextModule(value, 'black', 0.3, i);
       array.push(suitableTextModule);
     }
-    console.log(app.globalData.templates.length + ":" + array)
-    var choseTextModule = array[0];
+    for(var i = 0; i < 9 ; i++)
+      array.push(array[0])
+      console.log('jj')
+    console.log(app.globalData.templates)
+    console.log('jj')
+    var choseTextModule = GetTextModule(value, 'black', 1, 0);
     // this.parseInputValue(value);
     switch (e.target.id) {
       case 'title':
@@ -537,7 +541,7 @@ Page({
       color = this.data.colorModuleScrollView[this.data.choseColorModuleId].color;
     this.setData({
       choseTextModuleId: choseTextModuleId,
-      choseTextModule: this.getTextModule(this.data.inputValue, color, this.data.richTextSize, choseTextModuleId)
+      choseTextModule: GetTextModule(this.data.inputValue, color, this.data.richTextSize, choseTextModuleId)
     })
   },
   /**
@@ -561,7 +565,7 @@ Page({
         this.setData({
           filteredImageUrl: res.imgUrl,
           choseColorModuleId: colorModuleId,
-          choseTextModule: this.getTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.richTextSize, this.data.choseTextModuleId)
+          choseTextModule: GetTextModule(this.data.inputValue, this.data.colorModuleScrollView[colorModuleId].color, this.data.richTextSize, this.data.choseTextModuleId)
         })
       })
       .catch(() => {
@@ -571,40 +575,6 @@ Page({
 
 
   //-----------------------------前後交互函數-----------------------------------------//
-  //請求文字模板
-  getTextModule(sourceText, color, fontSize, id) {
-    var textModule = {}
-    // 获取本地保存的模版
-    let template = app.globalData.templates[0]
-
-    var currentTime = GetCurrentTime();
-    var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
-    sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
-    // 进行模版内容替换
-    template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
-
-    var textModule = {
-      nodes: template,
-      systemVariable: {
-        defaultValue: '让时间停在这一刻',
-        id: id,
-        height: 84,
-        width: 126,
-        hasTime: true,
-        time: temp,
-        hasLocation: false,
-        marginLeft: 8,
-        marginTop: 6,
-        maxLength: 9,
-        keyWords: [],
-      },
-      userVariable: {
-        color: color,
-        fontSize: fontSize,
-      }
-    }
-  },
-
   //返回文字模板
   putTextModule(textPosition, imagePosition) {
     var ratio = originalImageWidth / uploadedImageWidth;
@@ -653,7 +623,7 @@ Page({
   changeRichSize(e) {
     this.setData({
       richTextSize: e.detail.value * 0.025,
-      choseTextModule: this.getTextModule(this.data.inputValue, 'black', this.data.richTextSize, 0),
+      choseTextModule: GetTextModule(this.data.inputValue, 'black', this.data.richTextSize, 0),
     });
   },
 

@@ -18,9 +18,9 @@
       <textarea wx:elif="{{isInputStatu}}" class="input-text" wx:key="this" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='美好的一天说点什么吧' maxlength='25' placeholder-style='font-size: 13pt;'
         show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{windowHeight * 0.7 * 0.9  / 2}}px; left: 200rpx;'></textarea>
 
-      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px'
+      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;  background-color: yellow;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px;'
         bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent' id='id-movable'>
-        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools' style='background-color: yellow;' id='id-richText'></rich-text>
+        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools' id='id-richText' style='background-color: red'></rich-text>
       </movable-view>
     </movable-area>
     <!-- 滑出菜单层 -->
@@ -43,9 +43,9 @@
       <!-- 文本模板预览区 -->
       <view class='view-layoutSecond-preview-textModule'>
         <scroll-view scroll-x='true' class='textModuleScrollView'>
-          <view style='border: {{textModuleIndex == choseTextModuleId ? "4rpx solid #3f8ae9": ""}};' wx:key="this" wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap'
-            data-text-module-id='{{textModuleItem.systemVariable.id}}' disabled='{{false}}'>
-              <rich-text nodes="{{textModuleItem.nodes}}"></rich-text>
+          <view style='border: {{textModuleIndex == choseTextModuleId ? "6rpx solid #3f8ae9": ""}};' wx:key="this" wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap'
+            data-text-module-id='{{textModuleIndex}}' disabled='{{false}}'>
+              <rich-text nodes="{{textModuleItem.nodes}}" style='width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;'></rich-text>
           </view>
         </scroll-view>
       </view>

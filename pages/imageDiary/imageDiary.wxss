@@ -306,7 +306,7 @@
 }
 
 .textModuleScrollView {
-  height: 140rpx;
+  height: 100rpx;
   width: 750rpx;
   white-space: nowrap;
   position: relative;
@@ -314,13 +314,20 @@
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  background-color: red;
 }
 
 .textModuleScrollView-item {
   display: inline-block;
   width: 170rpx;
-  height: 50%;
+  height: 88rpx;
+}
+
+.textModuleScrollView-item-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
 button::after {
@@ -395,13 +402,14 @@ button::after {
   overflow: hidden;
 }
 
-.mask-slideOutlayout{
+.mask-slideOutlayout {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
-  width: 750rpx
+  width: 750rpx;
 }
+
 /*content*/
 
 .drawer_box {
