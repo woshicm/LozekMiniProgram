@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu, GetTextModule } from "../../common/util.js";
 import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
@@ -339,8 +339,9 @@ Page({
     //   //隨機調用名言模板
     // }
     // else {
-    for (var i = 0; i < 10; i++) {
-      var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
+    console.log(app.globalData.templates)
+    for (var i = 0; i < app.globalData.templates.length; i++) {
+      var suitableTextModule = GetTextModule(value, 'black', 0.5, i);
       array.push(suitableTextModule);
     }
     // }
@@ -655,10 +656,10 @@ Page({
       case 0://只显示用户输入的内容
       case 1: {
         var currentTime = GetCurrentTime();
-        var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+        var time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
         sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
         // 进行模版内容替换
-        template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
+        template = template.nodes.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{time}', time).replace('{sourceText}', sourceText)
 
         textModule = {
           nodes: template,
@@ -668,7 +669,7 @@ Page({
             height: 84,
             width: 126,
             hasTime: true,
-            time: temp,
+            time: time,
             hasLocation: false,
             marginLeft: 8,
             marginTop: 6,
@@ -684,10 +685,10 @@ Page({
       }
       case 2: {
         var currentTime = GetCurrentTime();
-        var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+        var time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
         sourceText = sourceText == '' ? '让时间不停在这一刻' : sourceText
         // 进行模版内容替换
-        template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
+        template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{time}', time).replace('{sourceText}', sourceText)
         textModule = {
           nodes: template,
           systemVariable: {
@@ -696,7 +697,7 @@ Page({
             height: 84,
             width: 126,
             hasTime: true,
-            time: temp,
+            time: time,
             hasLocation: false,
             marginLeft: 8,
             marginTop: 6,
