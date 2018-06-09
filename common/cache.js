@@ -4,8 +4,7 @@ function CacheInit(){
   wx.getStorage({
     key: 'cacheData',
     success: function(res) {
-      console.log('cache has been create at :')
-      console.log(res.data)
+      console.log('cache has been create')
     },
     fail: (res)=> {
       console.log("can't find cache data, next will create it")
@@ -33,18 +32,24 @@ function checkURLCache(url){
     wx.getStorage({
       key: 'cacheData',
       success: (res)=> {
-        cacheData = res.data
-        if(url in cacheData){
-          resolve(cacheData[url])
+        let cacheData = res.data
+        let imagrUrl = url.split('&')[0]
+        if (imagrUrl in cacheData){
+          console.log('inininininininin')
+          resolve(cacheData[imagrUrl])
         }else{
-          cacheImage(url)
+          console.log('no in')
+          cacheImage(imagrUrl)
           .then((res)=>{
             resolve(res)
           })
+          .catch((err)=>{
+            console.log(err)
+          })
         }
       },
-      fail: ()=>{
-        resolve(url)
+      fail: (err)=>{
+        reject(err)
       }
     })
   })
@@ -55,7 +60,7 @@ function addRecorderToCacheData(net_url,local_url){
   wx.getStorage({
     key: 'cacheData',
     success: function(res) {
-      cacheData = res.data
+      let cacheData = res.data
       cacheData[net_url] = local_url
       wx.setStorage({
         key: 'cacheData',
@@ -67,17 +72,44 @@ function addRecorderToCacheData(net_url,local_url){
 
 function cacheImage(net_url){
   let promise = new Promise((resolve,reject)=>{
-    wx.saveFile({
-      tempFilePath: net_url,
-      success: (res)=>{
-        console.log('cache new image ' + net_url  +' to :' + res.savedFilePath)
-        addRecorderToCacheData(net_url,res.savedFilePath)
-        resolve(res.savedFilePath)
+    wx.downloadFile({
+      url: net_url,
+      header: {
+
       },
-      fail: function (res) { },
-      complete: function (res) { },
+      success: function(res) {
+        console.log('cache new image ' + net_url + ' to :' + res.tempFilePath)
+        addRecorderToCacheData(net_url, res.tempFilePath)
+        resolve(res.tempFilePath)
+      },
+      fail: function(err) {
+        console.log(err)
+      },
+      complete: function(res) {},
     })
   })
   return promise
 }
-export { CacheInit}
+
+function TryCacheData(diarys){
+  let promise = new Promise((resolve,reject)=>{
+    for (let diary of diarys) {
+      for (let i = 0; i < diary.diary.image.length; i++) {
+        if (diary.diary.image[i].imageURL.startsWith('https://www')) {
+          console.log('origin :' + diary.diary.image[i].imageURL)
+          checkURLCache(diary.diary.image[i].imageURL)
+            .then((res) => {
+              console.log('cache image:' + res)
+              diary.diary.image[i].imageURL = res
+            })
+            .catch((err) => {
+              console.log('sdfsfsdffuck')
+            })
+        }
+      }
+      resolve()
+    }
+  })
+  return promise
+}
+export { CacheInit, TryCacheData}
