@@ -419,7 +419,7 @@ Page({
         title: '回到最初的起点',
       })
       var functionAreaData = this.data.functionAreaData;
-      functionAreaData[4] = 'GoBackward-disabled'
+      functionAreaData[3] = 'GoBackward-disabled'
       this.setData({
         functionAreaData: functionAreaData,
       })
@@ -508,7 +508,7 @@ Page({
     let nowInputTime = Date.parse(new Date())
     if ((nowInputTime - this.data.lastInputTime) >= 2500) {
       var functionAreaData = this.data.functionAreaData;
-      functionAreaData[4] = 'GoForward-disabled'
+      functionAreaData[3] = 'GoBackward'
       this.setData({
         functionAreaData: functionAreaData,
       })

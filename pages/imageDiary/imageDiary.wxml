@@ -5,26 +5,27 @@
 
   <!--图片区  -->
   <view class='view-layoutFirst'>
-    <image src='{{filteredImageUrl}}' mode='aspectFit' class='img-uploaded' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;' id ='id-uploadedImage'></image>
+    <image src='{{filteredImageUrl}}' mode='aspectFit' class='img-uploaded' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;' id='id-uploadedImage'></image>
     <movable-area class='movableArea-userInput' disabled="{{isMoveable}}" scale-area='true' style='height: {{uploadedImageHeight}}px; width: {{uploadedImageWidth}}px;'>
       <!-- 叙事模式输入 -->
       <block wx:if="{{mode == 'longText' && isInputStatu}}">
-        <input class='input-text' style="top: {{windowHeight * 0.8 * 0.9  / 2 - uploadedImageHeight / 4}}px; left: 188rpx;" placeholder='请在这里输入标题' maxlength='8' focus="{{isFocus}}" bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="titleInputOnBlurEvent"
+        <input class='input-text' style="top: {{windowHeight * 0.7 * 0.9  / 2 - uploadedImageHeight / 4}}px; left: 188rpx;" placeholder='请在这里输入标题' maxlength='8' focus="{{isFocus}}" bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="titleInputOnBlurEvent"
           id='title' value='{{inputTitle}}'></input>
         <textarea class="input-text" style='left: 188rpx;' wx:key="this" hidden="{{}}" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入正文' maxlength='50' placeholder-style='font-size: 13pt;'
           show-confirm-bar='false' id='content' value='{{inputValue}}'></textarea>
       </block>
       <!-- 散文模式输入 -->
       <textarea wx:elif="{{isInputStatu}}" class="input-text" wx:key="this" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='美好的一天说点什么吧' maxlength='25' placeholder-style='font-size: 13pt;'
-        show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{uploadedImageHeight / 2}}px; left: 188rpx;'></textarea>
+        show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{windowHeight * 0.7 * 0.9  / 2}}px; left: 200rpx;'></textarea>
 
-      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px' bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent' id='id-movable'>
-        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools'  style='background-color: yellow;' id='id-richText'></rich-text>
+      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px'
+        bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent' id='id-movable'>
+        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools' style='background-color: yellow;' id='id-richText'></rich-text>
       </movable-view>
     </movable-area>
     <!-- 滑出菜单层 -->
     <view class='layoutFirst-slideOutLayout' style='top: {{slideOutLayerTop - 99}}px;' hidden="{{!isShowTools}}">
-      <view class='mask-slideOutlayout'  style='top: {{slideOutLayerTop}}px; height: {{windowHeight}}px' catchtap='onSlideOutlayoutMaskTap'></view>
+      <view class='mask-slideOutlayout' style='top: {{slideOutLayerTop}}px; height: {{windowHeight}}px' catchtap='onSlideOutlayoutMaskTap'></view>
       <block wx:if='{{!isShowConfirm}}'>
         <!--滑动放大  -->
         <slider class='slider-changeRichSize' min='20' max='60' activeColor='#3f8ae9' block-size='20' bindchange='changeRichSize' bindchanging='changeRichSize' value='{{sliderValue}}' style='top: {{slideOutLayerTop - 40}}px;'></slider>
@@ -38,17 +39,15 @@
   </view>
   <!--文本区  -->
   <view class='view-layoutSecond modify-shadow-main-up'>
-    <!--分享按钮  -->
-    <!-- <view class='view-layoutSecond-shareButton' bindtap='saveDiaryText'>
-      <image src="/images/icon-imageDiary-shareButton.png" class='img-share'></image>
-    </view> -->
     <view class='view-layoutSecond-preview'>
       <!-- 文本模板预览区 -->
       <view class='view-layoutSecond-preview-textModule'>
         <scroll-view scroll-x='true' class='textModuleScrollView'>
           <view style='border: {{textModuleIndex == choseTextModuleId ? "4rpx solid #3f8ae9": ""}};' wx:key="this" wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap'
             data-text-module-id='{{textModuleItem.systemVariable.id}}' disabled='{{false}}'>
-            <rich-text nodes="{{textModuleItem.nodes}}" style='position:relative; bottom: 35rpx; right: 35rpx;'></rich-text>
+            <view style='display: flex; align-items:center; justify-content: center;'>
+              <rich-text nodes="{{textModuleItem.nodes}}"></rich-text>
+            </view>
           </view>
         </scroll-view>
       </view>
@@ -79,15 +78,6 @@
             <text>叙事模式</text>
             <switch class='switch-input' checked='{{switchChecked}}' bindchange='switchModel' disabled='{{switchDisabled}}' color='#3f8ae9'></switch>
           </view>
-          <!-- <view class='view-eachItem' style='margin-top:20px'>
-            <text class="text-eachTitle">文案</text>
-            
-            <view class='view-line'></view>
-            <view class='view-help-and-displayLength'>
-              <image class='img-helpLogo' src='/images/icon-imageDiary-help.svg'></image>
-              <text class='text-displayLength'>{{inputLength}}/{{inputMaxLength}}</text>
-            </view>
-          </view> -->
           <view class='view-eachItem view-dictum'>
             <text class='text-eachTitle'>名言</text>
             <view class='view-select-layout'>

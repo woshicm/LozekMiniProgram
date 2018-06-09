@@ -11,17 +11,21 @@
         <view class='modify-timeLine-dash-item'></view>
         <view class='modify-timeLine-dash-item'></view>
         <view class='modify-timeLine-dash-item'></view>
-        <view class='modify-timeLine-erase' wx:if='{{isLast && !show}}' style='height:{{todayEraseHeight}}rpx;'></view> 
+        <view class='modify-timeLine-erase' wx:if='{{isLast && !show}}' style='height:{{todayEraseHeight}}rpx;'></view>
       </view>
     </view>
   </view>
 </view>
-<view class='timeLine-add' wx:if='{{show}}' style='top:{{todayTop}}rpx'>
+<view class='timeLine-add' wx:if='{{show}}' style='top:{{todayTop}}rpx;'>
   <view class='text'>
     <text class='text-date' style='color: #f8bc71;'>{{today.dd}}</text>
     <text class='text-day' style='color: #f7ce99'>{{today.day_en}}</text>
   </view>
   <view class="image">
     <image src='/images/image-todayDot.svg' class='image-todayDot'></image>
+  </view>
+  <view class='timeLine-add-notice'>
+    <view class='timeLine-add-notice-text'>未完待续...</view>
+    <image src='/images/image-imageDiary-input-grey.svg' class='timeLine-add-notice-image'  />
   </view>
 </view>

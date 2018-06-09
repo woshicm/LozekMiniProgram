@@ -152,14 +152,9 @@ Page({
       filteredImageUrl: options.imgUrl,
       uploadedImageWidth: options.imageWidth,
       uploadedImageHeight: options.imageHeight,
+      originalImageWidth: options.originalImageWidth,
+      originalImageWidth: options.originalImageHeight,
     })
-    // GetImageInfo(imageUrl)
-    // .then((res) => {
-    //res就是要的信息
-    //   console.log(res)
-    //   }).catch((res) => {
-    // })
-    // console.log(options.imgUrl)
     let data = {
       'imageURL': options.imgUrl,
       'all': 1
@@ -383,44 +378,7 @@ Page({
         console.log("哈哈,失去焦点函数有bug!");
     }
   },
-
-  /**
-   * 确认输入内容并跳转
-   */
-  //   confirm() {
-  //     if (this.data.inputValue.length == 0) {
-  //       //隨機調用名言模板
-  //     }
-  //     else {
-  //       var array = []
-  //       for (var i = 0; i < 10; i++) {
-  // <<<<<<< HEAD
-  //         var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
-  //         array.push(suitableTextModule)
-  //       }
-  //     }
-  //     // var animation = wx.createAnimation({
-  //     //   duration: 200,  //动画时长
-  //     //   timingFunction: "linear", //线性
-  //     //   delay: 0  //0则不延迟
-  //     // });
-  //     // this.animation = animation;
-  //     // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
-  //     // this.setData({
-  //     //   inputValue: value,
-  //     //   animationData: animation.export(),
-  //     // });
-  //     // wx.showToast({
-  //     //   title: 'blur',
-  //     // })
-  //     var choseTextModule = this.getTextModule(value, 'black', 1, 0);
-  //     var scaleMax;
-  // =======
-  //         var suitableTextModule = this.getTextModule(this.data.inputValue, 'black', 0.3, i);
-  //         array.push(suitableTextModule)
-  //       }
-  //     };
-
+  
   /**
    * movableArea 监听事件
    */
@@ -668,7 +626,7 @@ Page({
         hasLocation: false,
         marginLeft: 8,
         marginTop: 6,
-        maxLength: 8,
+        maxLength: 9,
         keyWords: [],
       },
       userVariable: {
@@ -681,35 +639,36 @@ Page({
 
   //返回文字模板
   putTextModule(textPosition, imagePosition) {
+    var ratio = originalImageWidth / uploadedImageWidth;
     var beginPoint = {
-      'x': this.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left,
-      'y': textPosition.top - imagePosition.top,
+      'x': (this.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left) * ratio,
+      'y': (textPosition.top - imagePosition.top) * ratio,
     };
     var height = this.data.choseTextModule.systemVariable.height;
     var actions = [
       {
         'action': 'text',
         'text': this.data.choseTextModule.systemVariable.time,
-        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
+        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) * ratio / 2],
         'font-style': '',
         'font-color': '',
-        'font-size': 39,
+        'font-size': 39 * ratio + 'px',
       },
       {
         'action': 'text',
         'text': this.data.inputValue,
-        'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
-        'font-style': 'letter-spacing: 2px;',
+        'position': [beginPoint.x + this.data.inputValue / this.data.choseTextModule.systemVariable.time * this.data.choseTextModule.systemVariable.width / 2 * ratio, beginPoint.y + (height * 0.6 + (height * 0.2 - 12) / 2) * ratio],
+        'font-style': 'letter-spacing: ' + 2 * ratio + 'px;',
         'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': 12,
+        'font-size': 12 * ratio + 'px',
       },
       {
         'action': 'text',
         'text': 'Let time stop at this moment',
-        'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
+        'position': [beginPoint.x, beginPoint.y + (height * 0.8 + (height * 0.2 - 8) / 2) * ratio],
         'font-style': 'letter-spacing: 2px;',
         'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': '8px',
+        'font-size': 8 * ratio + 'px',
       },
     ]
     return actions;

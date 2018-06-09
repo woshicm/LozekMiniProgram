@@ -153,6 +153,9 @@
 
 .view-layoutSecond-preview-textModule {
   height: 30%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .view-layoutSecond-preview-colorModule {
@@ -303,10 +306,15 @@
 }
 
 .textModuleScrollView {
-  height: 170rpx;
+  height: 140rpx;
   width: 750rpx;
   white-space: nowrap;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  background-color: red;
 }
 
 .textModuleScrollView-item {
