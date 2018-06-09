@@ -1,5 +1,6 @@
 
-import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather, HideShareMenu, GetCurrentTime } from "../../common/util.js";
+import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather, HideShareMenu, GetCurrentTime, Copy } from "../../common/util.js";
+import { TryCacheData} from '../../common/cache.js'
 
 const app = getApp()
 const globalData = getApp().globalData
@@ -262,19 +263,29 @@ Page({
 
   //显示日记的数据
   displayDiary() {
-    var that = this
-    GetDiary()
-      .then((res) => {
-        that.setData({
-          btnSettingOpenType: 'getUserInfo',
-          diaryData: res.diary,
+    setTimeout(() => { 
+      GetDiary()
+        .then((res) => {
+          TryCacheData(res.diary)
+          .then(()=>{
+            setTimeout(()=>{
+              this.setData({
+                btnSettingOpenType: 'getUserInfo',
+                diaryData: res.diary,
+              })
+            },500)
+          })
+          .catch((err)=>{
+            console.log(err)
+          })
         })
+      .catch((err) => {
+        console.log(err)
+        // app.relogin(() => {
+        //   this.displayDiary()
+        // })
       })
-      .catch(() => {
-        app.relogin(() => {
-          that.displayDiary()
-        })
-      })
+    }, 1000)
   },
 
   //文本日记跳转监听事件

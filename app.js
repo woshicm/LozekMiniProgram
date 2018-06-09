@@ -51,7 +51,6 @@ App({
     this.initAppData()
     this.checkToken()
     CacheInit()
-
   },
 
   initAppData: function () {
