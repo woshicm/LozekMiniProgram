@@ -1,3 +1,5 @@
+import { CacheInit} from "./common/cache.js";
+
 App({
   globalData: {
     /**
@@ -48,6 +50,8 @@ App({
     // wx.removeStorageSync("token")
     this.initAppData()
     this.checkToken()
+    CacheInit()
+
   },
 
   initAppData: function () {
