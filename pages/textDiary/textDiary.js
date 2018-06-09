@@ -1,7 +1,7 @@
 // page/textDiary/textDiary.js
 
 // 导入方法统一以大写字母开头
-import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather, getWord, getLocationInfo, HideShareMenu } from "../../common/util.js";
+import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather, getWord, getLocationInfo, HideShareMenu, GetUserAuthorize } from "../../common/util.js";
 
 let app = getApp()
 Page({
@@ -85,7 +85,15 @@ Page({
       },
     })
     var weather = [app.globalData.weather.cond_code, app.globalData.weather.cond_txt];
-    console.log(weather);
+    if(weather[0] != undefined) return;
+    else if (app.globalData.userCurrentCityLatitude == ''){
+      GetUserAuthorize('scope.userLocation', '位置', '位置权限用于什么？获取天气、城市信息')
+      return;
+    }
+    else{
+      weather = getWeather(app.globalData.userCurrentCityLatitude, app.globalData.userCurrentCityLongitude)
+      app.globalData.weather = weather;
+    }
     this.setData({
       currentWeather: weather,
     });
@@ -102,7 +110,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
-
+    var weather = [app.globalData.weather.cond_code, app.globalData.weather.cond_txt];
+    if (weather[0] != undefined) return;
+    this.setData({
+      currentWeather: weather,
+    });
   },
 
   /**

@@ -18,9 +18,9 @@
       <textarea wx:elif="{{isInputStatu}}" class="input-text" wx:key="this" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='美好的一天说点什么吧' maxlength='25' placeholder-style='font-size: 13pt;'
         show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{windowHeight * 0.7 * 0.9  / 2}}px; left: 200rpx;'></textarea>
 
-      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth}}px; height: {{movableViewHeight}}px;  background-color: yellow;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px;'
+      <movable-view hidden="{{isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth * richTextSize}}px; height: {{movableViewHeight* richTextSize}}px; display: flex; align-items: center; justify-content: center;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px;'
         bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent' id='id-movable'>
-        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools' id='id-richText' style='background-color: red'></rich-text>
+        <rich-text nodes="{{choseTextModule.nodes}}" bindtap='showTools' id='id-richText'></rich-text>
       </movable-view>
     </movable-area>
     <!-- 滑出菜单层 -->

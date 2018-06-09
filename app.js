@@ -1,3 +1,5 @@
+import { CacheInit} from "./common/cache.js";
+
 App({
   globalData: {
     /**
@@ -7,6 +9,8 @@ App({
     windowHeight: wx.getSystemInfoSync().windowHeight,
     windowWidth: wx.getSystemInfoSync().windowWidth,
     token: '1',
+    // baseURL: 'http://localhost:8000/',
+    // baseURL: 'https://111.230.24.245/',
     baseURL: 'https://www.louzek.xyz/',
     getShareDiaryURL:'https://www.louzek.xyz:443/',
     api: {
@@ -46,6 +50,8 @@ App({
     // wx.removeStorageSync("token")
     this.initAppData()
     this.checkToken()
+    CacheInit()
+
   },
 
   initAppData: function () {

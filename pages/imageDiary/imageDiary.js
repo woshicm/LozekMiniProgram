@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu, GetTextModule } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu, GetTextModule, Copy } from "../../common/util.js";
 import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
@@ -316,12 +316,12 @@ Page({
     var array = [];
     console.log(app.globalData.templates)
     for (var i = 0; i < app.globalData.templates.length; i++) {
-      var suitableTextModule = GetTextModule(value, 'black', 0.3, i);
+      var suitableTextModule = GetTextModule(value, 'black', 0.5, i);
       array.push(suitableTextModule);
     }
-    for(var i = 0; i < 9 ; i++)
+    for (var i = 0; i < 9; i++)
       array.push(array[0])
-      console.log('jj')
+    console.log('jj')
     console.log(app.globalData.templates)
     console.log('jj')
     var choseTextModule = GetTextModule(value, 'black', 1, 0);
@@ -350,7 +350,7 @@ Page({
         console.log("哈哈,失去焦点函数有bug!");
     }
   },
-  
+
   /**
    * movableArea 监听事件
    */
@@ -577,7 +577,7 @@ Page({
   //-----------------------------前後交互函數-----------------------------------------//
   //返回文字模板
   putTextModule(textPosition, imagePosition) {
-    var ratio = originalImageWidth / uploadedImageWidth;
+    var ratio = this.data.originalImageWidth / this.data.uploadedImageWidth;
     var beginPoint = {
       'x': (this.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left) * ratio,
       'y': (textPosition.top - imagePosition.top) * ratio,
@@ -729,7 +729,17 @@ Page({
     setTimeout(
       function () {
         that.saveDiaryText(textPosition, imagePosition);
+        return;
       }, 50
     );
+    setTimeout(
+      function () {
+        wx.hideLoading();
+        wx.showToast({
+          title: '响应超时',
+          icon: 'none',
+        })
+      }, 3000
+    )
   }
 })

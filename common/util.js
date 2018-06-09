@@ -360,7 +360,7 @@ function getWeather(location) {
         reject(403)
       }
     },
-    fail: function (res) { reject(res) },
+    fail: function (res) { },
     complete: function (res) { },
   })
   // });
@@ -438,39 +438,19 @@ function getLocationInfo(location) {
 
 //获取用户权限
 //scope.userLocation,scope.userInfo
-function GetUserAuthorize(scope) {
+function GetUserAuthorize(scope, name, content) {
   var that = this
   wx.getSetting({
     success: (res) => {
       if (!res.authSetting[scope]) {
-        wx.authorize({
-          scope: scope,
-          success: (res) => {
-            switch (scope) {
-              // case 'scope.userInfo': wx.getUserInfo({
-              //   success: (e) => {
-              //     globalData.userInfoCity = e.detail.userInfo
-              //     console.log(globalData.userInfoCity.city)
-              //   }
-              // })
-              // break
-              case 'scope.userLocation': wx.getLocation({
-                success: (res) => {
-                  // that.setData({
-                  //   location: res.address
-                  // })
-                  globalData.userCurrentCityLatitude = res.latitude
-                  globalData.userCurrentCityLongitude = res.longitude
-                },
-              })
-                break
-              default: break
+        wx.showModal({
+          title: '缺少' + name + '权限，是否设置？',
+          content: content,
+          confirmText: '设置',
+          success: function(res){
+            if(res.confirm){
+              wx.openSetting();
             }
-          },
-          fail: (res) => {
-            wx.showToast({
-              title: '没有定位权限，请在设置重新授权',
-            })
           }
         })
       } else {
@@ -540,12 +520,18 @@ function HideShareMenu() {
 
 // 从本地模版库里生成对应模板
 function GetTextModule(sourceText, color, fontSize, id) {
-  console.log(globalData.templates[id])
+  let time = "";
+  let location = "";
+  let template = deeepCopy(globalData.templates[id]);
+  if(template.systemVariable.hasTime){
+    let currentTime = GetCurrentTime();
+    time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+  }
+  if (template.systemVariable.hasLocation){
+    location = GetLocationInfo(globalData.userCurrentCityLatitude, userCurrentCityLongitude);
+  }
 
-  let currentTime = GetCurrentTime();
-  let time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
-  sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
-  let template = globalData.templates[id]
+  sourceText = sourceText == '' ? template.systemVariable.defaultValue : sourceText
 
   template.nodes = template.nodes.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{time}', time).replace('{sourceText}', sourceText)
 
@@ -553,8 +539,21 @@ function GetTextModule(sourceText, color, fontSize, id) {
   template.time = time
   template.userVariable.color = color
   template.userVariable.fontSize = fontSize
-
   return template;
 }
 
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo, GetTemplates, HideShareMenu, GetTextModule }
+function deeepCopy(o) {
+  var output, v, key;
+  output = Array.isArray(o) ? [] : {};
+  for (key in o) {
+    v = o[key];
+    output[key] = (typeof v === "object") ? deeepCopy(v) : v;
+  }
+  return output;
+}
+
+function Copy(o){
+  return deeepCopy(o)
+}
+
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo, GetTemplates, HideShareMenu, GetTextModule, Copy }

@@ -9,50 +9,7 @@ Page({
 
     //時間軸
     today: GetCurrentTime(),
-    diaryData: [
-      // {
-      //   date: [2018, 6, 5, 'Thu'],
-      //   diary: {
-      //     image: [
-      //       {
-      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
-      //         text: '哈哈哈',
-      //       }
-      //     ],
-      //     text: [
-      //     ]
-
-      //   }
-      // },
-      // {
-      //   date: [2018, 6, 7, 'Thu'],
-      //   diary: {
-      //     image: [
-      //       {
-      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
-      //         text: '哈哈哈',
-      //       }
-      //     ],
-      //     text: [
-      //     ]
-
-      //   }
-      // },
-      // {
-      //   date: [2018, 6, 8, 'Thu'],
-      //   diary: {
-      //     image: [
-      //       {
-      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
-      //         text: '哈哈哈',
-      //       }
-      //     ],
-      //     text: [
-      //     ]
-
-      //   }
-      // },
-    ],
+    diaryData: [],
     scrollHeight: 0, //scroll-top的值，控制滚动到底部
     currentSearchDiaryDataId: 'diaryDate0', //竖向定位到到哪一天，该值是子元素id
     currentSerarchTextDiaryId: 'textCard0-0',//横向定位到哪个文本日记
@@ -93,7 +50,7 @@ Page({
   },
 
   onLoad(options) {
-    GetUserAuthorize('scope.userLocation')
+    GetUserAuthorize('scope.userLocation', '位置', '位置权限用于什么？获取天气、城市信息')
     setTimeout(
       function () {
         console.log(app.globalData.userCurrentCityLongitude + "," + app.globalData.userCurrentCityLatitude)
