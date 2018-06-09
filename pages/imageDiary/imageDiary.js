@@ -153,14 +153,9 @@ Page({
       filteredImageUrl: options.imgUrl,
       uploadedImageWidth: options.imageWidth,
       uploadedImageHeight: options.imageHeight,
+      originalImageWidth: options.originalImageWidth,
+      originalImageWidth: options.originalImageHeight,
     })
-    // GetImageInfo(imageUrl)
-    // .then((res) => {
-    //res就是要的信息
-    //   console.log(res)
-    //   }).catch((res) => {
-    // })
-    // console.log(options.imgUrl)
     let data = {
       'imageURL': options.imgUrl,
       'all': 1
@@ -314,38 +309,18 @@ Page({
 
   // 聚焦
   textareaOnFocusEvent: function (e) {
-    // var keyboardHeight = e.detail.height;
-    // //建立動畫：拉起鍵盤，彈窗向上偏移
-    // var animation = wx.createAnimation({
-    //   duration: 200,  //动画时长
-    //   timingFunction: "linear", //线性
-    //   delay: 0  //0则不延迟
-    // });
-    // this.animation = animation;
-    // animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
-    // this.setData({
-    //   keyboardHeight: keyboardHeight,
-    //   animationData: animation.export(),
-    // });
-    // wx.showToast({
-    //   title: 'focus',
-    // })
   },
   //失焦
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     var array = [];
-    // if (value.length == 0) {
-    //   //隨機調用名言模板
-    // }
-    // else {
     console.log(app.globalData.templates)
     for (var i = 0; i < app.globalData.templates.length; i++) {
       var suitableTextModule = GetTextModule(value, 'black', 0.5, i);
       array.push(suitableTextModule);
     }
-    // }
-    var choseTextModule = this.getTextModule(value, 'black', 1, 0);
+    console.log(app.globalData.templates.length + ":" + array)
+    var choseTextModule = array[0];
     // this.parseInputValue(value);
     switch (e.target.id) {
       case 'title':
@@ -354,20 +329,6 @@ Page({
         });
         break;
       case 'content':
-        // var animation = wx.createAnimation({
-        //   duration: 200,  //动画时长
-        //   timingFunction: "linear", //线性
-        //   delay: 0  //0则不延迟
-        // });
-        // this.animation = animation;
-        // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
-        // this.setData({
-        //   inputValue: value,
-        //   animationData: animation.export(),
-        // });
-        // wx.showToast({
-        //   title: 'blur',
-        // })
         var isShow = this.data.mode == 'longText';
         this.setData({
           inputValue: value,
@@ -385,44 +346,7 @@ Page({
         console.log("哈哈,失去焦点函数有bug!");
     }
   },
-
-  /**
-   * 确认输入内容并跳转
-   */
-  //   confirm() {
-  //     if (this.data.inputValue.length == 0) {
-  //       //隨機調用名言模板
-  //     }
-  //     else {
-  //       var array = []
-  //       for (var i = 0; i < 10; i++) {
-  // <<<<<<< HEAD
-  //         var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
-  //         array.push(suitableTextModule)
-  //       }
-  //     }
-  //     // var animation = wx.createAnimation({
-  //     //   duration: 200,  //动画时长
-  //     //   timingFunction: "linear", //线性
-  //     //   delay: 0  //0则不延迟
-  //     // });
-  //     // this.animation = animation;
-  //     // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
-  //     // this.setData({
-  //     //   inputValue: value,
-  //     //   animationData: animation.export(),
-  //     // });
-  //     // wx.showToast({
-  //     //   title: 'blur',
-  //     // })
-  //     var choseTextModule = this.getTextModule(value, 'black', 1, 0);
-  //     var scaleMax;
-  // =======
-  //         var suitableTextModule = this.getTextModule(this.data.inputValue, 'black', 0.3, i);
-  //         array.push(suitableTextModule)
-  //       }
-  //     };
-
+  
   /**
    * movableArea 监听事件
    */
@@ -652,99 +576,67 @@ Page({
     var textModule = {}
     // 获取本地保存的模版
     let template = app.globalData.templates[0]
-    switch (id) {
-      case 0://只显示用户输入的内容
-      case 1: {
-        var currentTime = GetCurrentTime();
-        var time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
-        sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
-        // 进行模版内容替换
-        template = template.nodes.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{time}', time).replace('{sourceText}', sourceText)
 
-        textModule = {
-          nodes: template,
-          systemVariable: {
-            defaultValue: '让时间停在这一刻',
-            id: id,
-            height: 84,
-            width: 126,
-            hasTime: true,
-            time: time,
-            hasLocation: false,
-            marginLeft: 8,
-            marginTop: 6,
-            maxLength: 8,
-            keyWords: [],
-          },
-          userVariable: {
-            color: color,
-            fontSize: fontSize,
-          }
-        }
-        return textModule;
-      }
-      case 2: {
-        var currentTime = GetCurrentTime();
-        var time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
-        sourceText = sourceText == '' ? '让时间不停在这一刻' : sourceText
-        // 进行模版内容替换
-        template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{time}', time).replace('{sourceText}', sourceText)
-        textModule = {
-          nodes: template,
-          systemVariable: {
-            defaultValue: '让时间不停在这一刻',
-            id: id,
-            height: 84,
-            width: 126,
-            hasTime: true,
-            time: time,
-            hasLocation: false,
-            marginLeft: 8,
-            marginTop: 6,
-            maxLength: 8,
-            keyWords: [],
-          },
-          userVariable: {
-            color: color,
-            fontSize: fontSize,
-          }
-        }
-        return textModule;
+    var currentTime = GetCurrentTime();
+    var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+    sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
+    // 进行模版内容替换
+    template = template.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{temp}', temp).replace('{sourceText}', sourceText)
+
+    var textModule = {
+      nodes: template,
+      systemVariable: {
+        defaultValue: '让时间停在这一刻',
+        id: id,
+        height: 84,
+        width: 126,
+        hasTime: true,
+        time: temp,
+        hasLocation: false,
+        marginLeft: 8,
+        marginTop: 6,
+        maxLength: 9,
+        keyWords: [],
+      },
+      userVariable: {
+        color: color,
+        fontSize: fontSize,
       }
     }
   },
 
   //返回文字模板
   putTextModule(textPosition, imagePosition) {
+    var ratio = originalImageWidth / uploadedImageWidth;
     var beginPoint = {
-      'x': this.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left,
-      'y': textPosition.top - imagePosition.top,
+      'x': (this.data.choseTextModule.systemVariable.marginLeft + textPosition.left - imagePosition.left) * ratio,
+      'y': (textPosition.top - imagePosition.top) * ratio,
     };
     var height = this.data.choseTextModule.systemVariable.height;
     var actions = [
       {
         'action': 'text',
         'text': this.data.choseTextModule.systemVariable.time,
-        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) / 2],
+        'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) * ratio / 2],
         'font-style': '',
         'font-color': '',
-        'font-size': 39,
+        'font-size': 39 * ratio + 'px',
       },
       {
         'action': 'text',
         'text': this.data.inputValue,
-        'position': [beginPoint.x, beginPoint.y + height * 0.6 + (height * 0.2 - 12) / 2],
-        'font-style': 'letter-spacing: 2px;',
+        'position': [beginPoint.x + this.data.inputValue / this.data.choseTextModule.systemVariable.time * this.data.choseTextModule.systemVariable.width / 2 * ratio, beginPoint.y + (height * 0.6 + (height * 0.2 - 12) / 2) * ratio],
+        'font-style': 'letter-spacing: ' + 2 * ratio + 'px;',
         'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': 12,
+        'font-size': 12 * ratio + 'px',
       },
       {
         'action': 'text',
         'text': 'Let time stop at this moment',
-        'position': [beginPoint.x, beginPoint.y + height * 0.8 + (height * 0.2 - 8) / 2],
+        'position': [beginPoint.x, beginPoint.y + (height * 0.8 + (height * 0.2 - 8) / 2) * ratio],
         'font-style': 'letter-spacing: 2px;',
         'font-color': this.data.choseTextModule.userVariable.color,
-        'font-size': '8px',
+        'font-size': 8 * ratio + 'px',
       },
     ]
     return actions;

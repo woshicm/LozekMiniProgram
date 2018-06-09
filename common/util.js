@@ -503,7 +503,7 @@ function GetUserAuthorize(scope) {
 /**
  * 获取文字模版
  */
-function GetTemplates() {
+function GetTemplates(){
   let templates = [
     "<div style=' align-items: center; color: {color}; transform: scale({fontSize},{fontSize});width: 126px; height: 84px; padding: 0px; text-align: center;'><div style='font-size: 39px; letter-spacing: 3px; height: 60%;'>{temp}</div><div style='letter-spacing: 2px; height: 20%; font-size: 12px; margin:0px;'>{sourceText}</div><div style='font-size: 8px; margin:0px;padding: 0px;height: 20%'>Let time stop at this moment</div></div>"
   ]

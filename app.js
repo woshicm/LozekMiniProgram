@@ -13,7 +13,7 @@ App({
     getShareDiaryURL:'https://www.louzek.xyz:443/',
     api: {
       login: '',
-      // getDiarys : base + '/diarys',
+      // getDiarys: base + '/diarys',
       saveDiary: '',
       getDiary: '',
       uploadImage: '',

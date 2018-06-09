@@ -27,7 +27,7 @@ Component({
     var todayTop = 280;
     var todayEraseHeight = 320;
     if(this.data.status == 'image_only'){
-      timeLineHeight = 310;
+      timeLineHeight = 320;
       todayTop = 150;
       todayEraseHeight = 210;
     }

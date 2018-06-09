@@ -1,6 +1,7 @@
-<view class="page-mainPage" animation='{{animationData}}' style='left:{{mainPageLeft}}rpx;' bindtouchstart='onMainPageTouchstart' catchtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend' bindtap='onMainPageTap'>
+<view class="page-mainPage" animation='{{animationData}}'  bindtap='onMainPageTap'>
   <!--遮蔽层-->
   <!-- <view class="drawer-screen" hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view> -->
+  <view class='mask' style='height: {{windowHeight}}px;' wx:if='{{isShowMask}}'></view>
   <view style='height: 149rpx;'>
     <view class="color-main" style='height: 119rpx;'>
       <open-data type="userAvatarUrl" class='image-portrait' catchtap='onPortraitTap'></open-data>
@@ -22,7 +23,7 @@
               <!-- 時間軸效果 -->
               <view class='index-display-timeLine'>
                 <!-- 這裡對日期加減的操作尚待完善 -->
-                <timeLine isLast='{{index == diaryData.length - 1}}' dash='{{index===0?false:!(diaryData[index-1].date[2] === displayItem.date[2] - 1)}}' date='{{displayItem.date}}' status='{{(displayItem.diary.text.length != 0 && displayItem.diary.image.length != 0) ? "both" : (displayItem.diary.image.length != 0 ? "image_only" : "text_only")}}'></timeLine>
+                <timeLine isLast='{{diaryDataIndex == diaryData.length - 1}}' dash='{{diaryDataIndex ===0 ? false : !(diaryData[index-1].date[2] === displayItem.date[2] - 1)}}' date='{{displayItem.date}}' status='{{(displayItem.diary.text.length != 0 && displayItem.diary.image.length != 0) ? "both" : (displayItem.diary.image.length != 0 ? "image_only" : "text_only")}}'></timeLine>
               </view>
               <view class='index-display-aDay'>
                 <!-- 對每天的文本日記遍歷 -->
@@ -31,7 +32,6 @@
                     <textCard id='{{"textCard" + diaryDataIndex +"-"+ textDiaryIndex}}' textDiaryId='{{textItem.main.id}}' title='{{textItem.main.title}}' text='{{textItem.main.text}}' iamgeUrl='{{(textItem.main.images.length) == 0? []: textItem.main.images}}' currentTextDiaryData='{{textItem}}'
                       data-diarydataindex='{{diaryDataIndex}}' data-textdiaryindex='{{textDiaryIndex}}' bindtap='previewTextDiary' bindlongpress='showTextDiaryEditMenu'></textCard>
                     <!--遮蔽层-->
-                    <view class="drawer-screen"  hidden="{{(currentDiaryDataIndex != -1) ? false:true}}" bindtap='click_block'></view>
                     <!--content-->
                     <!--使用animation属性指定需要执行的动画-->
                     <!-- <view animation="{{animationData}} " class="drawer_box" sytle='background-color:red;' hidden="{{(textDiaryIndex == currentTextDiaryIndex) && (diaryDataIndex == currentDiaryDataIndex) ? false:true}}">  -->
@@ -99,12 +99,12 @@
   </view>
 </view>
 <!-- 抽屉页 -->
-<view class='page-drawerPage' animation='{{animationData}}' style='left:{{drawerMenuLeft}}rpx;' bindtouchstart='onMainPageTouchstart' bindtouchmove='onMainPageTouchmove' bindtouchend='onMainPageTouchend'>
+<view class='page-drawerPage' animation='{{animationData}}' style='left:{{drawerMenuLeft}}rpx; height: {{windowHeight}}px;'>
   <view class='drawerPersonalInfo'>
     <open-data type="userAvatarUrl" class='image-portraitOfDrawer'></open-data>
     <open-data type="userNickName" class='text-nicknameOfDrawer'></open-data>
   </view>
-  <view style="  background-color: #f0f0f0; height: 920rpx;">
+  <view>
     <view class='drawerOptions'>
       <view class='drawer-optionLine'>
         <image src="/images/icon/ic_settings.svg" class="icon-drawer"></image>
@@ -113,11 +113,7 @@
       </view>
       <view class='drawer-optionLine'>
         <image src="/images/icon/ic_settings.svg" class="icon-drawer"></image>
-        <text class='text-options'>收藏</text>
-      </view>
-      <view class='drawer-optionLine'>
-        <image src="/images/icon/ic_settings.svg" class="icon-drawer"></image>
-        <text class='text-options'>草稿</text>
+        <text class='text-options'>关于</text>
       </view>
       <view class='drawer-optionLine'>
         <image src="/images/icon/ic_help.svg" class="icon-drawer"></image>

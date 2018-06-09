@@ -1,13 +1,58 @@
-import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather, HideShareMenu } from "../../common/util.js";
+
+import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather, HideShareMenu, GetCurrentTime } from "../../common/util.js";
 
 const app = getApp()
 const globalData = getApp().globalData
 Page({
   data: {
-    // windowHeight: app.globalData.windowHeight,
+     windowHeight: app.globalData.windowHeight,
 
     //時間軸
-    diaryData: {},
+    today: GetCurrentTime(),
+    diaryData: [
+      // {
+      //   date: [2018, 6, 5, 'Thu'],
+      //   diary: {
+      //     image: [
+      //       {
+      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
+      //         text: '哈哈哈',
+      //       }
+      //     ],
+      //     text: [
+      //     ]
+
+      //   }
+      // },
+      // {
+      //   date: [2018, 6, 7, 'Thu'],
+      //   diary: {
+      //     image: [
+      //       {
+      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
+      //         text: '哈哈哈',
+      //       }
+      //     ],
+      //     text: [
+      //     ]
+
+      //   }
+      // },
+      // {
+      //   date: [2018, 6, 8, 'Thu'],
+      //   diary: {
+      //     image: [
+      //       {
+      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
+      //         text: '哈哈哈',
+      //       }
+      //     ],
+      //     text: [
+      //     ]
+
+      //   }
+      // },
+    ],
     scrollHeight: 0, //scroll-top的值，控制滚动到底部
     currentSearchDiaryDataId: 'diaryDate0', //竖向定位到到哪一天，该值是子元素id
     currentSerarchTextDiaryId: 'textCard0-0',//横向定位到哪个文本日记
@@ -23,6 +68,7 @@ Page({
     keywordsArraryIndex: 0, //搜索到匹配关键字的数组的下标
     currentChoseDiaryTop: 0,
     //導航抽屜
+    isShowMask: false,
     userInfo: {},
     check: false,   //是否触发滑动操作
     state: 0,    //0:初始状态 1:菜单弹出中状态 2:菜单弹入状态中 3:菜单弹出状态
@@ -50,8 +96,9 @@ Page({
     GetUserAuthorize('scope.userLocation')
     setTimeout(
       function () {
+        console.log(app.globalData.userCurrentCityLongitude + "," + app.globalData.userCurrentCityLatitude)
         getWeather(app.globalData.userCurrentCityLongitude + "," + app.globalData.userCurrentCityLatitude)
-      }, 1000
+      }, 2000
     )
   },
 
@@ -63,130 +110,6 @@ Page({
   },
 
   //導航抽屜
-  onMainPageTouchstart: function (e) {
-    var data = this.data;
-    var clientX = e.touches[0].clientX;
-    data.startTime = e.timeStamp;
-    //初识状态
-    if (data.state === 0) {
-      if (clientX <= data.touchCheckX) {
-        data.check = true;
-        data.state = 1;
-        data.firstTouchX = clientX;
-      }
-    }
-    //菜单弹出状态
-    else if (data.state === 3) {
-      if (clientX >= 0) {
-        data.check = true;
-        data.state = 2;
-        data.firstTouchX = clientX;
-      }
-    }
-  },
-  onMainPageTouchmove: function (e) {
-    var data = this.data;
-    var pixelRatio = wx.getSystemInfoSync().pixelRatio;
-    if (data.check) {
-      var mainPageLeft = 0, drawerMenuLeft = 0;
-      var moveX = e.touches[0].clientX - data.firstTouchX;
-      if (data.state === 1) {
-        //处理边界状态
-        if (moveX < 0) {
-          moveX = 0;
-        }
-        if (moveX > data.maxMoveX) {
-          moveX = data.maxMoveX;
-        }
-        if (moveX >= 0 && moveX <= data.maxMoveX) {
-          data.moveX = moveX;
-          moveX = moveX - data.lastTranlateX;
-          //px转为rpx
-          moveX = moveX * pixelRatio;
-          mainPageLeft = moveX;
-          drawerMenuLeft = -580 + moveX;
-        }
-      }
-      else if (data.state === 2) {
-        //处理边界状态
-        if (moveX > 0) {
-          moveX = 0;
-        }
-        if (moveX < -data.maxMoveX) {
-          moveX = -data.maxMoveX;
-        }
-        if (moveX <= 0 && moveX >= -data.maxMoveX) {
-          data.moveX = moveX;
-          moveX = moveX - data.lastTranlateX;
-          //px转为rpx
-          moveX = moveX * pixelRatio;
-          var maxMoveX = data.maxMoveX * pixelRatio;
-          mainPageLeft = maxMoveX + moveX;
-          drawerMenuLeft = maxMoveX - 580 + moveX;
-        }
-      }
-      this.setData({
-        mainPageLeft: mainPageLeft,
-        drawerMenuLeft: drawerMenuLeft
-      });
-    }
-  },
-  onMainPageTouchend: function (e) {
-    var data = this.data;
-    if (!data.check) {
-      return;
-    }
-    data.endTime = e.timeStamp;
-    data.check = false;
-    data.firstTouchX = 0;
-    var moveX = data.moveX;
-    data.moveX = 0;
-    var animation = wx.createAnimation({
-      duration: 250,
-      timingFunction: 'ease'
-    });
-    var translateX = 0;
-    var mainPageLeft = 0;
-    var windowWidth = wx.getSystemInfoSync().windowWidth;
-    if (data.state === 1) {
-      if (moveX === 0 || moveX === data.maxMoveX) {
-        data.state = (moveX === 0) ? 0 : 3;
-        return;
-      }
-      mainPageLeft = moveX;
-      //滑动距离是否超过窗口宽度一半
-      if (mainPageLeft > (windowWidth / 3) || data.endTime - data.startTime < 200) {
-        translateX = data.maxMoveX - moveX;
-        data.state = 3;
-      }
-      else {
-        translateX = -moveX;
-        data.state = 0;
-      }
-    }
-    else if (data.state === 2) {
-      if (moveX === 0 || moveX === -data.maxMoveX) {
-        data.state = (moveX === 0) ? 3 : 0;
-        return;
-      }
-      //滑动距离是否超过窗口宽度一半
-      mainPageLeft = data.maxMoveX + moveX
-      if (mainPageLeft > (windowWidth / 3)) {
-        translateX = -moveX;
-        data.state = 3;
-      }
-      else {
-        translateX = -mainPageLeft;
-        data.state = 0;
-      }
-    }
-    translateX += data.lastTranlateX;
-    data.lastTranlateX = translateX;
-    animation.translateX(translateX).step();
-    this.setData({
-      animationData: animation.export()
-    });
-  },
   onMainPageTap: function (e) {
     var data = this.data;
     if (data.state !== 3) {
@@ -219,7 +142,8 @@ Page({
     data.state = 3;
     animation.translateX(translateX).step();
     this.setData({
-      animationData: animation.export()
+      animationData: animation.export(),
+      isShowMask: true,
     });
   },
 
@@ -235,7 +159,8 @@ Page({
     var animation = wx.createAnimation({ duration: 100 });
     animation.translateX(translateX).step();
     this.setData({
-      animationData: animation.export()
+      animationData: animation.export(),
+      isShowMask: false,
     });
   },
 
@@ -297,10 +222,14 @@ Page({
         let imgUrl = ' ';
         let uploadedImageWidth = 0;
         let uploadedImageHeight = 0;
+        let originalImageWidth = 0;
+        let originalImageHeight = 0;
         wx.getImageInfo({
           src: tempFilePaths[0],
           success: (res) => {
             imgUrl = tempFilePaths[0];
+            originalImageWidth = res.width;
+            originalImageHeight = res.height;
             if (res.height > res.width) {
               var width = res.width * (0.9 * 0.7 * app.globalData.windowHeight) / res.height;
               if (width > app.globalData.windowWidth) {
@@ -320,53 +249,11 @@ Page({
               uploadedImageHeight = res.height;
             }
           },
-          //   UploadImage(tempFilePaths[0])
-          //     .then((res) => {
-          //       wx.hideLoading();
-          //       wx.showToast({
-          //         title: '上传成功',
-          //         icon: 'success',
-          //         duration: 2000,
-          //       })
-          //       console.log("upload images completed: " + res.imgUrl)
-          //     })
-          //     .catch((e) => {
-          //       wx.hideLoading()
-          //       wx.showToast({
-          //         title: '上传失败: ' + e,
-          //         icon: 'fail',
-          //         duration: 2000,
-          //       })
-          //       console.log("upload images fail:" + e)
-          //     })
-          // },
           fail: function (res) { },
           complete: function (res) {
-            // wx.setStorageSync('imgUrl', imgUrl);
-            // wx.setStorageSync('uploadedImageWidth', uploadedImageWidth);
-            // wx.setStorageSync('uploadedImageHeight', uploadedImageHeight);
-            //发起api滤镜
-            // wx.request({
-            //   url: 'https://api.ai.qq.com/fcgi-bin/vision/vision_imgfilter',
-            //   data:{
-            //     "app_id": 1106918284,
-            //     "time_stamp": 2,
-            //     "noce_str": "sadsadefadsfas",
-            //      "sign": "",
-            //      "filter": 1,
-            //      "iamge": ,
-            //   },
-            // header:{
-            //   "content-type": "aplication/json"
-            // },
-            // success:(res)=>{
-            //   console.log(res.data)
-            // }
-            // })
             wx.navigateTo({
-              url: '../imageDiary/imageDiary?imgUrl=' + imgUrl + '&imageWidth=' + uploadedImageWidth + '&imageHeight=' + uploadedImageHeight
+              url: '../imageDiary/imageDiary?imgUrl=' + imgUrl + '&imageWidth=' + uploadedImageWidth + '&imageHeight=' + uploadedImageHeight + '&originalImageWidth=' + originalImageWidth + '&originalImageHeight=' + originalImageHeight
             });
-
           }
         })
       }
