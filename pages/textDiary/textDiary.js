@@ -1,7 +1,7 @@
 // page/textDiary/textDiary.js
 
 // 导入方法统一以大写字母开头
-import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather, getWord, getLocationInfo } from "../../common/util.js";
+import { GetCurrentTime, UploadImage, GetImageInfo, SaveDiary, getWeather, getWord, getLocationInfo, HideShareMenu } from "../../common/util.js";
 
 let app = getApp()
 Page({
@@ -47,6 +47,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
   onLoad: function (options) {
+    HideShareMenu()
     //从主页传递标题和内容
     var that = this
     if (options.type == 'reEdit') {

@@ -302,11 +302,11 @@ button::after {
 
 /*content*/
 
-.drawer_box {
+/* .drawer_box {
   height: 300rpx;
   width: 300rpx;
   overflow: hidden;
-  position: fixed;
+   position: fixed; 
   top: 70%;
   left: 20%;
   z-index: 1001;
@@ -319,11 +319,17 @@ button::after {
   padding: 15px;
   font: 20px "microsoft yahei";
   text-align: center;
-}
+}*/
 
 .drawer-content {
   width: 40%;
-  height: 300px;
-  margin-left: 30%;
-  margin-right: 30%;
+  height: 230rpx;
+  position: fixed;
+  left: 40%;
+  z-index: 1001;
+  background: #fafafa;
+  box-shadow: 5rpx 5rpx 10rpx 10rpx rgba(0, 0, 0, 0.15);
+}
+.diary-editmenu-button{
+  height: 70rpx;
 }

@@ -1,11 +1,11 @@
 {
   "pages": [
-    
     "pages/index/index",
     "pages/imageDiary/imageDiary",
     "pages/textDiary/textDiary",
     "pages/shareDiary/shareDiary",
-    "pages/imageDiary/finished/finished"
+    "pages/imageDiary/finished/finished",
+    "pages/textDiaryShared/textDiaryShared"
   ],
   "window": {
     "backgroundTextStyle": "dark",

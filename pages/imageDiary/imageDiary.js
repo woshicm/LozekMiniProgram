@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu } from "../../common/util.js";
 import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
@@ -147,6 +147,7 @@ Page({
 
   //-----------------------------生命週期函數-----------------------------------------//
   onLoad: function (options) {
+    HideShareMenu()
     this.setData({
       originalImageUrl: options.imgUrl,
       filteredImageUrl: options.imgUrl,
@@ -167,7 +168,7 @@ Page({
         console.log("不用管这个被取消的请求，他没错误")
       })
     // 加载模版内容
-    if (app.globalData.templates.length == 0){
+    if (app.globalData.templates.length == 0) {
       GetTemplates()
         .then((data) => {
           app.globalData.templates = data
@@ -605,8 +606,10 @@ Page({
   //-----------------------------前後交互函數-----------------------------------------//
   //請求文字模板
   getTextModule(sourceText, color, fontSize, id) {
+    var textModule = {}
     // 获取本地保存的模版
     let template = app.globalData.templates[0]
+<<<<<<< HEAD
 
     var currentTime = GetCurrentTime();
     var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
@@ -634,7 +637,6 @@ Page({
         fontSize: fontSize,
       }
     }
-    return textModule;
   },
 
   //返回文字模板

@@ -15,14 +15,18 @@ Component({
     currentTextDiaryData:{
       type: []
     }
+
   },
 
   data: {
     width: 441,
     boxType: 'oneText',
+    visible: false,
+    animationOnExtraMenu: [],
   },
   methods: {
-    onTapExtra(e) {
+    onTapExtra() {
+      console.log('触发了')
       this.setData({
         visible: true,
       });
