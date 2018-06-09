@@ -528,4 +528,33 @@ function GetTemplates(){
   });
   return promise
 }
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo, GetTemplates }
+
+//隐藏右上角分享
+function HideShareMenu() {
+  wx.hideShareMenu({
+    success: function (res) { },
+    fail: function (res) { },
+    complete: function (res) { },
+  })
+}
+
+// 从本地模版库里生成对应模板
+function GetTextModule(sourceText, color, fontSize, id) {
+  console.log(globalData.templates[id])
+
+  let currentTime = GetCurrentTime();
+  let time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+  sourceText = sourceText == '' ? '让时间停在这一刻' : sourceText
+  let template = globalData.templates[id]
+
+  template.nodes = template.nodes.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{time}', time).replace('{sourceText}', sourceText)
+
+  template.id = id
+  template.time = time
+  template.userVariable.color = color
+  template.userVariable.fontSize = fontSize
+
+  return template;
+}
+
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo, GetTemplates, HideShareMenu, GetTextModule }

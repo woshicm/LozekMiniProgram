@@ -7,7 +7,6 @@ App({
     windowHeight: wx.getSystemInfoSync().windowHeight,
     windowWidth: wx.getSystemInfoSync().windowWidth,
     token: '1',
-<<<<<<< HEAD
     baseURL: 'https://www.louzek.xyz/',
     getShareDiaryURL:'https://www.louzek.xyz:443/',
     api: {

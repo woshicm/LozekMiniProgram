@@ -10,48 +10,48 @@ Page({
     //時間軸
     today: GetCurrentTime(),
     diaryData: [
-      {
-        date: [2018, 6, 5, 'Thu'],
-        diary: {
-          image: [
-            {
-              imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
-              text: '哈哈哈',
-            }
-          ],
-          text: [
-          ]
+      // {
+      //   date: [2018, 6, 5, 'Thu'],
+      //   diary: {
+      //     image: [
+      //       {
+      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
+      //         text: '哈哈哈',
+      //       }
+      //     ],
+      //     text: [
+      //     ]
 
-        }
-      },
-      {
-        date: [2018, 6, 7, 'Thu'],
-        diary: {
-          image: [
-            {
-              imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
-              text: '哈哈哈',
-            }
-          ],
-          text: [
-          ]
+      //   }
+      // },
+      // {
+      //   date: [2018, 6, 7, 'Thu'],
+      //   diary: {
+      //     image: [
+      //       {
+      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
+      //         text: '哈哈哈',
+      //       }
+      //     ],
+      //     text: [
+      //     ]
 
-        }
-      },
-      {
-        date: [2018, 6, 8, 'Thu'],
-        diary: {
-          image: [
-            {
-              imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
-              text: '哈哈哈',
-            }
-          ],
-          text: [
-          ]
+      //   }
+      // },
+      // {
+      //   date: [2018, 6, 8, 'Thu'],
+      //   diary: {
+      //     image: [
+      //       {
+      //         imageURL: 'https://www.louzek.xyz:443/image?name=ce7362e343b0fcd8454025aa36ac1d89848e813f_4&15285085',
+      //         text: '哈哈哈',
+      //       }
+      //     ],
+      //     text: [
+      //     ]
 
-        }
-      },
+      //   }
+      // },
     ],
     scrollHeight: 0, //scroll-top的值，控制滚动到底部
     currentSearchDiaryDataId: 'diaryDate0', //竖向定位到到哪一天，该值是子元素id
@@ -103,7 +103,7 @@ Page({
   },
 
   onShow() {
-    // this.displayDiary()
+    this.displayDiary()
   },
   onUnload() {
 

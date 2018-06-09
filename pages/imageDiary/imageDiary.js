@@ -1,7 +1,7 @@
 // page/imageDiary/imageDiary.js
 
 // 导入方法统一以大写字母开头
-import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu } from "../../common/util.js";
+import { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, SaveDiary, GetCurrentTime, GetImageInfo, GetTemplates, HideShareMenu, GetTextModule } from "../../common/util.js";
 import { GetFliter } from "../../common/image_api.js";
 
 let app = getApp()
@@ -309,37 +309,18 @@ Page({
 
   // 聚焦
   textareaOnFocusEvent: function (e) {
-    // var keyboardHeight = e.detail.height;
-    // //建立動畫：拉起鍵盤，彈窗向上偏移
-    // var animation = wx.createAnimation({
-    //   duration: 200,  //动画时长
-    //   timingFunction: "linear", //线性
-    //   delay: 0  //0则不延迟
-    // });
-    // this.animation = animation;
-    // animation.translateY(-0.2 * keyboardHeight * app.globalData.pixelRatio).step();
-    // this.setData({
-    //   keyboardHeight: keyboardHeight,
-    //   animationData: animation.export(),
-    // });
-    // wx.showToast({
-    //   title: 'focus',
-    // })
   },
   //失焦
   textareaOnBlurEvent(e) {
     var value = e.detail.value;
     var array = [];
-    // if (value.length == 0) {
-    //   //隨機調用名言模板
-    // }
-    // else {
-    for (var i = 0; i < 10; i++) {
-      var suitableTextModule = this.getTextModule(value, 'black', 0.5, i);
+    console.log(app.globalData.templates)
+    for (var i = 0; i < app.globalData.templates.length; i++) {
+      var suitableTextModule = GetTextModule(value, 'black', 0.5, i);
       array.push(suitableTextModule);
     }
-    // }
-    var choseTextModule = this.getTextModule(value, 'black', 1, 0);
+    console.log(app.globalData.templates.length + ":" + array)
+    var choseTextModule = array[0];
     // this.parseInputValue(value);
     switch (e.target.id) {
       case 'title':
@@ -348,20 +329,6 @@ Page({
         });
         break;
       case 'content':
-        // var animation = wx.createAnimation({
-        //   duration: 200,  //动画时长
-        //   timingFunction: "linear", //线性
-        //   delay: 0  //0则不延迟
-        // });
-        // this.animation = animation;
-        // animation.translateY(0.2 * this.data.keyboardHeight * app.globalData.pixelRatio).step();
-        // this.setData({
-        //   inputValue: value,
-        //   animationData: animation.export(),
-        // });
-        // wx.showToast({
-        //   title: 'blur',
-        // })
         var isShow = this.data.mode == 'longText';
         this.setData({
           inputValue: value,
@@ -609,7 +576,6 @@ Page({
     var textModule = {}
     // 获取本地保存的模版
     let template = app.globalData.templates[0]
-<<<<<<< HEAD
 
     var currentTime = GetCurrentTime();
     var temp = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;

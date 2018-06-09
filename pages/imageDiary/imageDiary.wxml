@@ -45,9 +45,7 @@
         <scroll-view scroll-x='true' class='textModuleScrollView'>
           <view style='border: {{textModuleIndex == choseTextModuleId ? "4rpx solid #3f8ae9": ""}};' wx:key="this" wx:for='{{textModuleScrollView}}' wx:for-item='textModuleItem' wx:for-index='textModuleIndex' class='textModuleScrollView-item' bindtap='onTextModuleItemTap'
             data-text-module-id='{{textModuleItem.systemVariable.id}}' disabled='{{false}}'>
-            <view style='display: flex; align-items:center; justify-content: center;'>
               <rich-text nodes="{{textModuleItem.nodes}}"></rich-text>
-            </view>
           </view>
         </scroll-view>
       </view>
