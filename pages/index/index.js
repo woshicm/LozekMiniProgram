@@ -1,5 +1,4 @@
-
-import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather, HideShareMenu, GetCurrentTime, Copy } from "../../common/util.js";
+import { ParseText, UploadImage, GetDiary, DeleteDiary, GetUserAuthorize, getWeather, HideShareMenu, GetCurrentTime, Copy, CheckToken } from "../../common/util.js";
 import { TryCacheData} from '../../common/cache.js'
 
 const app = getApp()
@@ -61,7 +60,9 @@ Page({
   },
 
   onShow() {
-    this.displayDiary()
+    CheckToken(()=>{
+      this.displayDiary()
+    })
   },
   onUnload() {
 
@@ -220,7 +221,6 @@ Page({
 
   //显示日记的数据
   displayDiary() {
-    setTimeout(() => { 
       GetDiary()
         .then((res) => {
           TryCacheData(res.diary)
@@ -231,13 +231,6 @@ Page({
             })
           }, 1500)
         })
-      .catch((err) => {
-        console.log(err)
-        // app.relogin(() => {
-        //   this.displayDiary()
-        // })
-      })
-    }, 1000)
   },
 
   //文本日记跳转监听事件
