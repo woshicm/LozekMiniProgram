@@ -224,17 +224,12 @@ Page({
       GetDiary()
         .then((res) => {
           TryCacheData(res.diary)
-          .then(()=>{
-            setTimeout(()=>{
-              this.setData({
-                btnSettingOpenType: 'getUserInfo',
-                diaryData: res.diary,
-              })
-            },500)
-          })
-          .catch((err)=>{
-            console.log(err)
-          })
+          setTimeout(() => {
+            this.setData({
+              btnSettingOpenType: 'getUserInfo',
+              diaryData: res.diary,
+            })
+          }, 1500)
         })
       .catch((err) => {
         console.log(err)

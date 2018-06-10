@@ -35,10 +35,10 @@ function checkURLCache(url){
         let cacheData = res.data
         let imagrUrl = url.split('&')[0]
         if (imagrUrl in cacheData){
-          console.log('inininininininin')
+          // console.log('inininininininin')
           resolve(cacheData[imagrUrl])
         }else{
-          console.log('no in')
+          // console.log('no in')
           cacheImage(imagrUrl)
           .then((res)=>{
             resolve(res)
@@ -92,14 +92,13 @@ function cacheImage(net_url){
 }
 
 function TryCacheData(diarys){
-  let promise = new Promise((resolve,reject)=>{
     for (let diary of diarys) {
       for (let i = 0; i < diary.diary.image.length; i++) {
-        if (diary.diary.image[i].imageURL.startsWith('https://www')) {
-          console.log('origin :' + diary.diary.image[i].imageURL)
+        if (diary.diary.image[i].imageURL.startsWith('https://www') || diary.diary.image[i].imageURL.includes('image?name')) {
+          // console.log('origin :' + diary.diary.image[i].imageURL)
           checkURLCache(diary.diary.image[i].imageURL)
             .then((res) => {
-              console.log('cache image:' + res)
+              // console.log('cache image:' + res)
               diary.diary.image[i].imageURL = res
             })
             .catch((err) => {
@@ -107,9 +106,6 @@ function TryCacheData(diarys){
             })
         }
       }
-      resolve()
     }
-  })
-  return promise
 }
 export { CacheInit, TryCacheData}

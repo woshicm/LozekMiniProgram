@@ -443,8 +443,28 @@ function GetUserAuthorize(scope, name, content) {
   wx.getSetting({
     success: (res) => {
       if (!res.authSetting[scope]) {
-        wx.authorize({
-          scope: scope,
+        wx.showModal({
+          title: '缺少' + name + '权限，是否设置？',
+          content: content,
+          confirmText: '设置',
+          success: function(res){
+            if(res.confirm){
+              // wx.openSetting();
+              wx.authorize({
+                scope: 'scope.userLocation',
+                success: function(res) {
+                 wx.redirectTo({
+                   url: 'index',
+                   success: function(res) {},
+                   fail: function(res) {},
+                   complete: function(res) {},
+                 })
+                },
+                fail: function(res) {},
+                complete: function(res) {},
+              })
+            }
+          }
         })
       } else {
         switch (scope) {
