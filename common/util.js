@@ -73,6 +73,15 @@ function UploadImage(data) {
         } else if (res.statusCode == '403') {
           reject(403)
         }
+        setTimeout(
+          function () {
+            wx.hideLoading();
+            wx.showToast({
+              title: '响应超时',
+              icon: 'none',
+            })
+          }, 3000
+        )
       },
       complete: (res) => {
         // FreshDiaryDataStorage()

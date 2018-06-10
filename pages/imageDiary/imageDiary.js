@@ -350,7 +350,9 @@ Page({
         console.log("哈哈,失去焦点函数有bug!");
     }
   },
+  textareaOnLineChangeEvent(e){
 
+  },
   /**
    * movableArea 监听事件
    */
@@ -744,16 +746,5 @@ Page({
         close = true;
       }, 50
     );
-    setTimeout(
-      function () {
-        if(close)
-        return;
-        wx.hideLoading();
-        wx.showToast({
-          title: '响应超时',
-          icon: 'none',
-        })
-      }, 3000
-    )
   }
 })

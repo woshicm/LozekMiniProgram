@@ -47,7 +47,7 @@ Component({
      */
     previewTextDiary() {
       wx.navigateTo({
-        url: '/pages/shareDiary/shareDiary?title=' + this.properties.title + '&text=' + this.properties.text + '&type=textDiary',
+        url: '/pages/textDiary/textDiary?textDiaryData=' + this.properties.currentTextDiaryData + '&type=reEdit',
         success: function (res) { },
         fail: function (res) { },
         complete: function (res) { },

@@ -51,26 +51,32 @@ Page({
     //从主页传递标题和内容
     var that = this
     if (options.type == 'reEdit') {
-      wx.getStorage({
-        key: 'textDiaryData',
-        success: function (res) {
-          that.setData({
-            isReEdit: true,
-            textDiaryId: res.data[0].id,
-            titleValue: res.data[0].title,
-            textValue: res.data[0].text,
-            addedPhoto: res.data[0].imageUrl,
-            choseCount: res.data[0].imageUrl.length,
-            weather: res.data[0].weather,
-          })
-        },
-        complete: function () {
-          wx.removeStorage({
-            key: 'textDiaryData',
-            success: function (res) { },
-          })
-        }
+      this.setData({
+        isReEdit: true,
+        textDiaryData: options.textDiaryData,
       })
+      // wx.getStorage({
+      //   key: 'textDiaryData',
+      //   success: function (res) {
+      //     that.setData({
+      //       isReEdit: true,
+      //       textDiaryId: res.data[0].id,
+      //       titleValue: res.data[0].title,
+      //       textValue: res.data[0].text,
+      //       addedPhoto: res.data[0].imageUrl,
+      //       choseCount: res.data[0].imageUrl.length,
+      //       weather: res.data[0].weather,
+      //     })
+      //   },
+      //   complete: function () {
+      //     wx.removeStorage({
+      //       key: 'textDiaryData',
+      //       success: function (res) { },
+      //     })
+      //   }
+      // })
+      console.log('我: ')
+      console.log(this.data.textDiaryData)
       return;
     }
 

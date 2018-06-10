@@ -11,12 +11,12 @@
       <block wx:if="{{mode == 'longText' && isInputStatu}}">
         <input class='input-text' style="top: {{windowHeight * 0.7 * 0.9  / 2 - uploadedImageHeight / 4}}px; left: 188rpx;" placeholder='请在这里输入标题' placeholder-style='font-size: 18pt;' maxlength='8' focus="{{isFocus}}" bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="titleInputOnBlurEvent"
           id='title' value='{{inputTitle}}'></input>
-        <textarea class="input-text" style='left: 188rpx;' wx:key="this"  auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入正文' maxlength='50' placeholder-style='font-size: 18pt;'
+        <textarea class="input-text" style='left: 100rpx; font-size: 15pt; background-color: rgba(255,255,255,0.5);' wx:key="this"  auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='请在这里输入正文' maxlength='50' placeholder-style='font-size: 15pt;'
           show-confirm-bar='false' id='content' value='{{inputValue}}'></textarea>
       </block>
       <!-- 散文模式输入 -->
-      <textarea wx:elif="{{isInputStatu}}" class="input-text" wx:key="this" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" placeholder='美好的一天说点什么吧' maxlength='25' placeholder-style='font-size: 18pt;'
-        show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{windowHeight * 0.7 * 0.9  / 2}}px; left: 160rpx;'></textarea>
+      <textarea wx:elif="{{isInputStatu}}" class="input-text" wx:key="this" auto-height='true' bindfocus='textareaOnFocusEvent' bindinput='textareaOnInputEvent' bindblur="textareaOnBlurEvent" bindlinechange='textareaOnLineChangeEvent' placeholder='美好的一天说点什么吧' maxlength='25' placeholder-style='font-size: 18pt;'
+        show-confirm-bar='false' focus="{{isFocus}}" id='content' value='{{inputValue}}' style='top: {{windowHeight * 0.7 * 0.9  / 2}}px; left: 100rpx; font-size: 18pt; background-color: rgba(255,255,255,0.5);'></textarea>
 
       <movable-view wx:if="{{!isInputStatu}}" direction='all' scale='true' scale-min='0.5' scale-max='2' style='width: {{movableViewWidth * richTextSize}}px; height: {{movableViewHeight* richTextSize}}px; display: flex; align-items: center; justify-content: center;' x='{{(uploadedImageWidth - movableViewWidth) / 2}}px' y='{{(uploadedImageHeight - movableViewHeight) / 2}}px;'
         bindchange='onMovableAreaChangeEvent' bindscale='onMovableAreaScaleEvent' id='id-movable'>

@@ -1,3 +1,5 @@
 {
-  
+  "navigationBarTitleText": "文本日记",
+  "enablePullDownRefresh": false,
+  "disableScroll": true
 }
