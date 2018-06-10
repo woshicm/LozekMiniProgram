@@ -72,6 +72,8 @@ function UploadImage(data) {
           resolve(JSON.parse(res.data))
         } else if (res.statusCode == '403') {
           reject(403)
+        }else{
+          reject(res.statusCode)
         }
       },
       complete: (res) => {
