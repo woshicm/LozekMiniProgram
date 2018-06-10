@@ -36,7 +36,7 @@ App({
      */
     userCurrentCityLatitude: '',
     userCurrentCityLongitude: '',
-    weather: {},
+    weather: "",
     // 文字模板
     templates: [],
   },

@@ -443,15 +443,8 @@ function GetUserAuthorize(scope, name, content) {
   wx.getSetting({
     success: (res) => {
       if (!res.authSetting[scope]) {
-        wx.showModal({
-          title: '缺少' + name + '权限，是否设置？',
-          content: content,
-          confirmText: '设置',
-          success: function(res){
-            if(res.confirm){
-              wx.openSetting();
-            }
-          }
+        wx.authorize({
+          scope: scope,
         })
       } else {
         switch (scope) {
@@ -523,17 +516,21 @@ function GetTextModule(sourceText, color, fontSize, id) {
   let time = "";
   let location = "";
   let template = deeepCopy(globalData.templates[id]);
+  console.log('模板')
+  console.log(template);
   if(template.systemVariable.hasTime){
     let currentTime = GetCurrentTime();
     time = (currentTime.hh < 10 ? "0" : "") + currentTime.hh + ":" + (currentTime.min < 10 ? "0" : "") + currentTime.min;
+    template.nodes = template.nodes.replace('{lozek-time}', time);
+    template.systemVariable.time = time;
   }
   if (template.systemVariable.hasLocation){
     location = GetLocationInfo(globalData.userCurrentCityLatitude, userCurrentCityLongitude);
+    template.nodes = template.nodes.replace('{lozek-location}', time);
   }
 
   sourceText = sourceText == '' ? template.systemVariable.defaultValue : sourceText
-
-  template.nodes = template.nodes.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{time}', time).replace('{sourceText}', sourceText)
+  template.nodes = template.nodes.replace('{color}', color).replace(new RegExp('{fontSize}', 'g'), fontSize).replace('{sourceText}', sourceText)
 
   template.id = id
   template.time = time

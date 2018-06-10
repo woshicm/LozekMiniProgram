@@ -108,8 +108,7 @@
     <view class='drawerOptions'>
       <view class='drawer-optionLine'>
         <image src="/images/icon/ic_settings.svg" class="icon-drawer"></image>
-        <!-- <text class='text-options'>设置</text> -->
-        <button class='text-options' open-type='{{btnSettingOpenType}}' bindgetuserinfo="getuserinfo">设置</button>
+        <text class='text-options'>设置</text>
       </view>
       <view class='drawer-optionLine'>
         <image src="/images/icon/ic_settings.svg" class="icon-drawer"></image>

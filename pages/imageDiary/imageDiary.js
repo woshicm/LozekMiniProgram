@@ -583,19 +583,20 @@ Page({
       'y': (textPosition.top - imagePosition.top) * ratio,
     };
     var height = this.data.choseTextModule.systemVariable.height;
+    var value = this.data.inputValue == "" ? this.data.choseTextModule.systemVariable.defaultValue : this.data.inputValue;
     var actions = [
       {
         'action': 'text',
         'text': this.data.choseTextModule.systemVariable.time,
         'position': [beginPoint.x, beginPoint.y + (height * 0.6 - 39) * ratio / 2],
-        'font-style': '',
-        'font-color': '',
+        'font-style': 'letter-spacing: ' + 3 * ratio + 'px;',
+        'font-color': this.data.choseTextModule.userVariable.color,
         'font-size': 39 * ratio + 'px',
       },
       {
         'action': 'text',
-        'text': this.data.inputValue,
-        'position': [beginPoint.x + this.data.inputValue / this.data.choseTextModule.systemVariable.time * this.data.choseTextModule.systemVariable.width / 2 * ratio, beginPoint.y + (height * 0.6 + (height * 0.2 - 12) / 2) * ratio],
+        'text': value,
+        'position': [beginPoint.x + value.length / this.data.choseTextModule.systemVariable.defaultValue.length * this.data.choseTextModule.systemVariable.width / 2 * ratio, beginPoint.y + (height * 0.6 + (height * 0.2 - 12) / 2) * ratio],
         'font-style': 'letter-spacing: ' + 2 * ratio + 'px;',
         'font-color': this.data.choseTextModule.userVariable.color,
         'font-size': 12 * ratio + 'px',
@@ -609,6 +610,7 @@ Page({
         'font-size': 8 * ratio + 'px',
       },
     ]
+    console.log(actions)
     return actions;
   },
   //显示文本工具栏
@@ -670,12 +672,21 @@ Page({
     let isOver = this.data.isLengthOver;
     var mode = 'longText';
     if (this.data.mode == 'longText') {
+      wx.showToast({
+        title: '已切换至短文本模式',
+        icon: 'none',
+      })
       mode = 'shortText'
       if (value.length > 25) {
         value = value.slice(0, 25);
         isOver = true;
       }
     }
+    else 
+      wx.showToast({
+        title: '已切换至长文本模式',
+        icon: 'none',
+      })
     var isShow = this.data.mode == 'longText';
     this.setData({
       mode: mode,
@@ -704,6 +715,7 @@ Page({
   },
   //存至本地
   onSaveTap() {
+    var close = false;
     wx.showLoading({
       title: '正在保存...',
     })
@@ -729,11 +741,13 @@ Page({
     setTimeout(
       function () {
         that.saveDiaryText(textPosition, imagePosition);
-        return;
+        close = true;
       }, 50
     );
     setTimeout(
       function () {
+        if(close)
+        return;
         wx.hideLoading();
         wx.showToast({
           title: '响应超时',

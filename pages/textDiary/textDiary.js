@@ -84,8 +84,12 @@ Page({
         })
       },
     })
-    var weather = [app.globalData.weather.cond_code, app.globalData.weather.cond_txt];
-    if(weather[0] != undefined) return;
+
+    var weather = {};
+    if(app.globalData.weather != ""){
+      weather = [app.globalData.weather.cond_code, app.globalData.weather.cond_txt];
+      console.log('1');
+    }
     else if (app.globalData.userCurrentCityLatitude == ''){
       GetUserAuthorize('scope.userLocation', '位置', '位置权限用于什么？获取天气、城市信息')
       return;
@@ -93,7 +97,10 @@ Page({
     else{
       weather = getWeather(app.globalData.userCurrentCityLatitude, app.globalData.userCurrentCityLongitude)
       app.globalData.weather = weather;
+      console.log('2')
     }
+    console.log(weather)
+    console.log(app.globalData.weather);
     this.setData({
       currentWeather: weather,
     });
@@ -110,11 +117,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
-    var weather = [app.globalData.weather.cond_code, app.globalData.weather.cond_txt];
-    if (weather[0] != undefined) return;
-    this.setData({
-      currentWeather: weather,
-    });
   },
 
   /**
@@ -647,7 +649,7 @@ Page({
   save() {
     let textDiaryData = {
       'type': 0,
-      'title': this.data.titleValue,
+      'title': this.data.titleValue.length == 0 ? '[无标题]' : this.data.titleValue.length,
       'text': this.data.textValue,
       'images': this.data.addedPhoto,
       'weather': this.data.weather,

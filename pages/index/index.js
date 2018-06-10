@@ -422,16 +422,31 @@ Page({
     this.initCurrentDiaryIndex()
     switch (this.data.currentDisplayDiaryType) {
       case 'allTypes':
+        wx.showToast({
+          title: '只显示图片路迹',
+          icon: 'none',
+          duration: 1000,
+        })
         that.setData({
           currentDisplayDiaryType: 'imageDiary'
         })
         break
       case 'imageDiary':
+        wx.showToast({
+          title: '只显示文字路迹',
+          icon: 'none',
+          duration: 1000,
+        })
         that.setData({
           currentDisplayDiaryType: 'textDiary'
         })
         break
       default:
+        wx.showToast({
+          title: '显示图片文字路迹',
+          icon: 'none',
+          duration: 1000,
+        })
         that.setData({
           currentDisplayDiaryType: 'allTypes'
         })
