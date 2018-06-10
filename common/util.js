@@ -449,7 +449,20 @@ function GetUserAuthorize(scope, name, content) {
           confirmText: '设置',
           success: function(res){
             if(res.confirm){
-              wx.openSetting();
+              // wx.openSetting();
+              wx.authorize({
+                scope: 'scope.userLocation',
+                success: function(res) {
+                 wx.redirectTo({
+                   url: 'index',
+                   success: function(res) {},
+                   fail: function(res) {},
+                   complete: function(res) {},
+                 })
+                },
+                fail: function(res) {},
+                complete: function(res) {},
+              })
             }
           }
         })
