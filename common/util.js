@@ -1,5 +1,69 @@
 let globalData = getApp().globalData
 
+function login(callback) {
+  wx.login({
+    success: (res) => {
+      wx.request({
+        url: globalData.api.login,
+        method: 'POST',
+        data: {
+          code: res.code
+        },
+        success: (res) => {
+          wx.setStorageSync('token', res.data.token)
+          callback()
+        }
+      })
+    },
+    fail: function (res) { },
+    complete: function (res) { },
+  })
+}
+
+function CheckToken (callback) {
+  let token = wx.getStorageSync("token") || null
+  wx.checkSession({
+    success: (res) => {
+      login(() => {
+        globalData.token = wx.getStorageSync("token")
+        callback()
+      })
+    },
+    fail: (res) => {
+      login(() => {
+        globalData.token = wx.getStorageSync("token")
+        callback()
+      })
+    },
+    complete: (res) => {
+      
+    },
+  })
+}
+
+function relogin(callback){
+  wx.login({
+    success: (res) => {
+      wx.request({
+        url: globalData.api.login,
+        method: 'POST',
+        data: {
+          code: res.code
+        },
+        success: (res) => {
+          wx.setStorageSync('token', res.data.token)
+          globalData.token = wx.getStorageSync("token")
+          callback()
+        }
+      })
+    },
+    fail: function (res) {
+      console.log("login error: " + res)
+    },
+    complete: function (res) { },
+  })
+}
+
 /*获取当前页url*/
 function GetCurrentPageUrl() {
   var pages = getCurrentPages()    //获取加载的页面
@@ -72,6 +136,8 @@ function UploadImage(data) {
           resolve(JSON.parse(res.data))
         } else if (res.statusCode == '403') {
           reject(403)
+        }else{
+          reject(res.statusCode)
         }
         setTimeout(
           function () {
@@ -582,4 +648,4 @@ function Copy(o){
   return deeepCopy(o)
 }
 
-export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo, GetTemplates, HideShareMenu, GetTextModule, Copy }
+export { ParseText, UploadImage, GetCurrentPageUrl, GetCurrentPageUrlWithArgs, GetDiary, SaveDiary, GetCurrentTime, DeleteDiary, GetImageInfo, getWeather, getWord, GetUserAuthorize, getLocationInfo, GetTemplates, HideShareMenu, GetTextModule, Copy, CheckToken }

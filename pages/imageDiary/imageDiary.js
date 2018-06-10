@@ -646,25 +646,30 @@ Page({
    * saveDiaryText
    */
   saveDiaryText(textPosition, imagePosition) {
-    var actions = this.putTextModule(textPosition, imagePosition);
-    console.log(actions)
-    let diary = {
-      'type': 1,
-      'imageURL': this.data.filteredImageUrl,
-      'location': '',
-      'actions': actions,
-    }
-    console.log(diary)
-    SaveDiary(diary)
-      .then((res) => {
-        wx.hideLoading();
-        wx.redirectTo({
-          url: 'finished/finished',
+      var actions = this.putTextModule(textPosition, imagePosition);
+      console.log(actions)
+      let diary = {
+        'type': 1,
+        'imageURL': this.data.filteredImageUrl,
+        'location': '',
+        'actions': actions,
+      }
+      console.log(diary)
+      SaveDiary(diary)
+        .then((res) => {
+          wx.hideLoading();
+          wx.redirectTo({
+            url: 'finished/finished',
+          })
         })
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+        .catch((e) => {
+          wx.hideLoading();
+          wx.showToast({
+            title: '响应超时,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        })
   },
   /**
    * 切换叙事模式
